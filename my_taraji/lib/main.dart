@@ -49,8 +49,8 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-      home: isLoading ? const LoadingScreen() : const HomeScreen(),
-      // home: isLoading ? const LoadingScreen() : const LoginScreen(),
+     // home: isLoading ? const LoadingScreen() : const HomeScreen(),
+      home: isLoading ? const LoadingScreen() : const LoginScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
