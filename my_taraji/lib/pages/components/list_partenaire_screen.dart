@@ -95,7 +95,7 @@ class _ListPartenaireScreenState extends State<ListPartenaireScreen> {
                       });
                     },
                     child: Text(
-                      showAllCards ? 'VOIR MOINS' : 'VOIR TOUT',
+                      showAllCards ? 'VOIR MOINS' : 'VOIR TOUS',
                       style: const TextStyle(
                         color: MyColors.grey,
                       ),

@@ -66,7 +66,7 @@ class _ListNewsScreenState extends State<ListNewsScreen> {
                       setState(() {});
                     },
                     child: const Text(
-                      'VOIR TOUT',
+                      'VOIR TOUS',
                       style: TextStyle(
                         color: MyColors.grey,
                       ),
