@@ -42,7 +42,8 @@ class _TopScreenState extends State<TopScreen> {
                       ProfileSection(
                         name: 'John Doe',
                         phoneNumber: '50 500 444',
-                        profileImagePath: 'images/profile.jpg',
+                        profileImagePath:
+                            'https://a.storyblok.com/f/191576/1200x800/faa88c639f/round_profil_picture_before_.webp',
                       ),
                     ],
                   ),

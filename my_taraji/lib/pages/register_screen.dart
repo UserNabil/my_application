@@ -5,14 +5,28 @@ import 'components/my_color.dart';
 import 'components/my_button.dart';
 import 'components/input_field.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController sponsorship = TextEditingController();
+  bool accept = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController phoneController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -84,18 +98,32 @@ class RegisterScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     buildInputField('Mot de passe', '**********', true, false,
                         true, passwordController),
+                    const SizedBox(height: 16),
+                    buildInputField('Code de parrainage', 'ET-SPONSORSHIP',
+                        true, false, true, sponsorship),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Checkbox(
-                          value: false,
+                          value: accept,
                           onChanged: (value) {
-                            value = !value!;
+                            setState(() {
+                              accept = value!;
+                            });
                           },
                         ),
-                        const Text(
-                          'Se rappeler de moi',
-                          style: TextStyle(color: MyColors.yellow),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              accept = !accept;
+                            });
+                          },
+                          child: GestureDetector(
+                            child: const Text(
+                              'Accepter les conditions générales',
+                              style: TextStyle(color: MyColors.yellow),
+                            ),
+                          ),
                         ),
                       ],
                     ),

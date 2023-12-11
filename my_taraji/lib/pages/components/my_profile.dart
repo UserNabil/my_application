@@ -36,7 +36,7 @@ Widget buildPhoto(String profileImagePath) {
             shape: BoxShape.circle,
             color: MyColors.black,
             image: DecorationImage(
-                image: AssetImage(profileImagePath), fit: BoxFit.cover),
+                image: NetworkImage(profileImagePath), fit: BoxFit.cover),
           )),
       onTap: () {
         // ignore: avoid_print

@@ -4,8 +4,8 @@
 
 /.vs/MyTaraji.Mobile/FileContentIndex
 /.vs
-/my_taraji/macos/Flutter/GeneratedPluginRegistrant.swift
-/my_taraji/linux/flutter/generated_plugins.cmake
-/my_taraji/linux/flutter/generated_plugin_registrant.cc
-/my_taraji/windows/flutter/generated_plugins.cmake
-/my_taraji/windows/flutter/generated_plugin_registrant.cc
+/my_taraji/macos/Flutter/
+/my_taraji/linux/flutter/
+/my_taraji/linux/flutter/
+/my_taraji/windows/flutter/
+/my_taraji/windows/flutter/
