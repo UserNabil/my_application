@@ -60,15 +60,18 @@ class _ListPartenaireScreenState extends State<ListPartenaireScreen> {
   ];
 
   bool showAllCards = false;
-
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double heightRatio = 2.0;
+    double calculatedHeight = screenWidth * heightRatio;
     List<CardItem> displayedCards =
         showAllCards ? allCardItems : allCardItems.take(4).toList();
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+    return SizedBox(
+      height: showAllCards ? calculatedHeight * 1.8 : calculatedHeight,
+      child: Scaffold(
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(

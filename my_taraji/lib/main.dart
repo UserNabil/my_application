@@ -41,7 +41,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'My Taraji',
       theme: ThemeData(
+        fontFamily: 'Poppins',
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
             TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
@@ -49,8 +51,8 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-     // home: isLoading ? const LoadingScreen() : const HomeScreen(),
-      home: isLoading ? const LoadingScreen() : const LoginScreen(),
+      home: isLoading ? const LoadingScreen() : const HomeScreen(),
+      // home: isLoading ? const LoadingScreen() : const LoginScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),

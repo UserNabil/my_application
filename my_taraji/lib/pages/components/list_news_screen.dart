@@ -42,9 +42,13 @@ class _ListNewsScreenState extends State<ListNewsScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+    double screenWidth = MediaQuery.of(context).size.width;
+    double heightRatio = 0.6;
+    double calculatedHeight = screenWidth * heightRatio;
+    return SizedBox(
+      height: calculatedHeight,
+      child: Scaffold(
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(

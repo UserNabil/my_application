@@ -12,6 +12,7 @@ class ListCompagnesScreen extends StatefulWidget {
   const ListCompagnesScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ListCompagnesScreenState createState() => _ListCompagnesScreenState();
 }
 
@@ -42,9 +43,13 @@ class _ListCompagnesScreenState extends State<ListCompagnesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+    double screenWidth = MediaQuery.of(context).size.width;
+    double heightRatio = 0.6;
+    double calculatedHeight = screenWidth * heightRatio;
+    return SizedBox(
+      height: calculatedHeight,
+      child: Scaffold(
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
@@ -78,7 +83,6 @@ class _ListCompagnesScreenState extends State<ListCompagnesScreen> {
             ),
             Container(
               margin: EdgeInsets.zero,
-              height: 200.0,
               child: CarouselSlider(
                 options: CarouselOptions(
                   height: 200.0,
