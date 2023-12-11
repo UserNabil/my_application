@@ -140,65 +140,65 @@ class _ListPartenaireScreenState extends State<ListPartenaireScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Image.asset(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
+            child: Image.asset(
               'images/$imageName.png',
               fit: BoxFit.cover,
             ),
-            const SizedBox(height: 8.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: FractionallySizedBox(
-                alignment: Alignment.topLeft,
-                widthFactor: 0.45,
-                child: Container(
-                  height: 30,
-                  padding: const EdgeInsets.only(
-                      left: 0.0, right: 0.0, top: 2.0, bottom: 2.0),
-                  decoration: const BoxDecoration(
-                    color: MyColors.yellow,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15.0),
-                      topRight: Radius.circular(15.0),
-                      bottomLeft: Radius.circular(15.0),
-                      bottomRight: Radius.circular(15.0),
-                    ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FractionallySizedBox(
+              alignment: Alignment.topLeft,
+              widthFactor: 0.45,
+              child: Container(
+                height: 30,
+                padding: const EdgeInsets.only(
+                    left: 0.0, right: 0.0, top: 2.0, bottom: 2.0),
+                decoration: const BoxDecoration(
+                  color: MyColors.yellow,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0),
+                    bottomLeft: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
                   ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      xpText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 10),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    xpText,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 10,
                     ),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8.0),
-                  ExpandableText(description),
-                ],
-              ),
+                ),
+                const SizedBox(height: 4.0),
+                ExpandableText(description),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -239,20 +239,6 @@ class _ExpandableTextState extends State<ExpandableText> {
                 maxLines: widget.maxLines,
                 overflow: TextOverflow.ellipsis,
               ),
-        InkWell(
-          onTap: () {
-            setState(() {
-              isExpanded = !isExpanded;
-            });
-          },
-          child: Text(
-            isExpanded ? 'Voir moins' : 'Voir plus',
-            style: const TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
       ],
     );
   }
