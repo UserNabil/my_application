@@ -14,12 +14,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.6.0
   shared_preferences: ^2.0.9
-  motion_tab_bar: ^2.0.1
   enefty_icons: ^1.0.7
   flutter_svg: ^0.22.0
-  fluentui_system_icons: ^1.1.222
   carousel_slider: ^4.2.1
-  simple_animation_progress_bar: ^1.6.0
+  motion_tab_bar_v2: ^0.3.0
+  flutter_tabler_icons: ^1.11.0  
+  fluentui_system_icons: ^1.1.222
+  simple_animation_progress_bar: ^1.6.0 
+  curved_navigation_bar: ^1.0.3
+  flare_flutter: ^3.0.2
+  liquid_swipe: ^3.1.0
 
 dev_dependencies:
   flutter_test:

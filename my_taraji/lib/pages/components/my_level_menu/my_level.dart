@@ -8,11 +8,11 @@ class MyCardLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         //Top
-        const Column(
+        Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +34,7 @@ class MyCardLevel extends StatelessWidget {
           ],
         ),
         // Middle
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
@@ -76,26 +76,38 @@ class MyCardLevel extends StatelessWidget {
         // Bottom
         Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Silver",
-                    style: TextStyle(fontSize: 11, color: MyColors.black)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                        color: MyColors.black)),
                 Text("Gold",
-                    style: TextStyle(fontSize: 11, color: MyColors.black))
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                        color: MyColors.black))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [MyProgressBar(value: 75)],
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("XP:2840/5000",
-                    style: TextStyle(fontSize: 11, color: MyColors.black)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                        color: MyColors.black)),
                 Text("74,3%",
-                    style: TextStyle(fontSize: 11, color: MyColors.black))
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                        color: MyColors.black))
               ],
             )
           ],

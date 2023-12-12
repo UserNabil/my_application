@@ -121,8 +121,10 @@ class MyCustomClipper extends CustomClipper<Path> {
 
 class DeformedContainer extends StatelessWidget {
   final double width;
+  final Color color;
 
-  const DeformedContainer({Key? key, required this.width}) : super(key: key);
+  const DeformedContainer({Key? key, required this.width, required this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +152,7 @@ class DeformedContainer extends StatelessWidget {
           child: Container(
             height: 237,
             width: width,
-            color: MyColors.white,
+            color: color,
           ),
         ),
       ],
@@ -168,14 +170,14 @@ class Cards extends StatelessWidget {
       children: [
         const Padding(
             padding: EdgeInsets.only(top: 15),
-            child: DeformedContainer(width: 347)),
+            child: DeformedContainer(width: 347, color: MyColors.white)),
         const Padding(
             padding: EdgeInsets.only(top: 10),
-            child: DeformedContainer(width: 347)),
+            child: DeformedContainer(width: 347, color: MyColors.white)),
         const Padding(
             padding: EdgeInsets.only(top: 5),
-            child: DeformedContainer(width: 347)),
-        const DeformedContainer(width: 347),
+            child: DeformedContainer(width: 347, color: MyColors.white)),
+        const DeformedContainer(width: 347, color: MyColors.white),
         MyCard(index: index)
       ],
     );

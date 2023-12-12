@@ -63,7 +63,7 @@ class _ListPartenaireScreenState extends State<ListPartenaireScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double heightRatio = 2.0;
+    double heightRatio = 1.8;
     double calculatedHeight = screenWidth * heightRatio;
     List<CardItem> displayedCards =
         showAllCards ? allCardItems : allCardItems.take(4).toList();

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/pages/home_screen.dart';
+import 'pages/main_screen.dart';
 import 'pages/reset_password.dart';
 import 'dart:async';
 import 'pages/login_screen.dart';
 import 'pages/register_screen.dart';
 import 'pages/components/loading_page.dart';
+import 'pages/screens/fanpay_screen.dart';
+import 'pages/screens/fanzone_screen.dart';
+import 'pages/screens/market_screen.dart';
+import 'pages/screens/selfcare_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +22,8 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -51,13 +54,17 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-      home: isLoading ? const LoadingScreen() : const HomeScreen(),
+      home: isLoading ? const LoadingScreen() : const MyMain(),
       // home: isLoading ? const LoadingScreen() : const LoginScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/reset_password': (context) => const ResetPasswordScreen(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => const MyMain(),
+        '/home/selfcare': (context) => const MySelfCare(),
+        '/home/fanpay': (context) => const MyFanPay(),
+        '/home/fanzone': (context) => const MyFanZone(),
+        '/home/market': (context) => const MyMarket(),
       },
     );
   }
