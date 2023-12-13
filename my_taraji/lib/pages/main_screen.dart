@@ -1,17 +1,12 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:my_taraji/pages/components/bottom/my_bottom_bar.dart';
-=======
-import 'package:my_taraji/pages/components/my_bottom_bar.dart';
->>>>>>> Develop
-import 'package:my_taraji/pages/screens/fanpay_screen.dart';
-import 'package:my_taraji/pages/screens/fanzone_screen.dart';
-import 'package:my_taraji/pages/screens/market_screen.dart';
-import 'package:my_taraji/pages/screens/selfcare_screen.dart';
-
+import 'components/bottom/my_bottom_bar.dart';
+import 'screens/fanpay_screen.dart';
+import 'screens/fanzone_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/market_screen.dart';
+import 'screens/selfcare_screen.dart';
 
 class MyMain extends StatefulWidget {
   const MyMain({super.key});

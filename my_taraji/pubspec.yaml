@@ -24,10 +24,8 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   flare_flutter: ^3.0.2
   liquid_swipe: ^3.1.0
-<<<<<<< HEAD
   flutter_custom_clippers: ^2.1.0
-=======
->>>>>>> Develop
+
 
 dev_dependencies:
   flutter_test:

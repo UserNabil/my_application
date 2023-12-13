@@ -3,17 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-<<<<<<< HEAD
+import '../core/my_taraji_logo.dart';
 import '../core/my_card.dart';
 import '../core/my_color.dart';
 import '../core/my_profile.dart';
-import '../core/my_taraji_logo.dart';
-=======
-import '../components/my_card.dart';
-import '../components/my_color.dart';
-import '../components/my_profile.dart';
-import '../components/my_taraji_logo.dart';
->>>>>>> Develop
 import '../self_care/list_transaction_screen.dart';
 
 class MySelfCare extends StatelessWidget {

@@ -4,11 +4,7 @@ import 'pages/reset_password.dart';
 import 'dart:async';
 import 'pages/login_screen.dart';
 import 'pages/register_screen.dart';
-<<<<<<< HEAD
 import 'pages/content/loading_page.dart';
-=======
-import 'pages/components/loading_page.dart';
->>>>>>> Develop
 import 'pages/screens/fanpay_screen.dart';
 import 'pages/screens/fanzone_screen.dart';
 import 'pages/screens/market_screen.dart';
