@@ -2,9 +2,9 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:my_taraji/pages/components/my_color.dart';
-import 'my_level_menu/my_level.dart';
-import 'next_match_menu/next_match.dart';
+import 'package:my_taraji/pages/core/my_color.dart';
+import '../components/my_level_menu/my_level.dart';
+import '../components/next_match_menu/next_match.dart';
 
 class MyCard extends StatefulWidget {
   const MyCard({super.key, required this.index});
@@ -39,7 +39,7 @@ class _MyCardState extends State<MyCard> {
 }
 
 class MyMatch extends StatelessWidget {
-  MyMatch({super.key, required this.carouselController});
+  const MyMatch({super.key, required this.carouselController});
   final CarouselController carouselController;
   @override
   Widget build(BuildContext context) {
@@ -98,16 +98,18 @@ class MyLevel extends StatelessWidget {
 class MyCustomClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
+    double width = 23;
+
     Path path_0 = Path();
-    path_0.moveTo(3, 26.0502);
-    path_0.cubicTo(3, 16.2017, 10.5637, 7.97556, 20.3785, 7.16141);
-    path_0.cubicTo(138.092, -2.60306, 210.568, -2.18116, 326.571, 7.19946);
-    path_0.cubicTo(336.407, 7.99489, 344, 16.2298, 344, 26.0985);
-    path_0.lineTo(344, 202.557);
-    path_0.cubicTo(344, 212.284, 336.616, 220.452, 326.936, 221.411);
-    path_0.cubicTo(210.419, 232.951, 137.791, 232.787, 20.1115, 221.376);
-    path_0.cubicTo(10.4112, 220.436, 3, 212.259, 3, 202.513);
-    path_0.lineTo(3, 26.0502);
+    path_0.moveTo(0, size.height * 0.1);
+    path_0.cubicTo(0, size.height * 0.05, width * 0.1, 0, width * 0.2, 0);
+    path_0.cubicTo(width * 0.6, 0, width * 0.8, size.height * 0.2, width,
+        size.height * 0.1);
+    path_0.lineTo(width, size.height - size.height * 0.1);
+    path_0.cubicTo(width, size.height - size.height * 0.05, width * 0.9,
+        size.height, width * 0.8, size.height);
+    path_0.cubicTo(width * 0.4, size.height, width * 0.2,
+        size.height - size.height * 0.2, 0, size.height * 0.1);
     path_0.close();
 
     return path_0;
@@ -121,8 +123,10 @@ class MyCustomClipper extends CustomClipper<Path> {
 
 class DeformedContainer extends StatelessWidget {
   final double width;
+  final Color color;
 
-  const DeformedContainer({Key? key, required this.width}) : super(key: key);
+  const DeformedContainer({Key? key, required this.width, required this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +154,7 @@ class DeformedContainer extends StatelessWidget {
           child: Container(
             height: 237,
             width: width,
-            color: MyColors.white,
+            color: color,
           ),
         ),
       ],
@@ -168,14 +172,14 @@ class Cards extends StatelessWidget {
       children: [
         const Padding(
             padding: EdgeInsets.only(top: 15),
-            child: DeformedContainer(width: 347)),
+            child: DeformedContainer(width: 347, color: MyColors.white)),
         const Padding(
             padding: EdgeInsets.only(top: 10),
-            child: DeformedContainer(width: 347)),
+            child: DeformedContainer(width: 347, color: MyColors.white)),
         const Padding(
             padding: EdgeInsets.only(top: 5),
-            child: DeformedContainer(width: 347)),
-        const DeformedContainer(width: 347),
+            child: DeformedContainer(width: 347, color: MyColors.white)),
+        const DeformedContainer(width: 347, color: MyColors.white),
         MyCard(index: index)
       ],
     );

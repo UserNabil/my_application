@@ -1,8 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
-
-import 'my_color.dart';
+import '../../core/my_color.dart';
 
 class MyNavBar extends StatefulWidget {
   final List<NavBarItem> items;
@@ -48,7 +46,7 @@ class _MyNavBarState extends State<MyNavBar> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(widget.items[index].icon,
-                      size: 20,
+                      size: 30,
                       color: index == selectedIndex
                           ? Colors.white
                           : MyColors.grey),
@@ -56,9 +54,10 @@ class _MyNavBarState extends State<MyNavBar> {
                   Text(
                     widget.items[index].label,
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 17,
                       color:
                           index == selectedIndex ? Colors.white : MyColors.grey,
+                      fontWeight: FontWeight.w500,
                     ),
                     textAlign: TextAlign.center,
                   ),

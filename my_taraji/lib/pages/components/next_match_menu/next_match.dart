@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:my_taraji/pages/components/my_color.dart';
+import 'package:my_taraji/pages/core/my_color.dart';
 
 class TeamCarousel extends StatelessWidget {
   TeamCarousel({super.key, required this.carouselController});

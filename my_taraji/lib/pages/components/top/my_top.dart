@@ -1,12 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
-
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:flutter/material.dart';
-import 'my_card.dart';
-import 'my_color.dart';
+import '../../core/my_card.dart';
+import '../../core/my_color.dart';
 import 'my_navbar.dart';
-import 'my_profile.dart';
-import 'my_taraji_logo.dart';
+import '../../core/my_profile.dart';
+import '../../core/my_taraji_logo.dart';
 
 class TopScreen extends StatefulWidget {
   const TopScreen({Key? key}) : super(key: key);
@@ -39,7 +38,9 @@ class _TopScreenState extends State<TopScreen> {
                         textSize: 17,
                         textPosition: TextPosition.right,
                       ),
-                      ProfileSection(
+                      MyProfile(
+                        greetingText: 'Bonjour',
+                        textPosition: TextPosition.left,
                         name: 'John Doe',
                         phoneNumber: '50 500 444',
                         profileImagePath:
@@ -51,15 +52,13 @@ class _TopScreenState extends State<TopScreen> {
                   MyNavBar(
                     items: [
                       NavBarItem(
-                          icon: FluentIcons.trophy_24_regular,
-                          label: 'Gamification'),
+                          icon: TablerIcons.shirt_sport, label: 'Gamification'),
                       NavBarItem(
-                          icon: FluentIcons.sport_soccer_24_regular,
-                          label: 'Matchs'),
+                          icon: TablerIcons.soccer_field, label: 'Matchs'),
                     ],
                     onItemSelected: (index) {
                       setState(() {
-                        myIndex = (myIndex + 1) % 2;
+                        myIndex = index;
                       });
                     },
                   ),

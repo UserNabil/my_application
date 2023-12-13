@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/pages/components/my_color.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: ListTransactionScreen(),
-  ));
-}
+import '../core/my_color.dart';
 
 class ListTransactionScreen extends StatefulWidget {
   const ListTransactionScreen({Key? key}) : super(key: key);
@@ -107,59 +103,59 @@ class _ListTransactionScreenState extends State<ListTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-              color: Colors.white,
-              padding:
-                  const EdgeInsets.only(top: 9.0, left: 15.0, bottom: 15.0),
-              child: const Text(
-                'Mes Transactions',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  color: MyColors.black,
-                ),
-              )),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.zero,
-              child: ListView.builder(
-                itemCount: cardData.length,
-                itemBuilder: (context, index) {
-                  return buildCard(
-                    cardData[index]['imageName']!,
-                    cardData[index]['title']!,
-                    cardData[index]['description']!,
-                    cardData[index]['xpText']!,
-                    cardData[index]['coin']!,
-                  );
-                },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 20),
+        SvgPicture.asset(
+          'images/icons/drag.svg',
+          height: 5,
+          width: 5,
+        ),
+        const SizedBox(height: 20),
+        const Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Mes Transactions',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+                color: MyColors.black,
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: cardData.length,
+          padding: const EdgeInsets.all(8.0),
+          itemBuilder: (context, index) {
+            return buildCard(
+              cardData[index]['imageName']!,
+              cardData[index]['title']!,
+              cardData[index]['description']!,
+              cardData[index]['xpText']!,
+              cardData[index]['coin']!,
+            );
+          },
+        ),
+      ],
     );
   }
 
   Widget buildCard(String imageName, String title, String description,
       String xpText, String coin) {
-    return Card(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
+    return Column(
+      children: [
+        Row(
           children: [
-            // Section 1: Image (Replace 'Image.network' with your image source)
             Image.asset(
               'images/$imageName.png',
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 8.0),
-            // Section 2: Text 1
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -173,7 +169,6 @@ class _ListTransactionScreenState extends State<ListTransactionScreen> {
                 Text(description),
               ],
             ),
-            // Section 3: Text 2
             const Spacer(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,14 +176,12 @@ class _ListTransactionScreenState extends State<ListTransactionScreen> {
                 Text(
                   xpText,
                   style: const TextStyle(
-                    //fontWeight: FontWeight.bold,
                     fontSize: 12.0,
                     color: Colors.green,
                   ),
                 ),
                 Text(
                     style: const TextStyle(
-                      //fontWeight: FontWeight.bold,
                       fontSize: 12.0,
                       color: Colors.red,
                     ),
@@ -197,7 +190,14 @@ class _ListTransactionScreenState extends State<ListTransactionScreen> {
             ),
           ],
         ),
-      ),
+        const SizedBox(
+          height: 40.0,
+          child: Divider(
+            color: MyColors.grey,
+            thickness: .3,
+          ),
+        ),
+      ],
     );
   }
 }
