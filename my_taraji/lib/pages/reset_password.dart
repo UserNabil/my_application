@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'components/my_taraji_logo.dart';
-import 'components/my_color.dart';
-import 'components/my_button.dart';
-import 'components/input_field.dart';
+import 'core/my_taraji_logo.dart';
+import 'core/my_color.dart';
+import 'core/my_button.dart';
+import 'core/input_field.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);

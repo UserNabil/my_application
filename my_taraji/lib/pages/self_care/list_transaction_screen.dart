@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+<<<<<<< HEAD
+import 'package:my_taraji/pages/core/my_color.dart';
+=======
 import 'package:my_taraji/pages/components/my_color.dart';
+>>>>>>> Develop
 
 class ListTransactionScreen extends StatefulWidget {
   const ListTransactionScreen({Key? key}) : super(key: key);

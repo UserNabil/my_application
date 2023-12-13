@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/pages/components/my_color.dart';
+import 'package:my_taraji/pages/core/my_color.dart';
 
 void main() {
   runApp(const MaterialApp(

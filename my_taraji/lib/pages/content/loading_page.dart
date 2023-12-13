@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'my_taraji_logo.dart';
-import 'my_color.dart';
+import '../core/my_taraji_logo.dart';
+import '../core/my_color.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({Key? key}) : super(key: key);
