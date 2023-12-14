@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/feature/home/components/my_progress.dart';
 import '../../../../core/theme/my_color.dart';
+import 'my_progress.dart';
 
 class MyCardLevel extends StatelessWidget {
   const MyCardLevel({Key? key}) : super(key: key);
