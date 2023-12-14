@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../core/theme/my_color.dart';
 
 void main() {
@@ -21,23 +22,27 @@ class _MonStatusScreenState extends State<MonStatusScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
-          color: Colors.white,
-          padding: const EdgeInsets.only(top: 9.0, left: 15.0, bottom: 15.0),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Mon Status',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                  color: MyColors.black,
-                ),
-              )
-            ],
-          ),
+        const SizedBox(height: 20),
+        SvgPicture.asset(
+          'images/icons/drag.svg',
+          height: 5,
+          width: 5,
         ),
+        const SizedBox(height: 20),
+        const Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Mon Status',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0,
+                color: MyColors.black,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
         // Container 1
         Container(
           margin: const EdgeInsets.all(8.0),

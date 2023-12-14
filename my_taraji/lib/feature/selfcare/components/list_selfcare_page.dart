@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:my_taraji/feature/selfcare/components/list_commande_screen.dart';
 import '../../../core/theme/my_color.dart';
 import '../../init/components/my_profile.dart';
 import '../../init/components/my_taraji_logo.dart';
@@ -90,6 +91,8 @@ class _SelfCareContentState extends State<SelfCareContent> {
         return const MonStatusScreen();
       // case 'Notifications':
       //   return const MyMarket();
+      case 'orders':
+        return const ListCommandeScreen();
       default:
         return selfContainer();
     }
