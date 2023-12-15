@@ -46,7 +46,7 @@ class MyProfile extends StatelessWidget {
       builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // You can return a loading indicator here if needed.
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
 
         if (snapshot.hasError) {

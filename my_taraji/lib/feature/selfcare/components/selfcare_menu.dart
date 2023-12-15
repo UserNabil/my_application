@@ -122,10 +122,10 @@ class _SelfCareMenuState extends State<SelfCareMenu>
         return selfContainer();
       case 'payments':
         _controller.forward();
-        return buildSlideTransition(ListTransaction());
+        return buildSlideTransition(const ListTransaction());
       case 'statut':
         _controller.forward();
-        return buildSlideTransition(MonStatus());
+        return buildSlideTransition(const MonStatus());
       // case 'Notifications':
       //   return const MyMarket();
       case 'orders':

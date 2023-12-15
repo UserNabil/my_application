@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/feature/fanpay/page/don_screen.dart';
 import 'package:my_taraji/feature/init/components/bottom_bar/bar.dart';
-import '../../fanpay/page/fanpay_screen.dart';
 import '../../fanzone/page/fanzone_screen.dart';
 import '../../home/page/home_screen.dart';
 import '../../shop/page/shop_screen.dart';
@@ -39,7 +39,7 @@ class InitScreenState extends State<InitScreen> {
   final pages = const [
     HomeScreen(),
     MySelfCare(),
-    MyFanPay(),
+    DonScreen(),
     MyFanZone(),
     MyShop(),
   ];
@@ -50,7 +50,7 @@ class InitScreenState extends State<InitScreen> {
       body: Stack(
         children: [
           AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             child: pages[currentSelectedIndex],
           ),
           Align(
