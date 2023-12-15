@@ -3,15 +3,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/my_color.dart';
 
-class ListTransactionScreen extends StatefulWidget {
-  const ListTransactionScreen({Key? key}) : super(key: key);
+class ListTransaction extends StatefulWidget {
+  const ListTransaction({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _ListTransactionScreenState createState() => _ListTransactionScreenState();
+  _ListTransactionState createState() => _ListTransactionState();
 }
 
-class _ListTransactionScreenState extends State<ListTransactionScreen> {
+class _ListTransactionState extends State<ListTransaction> {
   // Sample data for cards
   List<Map<String, String>> cardData = [
     {
@@ -128,6 +128,7 @@ class _ListTransactionScreenState extends State<ListTransactionScreen> {
         ),
         const SizedBox(height: 20),
         ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: cardData.length,
           padding: const EdgeInsets.all(8.0),

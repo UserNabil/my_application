@@ -4,7 +4,7 @@ import '../../../core/components/background_top.dart';
 import '../../../core/components/top_navigation.dart';
 import '../../init/components/my_card.dart';
 import '../../../core/theme/my_color.dart';
-import '../components/list_selfcare_page.dart';
+import '../components/selfcare_menu.dart';
 
 class MySelfCare extends StatelessWidget {
   const MySelfCare({super.key});
@@ -22,38 +22,53 @@ class MySelfCare extends StatelessWidget {
               ),
             ],
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: InitScreen(currentIndex: 1, active: active),
-          // ),
         ],
       ),
     );
   }
 }
 
-class SelfCare extends StatelessWidget {
+class SelfCare extends StatefulWidget {
   const SelfCare({super.key});
+
+  @override
+  _SelfCareState createState() => _SelfCareState();
+}
+
+class _SelfCareState extends State<SelfCare> {
+  bool isParent = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void onPressed() {
+    setState(() {
+      isParent = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetsToDisplay = [
-      const Stack(
+      Stack(
         children: [
-          CustomContainer(),
+          const CustomContainer(),
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(children: [
-              SizedBox(height: 10),
-              TopNavigation(title: "Selfcare"),
-              Padding(
+              const SizedBox(height: 10),
+              TopNavigation(
+                  title: "Selfcare", onPressed: onPressed, isParent: isParent),
+              const Padding(
                   padding: EdgeInsets.only(top: 15),
                   child: DeformedContainer(width: 347, color: MyColors.yellow)),
             ]),
           ),
-          Column(children: [
+          const Column(children: [
             SizedBox(height: 125),
-            SelfCareContent(),
+            SelfCareMenu(),
             SizedBox(height: 50),
           ]),
         ],

@@ -32,10 +32,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: InitScreen(currentIndex: 0, active: active),
-          // ),
         ],
       ),
     );

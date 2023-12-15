@@ -4,19 +4,19 @@ import '../../../core/theme/my_color.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: MonStatusScreen(),
+    home: MonStatus(),
   ));
 }
 
-class MonStatusScreen extends StatefulWidget {
-  const MonStatusScreen({Key? key}) : super(key: key);
+class MonStatus extends StatefulWidget {
+  const MonStatus({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _MonStatusScreenState createState() => _MonStatusScreenState();
+  _MonStatusState createState() => _MonStatusState();
 }
 
-class _MonStatusScreenState extends State<MonStatusScreen> {
+class _MonStatusState extends State<MonStatus> {
   @override
   Widget build(BuildContext context) {
     return Column(

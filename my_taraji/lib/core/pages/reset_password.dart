@@ -6,6 +6,7 @@ import '../components/my_button.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
+  static const routeName = '/reset_password';
 
   @override
   Widget build(BuildContext context) {

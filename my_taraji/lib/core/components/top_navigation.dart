@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 class TopNavigation extends StatelessWidget {
-  const TopNavigation({super.key, required this.title});
+  const TopNavigation(
+      {super.key,
+      required this.title,
+      required this.onPressed,
+      required this.isParent});
   final String title;
+  final Function onPressed;
+  final bool isParent;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +20,11 @@ class TopNavigation extends StatelessWidget {
         color: Colors.white,
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
-          Navigator.pushNamed(context, '/');
+          if (isParent) {
+            Navigator.pushNamed(context, '/');
+          } else {
+            onPressed();
+          }
         },
       ),
       title: Center(

@@ -5,19 +5,54 @@ import 'package:my_taraji/feature/selfcare/components/list_commande_screen.dart'
 import '../../../core/theme/my_color.dart';
 import '../../init/components/my_profile.dart';
 import '../../init/components/my_taraji_logo.dart';
-import 'list_transaction_screen.dart';
-import 'mon_status_screen.dart';
+import 'list_transaction.dart';
+import 'mon_status.dart';
 
-class SelfCareContent extends StatefulWidget {
-  const SelfCareContent({Key? key}) : super(key: key);
+class SelfCareMenu extends StatefulWidget {
+  const SelfCareMenu({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _SelfCareContentState createState() => _SelfCareContentState();
+  _SelfCareMenuState createState() => _SelfCareMenuState();
 }
 
-class _SelfCareContentState extends State<SelfCareContent> {
+class _SelfCareMenuState extends State<SelfCareMenu>
+    with TickerProviderStateMixin {
   String currentContent = '';
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    _animation = Tween<Offset>(
+      begin: const Offset(1, 0),
+      end: const Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget buildSlideTransition(Widget child) {
+    return SlideTransition(
+      position: _animation,
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -86,9 +121,11 @@ class _SelfCareContentState extends State<SelfCareContent> {
       case 'profile':
         return selfContainer();
       case 'payments':
-        return const ListTransactionScreen();
+        _controller.forward();
+        return buildSlideTransition(ListTransaction());
       case 'statut':
-        return const MonStatusScreen();
+        _controller.forward();
+        return buildSlideTransition(MonStatus());
       // case 'Notifications':
       //   return const MyMarket();
       case 'orders':
@@ -115,6 +152,7 @@ class _SelfCareContentState extends State<SelfCareContent> {
       ),
       const SizedBox(height: 30),
       ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: row.length,
         itemBuilder: (context, index) {

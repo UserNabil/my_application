@@ -28,10 +28,6 @@ class MyFanZone extends StatelessWidget {
               ),
             ],
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: InitScreen(currentIndex: 3, active: active),
-          // ),
         ],
       ),
     );

@@ -4,19 +4,19 @@ import 'package:my_taraji/core/theme/my_color.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: ListCompagnesScreen(),
+    home: ListCompagnes(),
   ));
 }
 
-class ListCompagnesScreen extends StatefulWidget {
-  const ListCompagnesScreen({Key? key}) : super(key: key);
+class ListCompagnes extends StatefulWidget {
+  const ListCompagnes({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _ListCompagnesScreenState createState() => _ListCompagnesScreenState();
+  _ListCompagnesState createState() => _ListCompagnesState();
 }
 
-class _ListCompagnesScreenState extends State<ListCompagnesScreen> {
+class _ListCompagnesState extends State<ListCompagnes> {
   final List<Map<String, String>> newsDataList = [
     {
       'imagePath': 'images/tarajinews1.png',
