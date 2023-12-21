@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/feature/fanpay/page/don_screen.dart';
+import 'package:my_taraji/feature/fanpay/page/fanpay_screen.dart';
 import 'package:my_taraji/feature/init/components/bottom_bar/bar.dart';
 import '../../fanzone/page/fanzone_screen.dart';
 import '../../home/page/home_screen.dart';
@@ -39,7 +39,7 @@ class InitScreenState extends State<InitScreen> {
   final pages = const [
     HomeScreen(),
     MySelfCare(),
-    DonScreen(),
+    MyFanPay(),
     MyFanZone(),
     MyShop(),
   ];

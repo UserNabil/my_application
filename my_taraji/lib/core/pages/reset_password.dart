@@ -45,7 +45,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 20),
                     const MyTarajiLogo(
-                      logoImagePath: 'images/taraji.png',
+                      logoImagePath: 'images/pngs/taraji.png',
                       firstText: 'My',
                       secondText: 'Taraji',
                       logoSize: 100,

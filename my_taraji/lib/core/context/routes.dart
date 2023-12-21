@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:my_taraji/feature/profile/page/profile_screen.dart';
 import '../../feature/fanpay/page/fanpay_screen.dart';
 import '../../feature/fanzone/page/fanzone_screen.dart';
 import '../../feature/home/page/home_screen.dart';
@@ -22,6 +23,7 @@ final Map<String, WidgetBuilder> routes = {
   RegisterScreen.routeName: (context) => const RegisterScreen(),
   LoadingScreen.routeName: (context) => const LoadingScreen(),
   ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
+  // MyProfile.routeName: (context) => const MyProfile(),
 };
 
 class CustomPageRoute extends PageRouteBuilder {

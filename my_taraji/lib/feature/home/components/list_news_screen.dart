@@ -2,38 +2,31 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: ListNewsScreen(),
-  ));
-}
-
-class ListNewsScreen extends StatefulWidget {
-  const ListNewsScreen({Key? key}) : super(key: key);
+class ListNews extends StatefulWidget {
+  const ListNews({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ListNewsScreenState createState() => _ListNewsScreenState();
+  ListNewsState createState() => ListNewsState();
 }
 
-class _ListNewsScreenState extends State<ListNewsScreen> {
+class ListNewsState extends State<ListNews> {
   final List<Map<String, String>> newsDataList = [
     {
-      'imagePath': 'images/tarajinews1.png',
+      'imagePath': 'images/pngs/tarajinews1.png',
       'title':
           'L\'espérance passe au demi-final de league au final pour jouer avec Le club africain au stade rades',
       'views': '125,908 vues • 12.03.2023',
       'admin': 'Admin 1',
     },
     {
-      'imagePath': 'images/imagetaraji2.png',
+      'imagePath': 'images/pngs/imagetaraji2.png',
       'title':
           'L\'espérance passe au demi-final de league au final pour jouer avec Le club africain au stade rades',
       'views': '50,000 vues • 13.03.2023',
       'admin': 'Admin 2',
     },
     {
-      'imagePath': 'images/imagetaraji1.png',
+      'imagePath': 'images/pngs/imagetaraji1.png',
       'title':
           'L\'espérance passe au demi-final de league au final pour jouer avec Le club africain au stade rades',
       'views': '30,000 vues • 14.03.2023',

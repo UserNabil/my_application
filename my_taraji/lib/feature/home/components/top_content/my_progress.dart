@@ -4,17 +4,24 @@ import '../../../../core/theme/my_color.dart';
 
 class MyProgressBar extends StatelessWidget {
   final double value;
+  final double width;
+  final double height;
 
-  const MyProgressBar({super.key, required this.value});
+  const MyProgressBar({
+    super.key,
+    required this.value,
+    required this.width,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 285,
-      height: 15,
+      width: width,
+      height: height,
       child: SimpleAnimationProgressBar(
-        height: 20,
-        width: 400,
+        height: height,
+        width: width,
         backgroundColor: const Color.fromARGB(255, 220, 220, 220),
         foregrondColor: MyColors.yellow,
         ratio: 0.5,

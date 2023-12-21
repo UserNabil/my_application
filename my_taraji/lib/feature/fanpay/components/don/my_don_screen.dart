@@ -13,11 +13,10 @@ class MyDon extends StatefulWidget {
   const MyDon({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MyDonState createState() => _MyDonState();
+  MyDonState createState() => MyDonState();
 }
 
-class _MyDonState extends State<MyDon> {
+class MyDonState extends State<MyDon> {
   double _sliderValue = 0;
   List<double> montants = [10.0, 20.0, 50.0, 100.0, 200.0];
   @override
@@ -55,7 +54,7 @@ class _MyDonState extends State<MyDon> {
                 // Image
                 ClipOval(
                   child: Image.asset(
-                    'images/taraji.png',
+                    'images/pngs/taraji.png',
                     fit: BoxFit.cover,
                     width: 60.0, // Adjust the width as needed
                     height: 60.0, // Adjust the height as needed
@@ -128,15 +127,18 @@ class _MyDonState extends State<MyDon> {
                       onPressed: () {
                         // Faites quelque chose lorsque le bouton est pressé
                         // Vous pouvez récupérer le montant correspondant
+                        // ignore: unused_local_variable
                         double selectedMontant = montant;
                         // Faites quelque chose avec le montant sélectionné
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: MyColors.yellow, // Couleur de fond en jaune
-                        onPrimary: Colors.white, // Couleur du texte en blanc
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            MyColors.yellow, // Couleur du texte en blanc
                       ),
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
+                        // ignore: unnecessary_brace_in_string_interps
                         child: Text('${montant} DT'),
                       ),
                     );

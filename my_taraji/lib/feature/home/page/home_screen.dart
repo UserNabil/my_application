@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/top_content/my_top.dart';
-import '../components/list_compagnies_screen.dart';
+import '../components/compagnies/compagnie_carousel.dart';
 import '../components/list_news_screen.dart';
 import '../components/list_partenaire_screen.dart';
 
@@ -12,9 +12,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> widgetsToDisplay = [
       const TopScreen(),
-      const ListCompagnesScreen(),
-      const ListNewsScreen(),
-      const ListPartenaireScreen(),
+      const ListCompagnes(),
+      const ListNews(),
+      const ListPartenaire(),
     ];
 
     return Scaffold(

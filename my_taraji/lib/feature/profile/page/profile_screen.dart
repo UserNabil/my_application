@@ -3,11 +3,11 @@ import '../../../core/components/background_top.dart';
 import '../../../core/components/custom_card.dart';
 import '../../../core/components/top_navigation.dart';
 import '../../../core/theme/my_color.dart';
-import '../components/selfcare/selfcare_menu.dart';
+import '../components/profile_menu.dart';
 
-class MySelfCare extends StatelessWidget {
-  const MySelfCare({super.key});
-  static const routeName = '/selfcare';
+class MyProfileSettings extends StatelessWidget {
+  const MyProfileSettings({super.key});
+  static const routeName = '/profile';
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class MySelfCare extends StatelessWidget {
           Column(
             children: [
               Expanded(
-                child: SelfCare(),
+                child: Profile(),
               ),
             ],
           ),
@@ -27,16 +27,16 @@ class MySelfCare extends StatelessWidget {
   }
 }
 
-class SelfCare extends StatefulWidget {
-  const SelfCare({super.key});
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
   @override
-  SelfCareState createState() => SelfCareState();
+  ProfileState createState() => ProfileState();
 }
 
-class SelfCareState extends State<SelfCare> {
+class ProfileState extends State<Profile> {
   bool isParent = true;
-  String currentContent = '';
+  String profileContent = '';
 
   @override
   void initState() {
@@ -46,9 +46,9 @@ class SelfCareState extends State<SelfCare> {
   void onPressed(String content) {
     setState(() {
       if (content == 'return') {
-        currentContent = 'return';
+        profileContent = 'return';
       } else {
-        currentContent = content;
+        profileContent = content;
       }
     });
   }
@@ -67,9 +67,9 @@ class SelfCareState extends State<SelfCare> {
             child: Column(children: [
               const SizedBox(height: 10),
               TopNavigation(
-                  title: currentContent == 'profile' ? 'Profil' : "Selfcare",
+                  title: "Profil",
                   onPressed: onPressed,
-                  currentContent: currentContent),
+                  currentContent: profileContent),
               const Padding(
                   padding: EdgeInsets.only(top: 15),
                   child: CustomCard(
@@ -81,7 +81,7 @@ class SelfCareState extends State<SelfCare> {
           ),
           Column(children: [
             const SizedBox(height: 125),
-            SelfCareMenu(onPressed: onPressed, currentContent: currentContent),
+            ProfileMenu(onPressed: onPressed, profileContent: profileContent),
             const SizedBox(height: 50),
           ]),
         ],

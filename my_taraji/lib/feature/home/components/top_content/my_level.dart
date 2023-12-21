@@ -66,7 +66,9 @@ class MyCardLevel extends StatelessWidget {
                                     fontWeight: FontWeight.w700)),
                           ]),
                       SizedBox(width: 10),
-                      Image(image: AssetImage("images/taraji.png"), width: 50),
+                      Image(
+                          image: AssetImage("images/pngs/taraji.png"),
+                          width: 50),
                     ]),
               ],
             )
@@ -92,7 +94,9 @@ class MyCardLevel extends StatelessWidget {
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [MyProgressBar(value: 75)],
+              children: [
+                MyProgressBar(value: 75, width: 285, height: 15),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

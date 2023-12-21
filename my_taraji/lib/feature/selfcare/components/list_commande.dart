@@ -3,16 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/my_color.dart';
 
-class ListCommandeScreen extends StatefulWidget {
-  const ListCommandeScreen({Key? key}) : super(key: key);
+class ListCommande extends StatefulWidget {
+  const ListCommande({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ListCommandeScreenState createState() => _ListCommandeScreenState();
+  ListCommandeState createState() => ListCommandeState();
 }
 
-class _ListCommandeScreenState extends State<ListCommandeScreen> {
-  // Sample data for cards
+class ListCommandeState extends State<ListCommande> {
   List<Map<String, String>> cardData = [
     {
       'imageName': 'commandeicon',
@@ -116,6 +114,7 @@ class _ListCommandeScreenState extends State<ListCommandeScreen> {
         ),
         const SizedBox(height: 20),
         ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: cardData.length,
           padding: const EdgeInsets.all(8.0),
@@ -141,7 +140,7 @@ class _ListCommandeScreenState extends State<ListCommandeScreen> {
         Row(
           children: [
             Image.asset(
-              'images/$imageName.png',
+              'images/pngs/$imageName.png',
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 8.0),
@@ -151,12 +150,24 @@ class _ListCommandeScreenState extends State<ListCommandeScreen> {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15.0,
                   ),
                 ),
-                Text(description),
-                Text(numCommande),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 10.0,
+                    color: Colors.grey,
+                  ),
+                ),
+                Text(
+                  numCommande,
+                  style: const TextStyle(
+                    fontSize: 10.0,
+                    color: Colors.grey,
+                  ),
+                ),
               ],
             ),
             const Spacer(),
@@ -168,8 +179,9 @@ class _ListCommandeScreenState extends State<ListCommandeScreen> {
                     Text(
                       date,
                       style: const TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 13.0,
                         color: Colors.green,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -180,8 +192,9 @@ class _ListCommandeScreenState extends State<ListCommandeScreen> {
                     const SizedBox(width: 18.0),
                     Text(
                         style: const TextStyle(
-                          fontSize: 12.0,
+                          fontSize: 13.0,
                           color: Colors.red,
+                          fontWeight: FontWeight.w500,
                         ),
                         etat),
                   ],

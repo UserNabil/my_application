@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../theme/my_color.dart';
-
 class CustomContainer extends StatelessWidget {
-  const CustomContainer({Key? key}) : super(key: key);
+  const CustomContainer(
+      {super.key, required this.colorFrom, required this.colorTo});
+  final Color colorFrom;
+  final Color colorTo;
 
   @override
   Widget build(BuildContext context) {
@@ -11,17 +12,17 @@ class CustomContainer extends StatelessWidget {
       height: 290,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('images/header.jpg'),
+          image: const AssetImage('images/pngs/header.jpg'),
           fit: BoxFit.fill,
           colorFilter: ColorFilter.mode(
             Colors.black.withOpacity(0.05),
             BlendMode.dstATop,
           ),
         ),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.bottomRight,
           end: Alignment.topLeft,
-          colors: [MyColors.redDarker, MyColors.red],
+          colors: [colorFrom, colorTo],
         ),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(50),

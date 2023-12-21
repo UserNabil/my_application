@@ -1,45 +1,31 @@
 import 'package:flutter/material.dart';
+import '../components/fanpay/fanpay_top.dart';
 
 class MyFanPay extends StatelessWidget {
   const MyFanPay({super.key});
   static const routeName = '/fanpay';
-  @override
-  Widget build(BuildContext context) {
-    return const Content();
-  }
-}
-
-class Content extends StatelessWidget {
-  const Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> widgetsToDisplay = [
+      const TopFanPay(),
+    ];
+
     return Scaffold(
       body: Stack(
         children: [
           Column(
             children: [
               Expanded(
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.green,
-                  child: const Center(
-                    child: Text(
-                      'MyFanPay',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                child: ListView.builder(
+                  itemCount: widgetsToDisplay.length,
+                  itemBuilder: (context, index) {
+                    return widgetsToDisplay[index];
+                  },
                 ),
               ),
             ],
           ),
-          // const Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: InitScreen(),
-          // ),
         ],
       ),
     );

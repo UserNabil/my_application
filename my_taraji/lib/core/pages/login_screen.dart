@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const SizedBox(height: 50),
                     const MyTarajiLogo(
-                      logoImagePath: 'images/taraji.png',
+                      logoImagePath: 'images/pngs/taraji.png',
                       firstText: 'My',
                       secondText: 'Taraji',
                       logoSize: 70,

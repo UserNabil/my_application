@@ -7,20 +7,20 @@ class TeamCarousel extends StatelessWidget {
   final CarouselController carouselController;
   final List<MatchData> matchsData = [
     MatchData(
-      TeamData('El Taraji', 'images/taraji.png'),
-      TeamData('Raja', 'images/raja.jpeg'),
+      TeamData('El Taraji', 'images/pngs/taraji.png'),
+      TeamData('Raja', 'images/pngs/raja.jpeg'),
       '12/12/2021',
       '12:00',
     ),
     MatchData(
-      TeamData('Setif', 'images/setif.png'),
-      TeamData('El Wydad', 'images/wydad.png'),
+      TeamData('Setif', 'images/pngs/setif.png'),
+      TeamData('El Wydad', 'images/pngs/wydad.png'),
       '12/12/2021',
       '12:00',
     ),
     MatchData(
-      TeamData('El Hilal', 'images/hilal.jpeg'),
-      TeamData('Setif', 'images/setif.png'),
+      TeamData('El Hilal', 'images/pngs/hilal.jpeg'),
+      TeamData('Setif', 'images/pngs/setif.png'),
       '12/12/2021',
       '12:00',
     ),
@@ -86,7 +86,8 @@ class Content extends StatelessWidget {
           const Positioned(
             top: 0,
             left: 0,
-            child: Image(image: AssetImage('images/football.png'), width: 30),
+            child:
+                Image(image: AssetImage('images/pngs/football.png'), width: 30),
           ),
         ],
       ),
@@ -206,7 +207,7 @@ class MyVersus extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Image(image: AssetImage('images/versus.png'), width: 30),
+        const Image(image: AssetImage('images/pngs/versus.png'), width: 30),
         Text(
           match.date,
           style: const TextStyle(

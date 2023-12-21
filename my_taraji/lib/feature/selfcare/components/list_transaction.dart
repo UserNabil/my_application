@@ -1,100 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../core/theme/my_color.dart';
 
 class ListTransaction extends StatefulWidget {
   const ListTransaction({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ListTransactionState createState() => _ListTransactionState();
+  ListTransactionState createState() => ListTransactionState();
 }
 
-class _ListTransactionState extends State<ListTransaction> {
-  // Sample data for cards
+class ListTransactionState extends State<ListTransaction> {
   List<Map<String, String>> cardData = [
     {
       'imageName': 'Recharge',
       'title': 'Taraji Store',
-      'description': '3:02 PM . Aug 22,2022',
+      'description': '3:02 PM • Aug 22,2022',
       'xpText': 'XP : +300',
       'coin': 'COINS : -1000 DT'
     },
     {
       'imageName': 'Paypal',
       'title': 'Recharge',
-      'description': '15:02 PM . Aug 02,2022',
+      'description': '15:02 PM • Aug 02,2022',
       'xpText': 'XP : +100',
       'coin': 'COINS : -10.000 DT'
     },
     {
       'imageName': 'Don',
       'title': 'Don',
-      'description': '18:12 PM . Juin, 15,2022',
+      'description': '18:12 PM • Juin, 15,2022',
       'xpText': 'XP : +200',
       'coin': 'COINS : -15.000 DT'
     },
     {
       'imageName': 'transfer',
       'title': 'Transfer',
-      'description': '11:26 PM . Mai 12,2022',
+      'description': '11:26 PM • Mai 12,2022',
       'xpText': 'XP : +500',
       'coin': 'COINS : -20.000 DT'
     },
     {
       'imageName': 'Recharge',
       'title': 'Taraji Store',
-      'description': '3:02 PM . Aug 22,2022',
+      'description': '3:02 PM • Aug 22,2022',
       'xpText': 'XP : +300',
       'coin': 'COINS : -1000 DT'
     },
     {
       'imageName': 'Paypal',
       'title': 'Recharge',
-      'description': '15:02 PM . Aug 02,2022',
+      'description': '15:02 PM • Aug 02,2022',
       'xpText': 'XP : +100',
       'coin': 'COINS : -10.000 DT'
     },
     {
       'imageName': 'Don',
       'title': 'Don',
-      'description': '18:12 PM . Juin, 15,2022',
+      'description': '18:12 PM • Juin, 15,2022',
       'xpText': 'XP : +200',
       'coin': 'COINS : -15.000 DT'
     },
     {
       'imageName': 'transfer',
       'title': 'Transfer',
-      'description': '11:26 PM . Mai 12,2022',
+      'description': '11:26 PM • Mai 12,2022',
       'xpText': 'XP : +500',
       'coin': 'COINS : -20.000 DT'
     },
     {
       'imageName': 'Recharge',
       'title': 'Taraji Store',
-      'description': '3:02 PM . Aug 22,2022',
+      'description': '3:02 PM • Aug 22,2022',
       'xpText': 'XP : +300',
       'coin': 'COINS : -1000 DT'
     },
     {
       'imageName': 'Paypal',
       'title': 'Recharge',
-      'description': '15:02 PM . Aug 02,2022',
+      'description': '15:02 PM • Aug 02,2022',
       'xpText': 'XP : +100',
       'coin': 'COINS : -10.000 DT'
     },
     {
       'imageName': 'Don',
       'title': 'Don',
-      'description': '18:12 PM . Juin, 15,2022',
+      'description': '18:12 PM • Juin, 15,2022',
       'xpText': 'XP : +200',
       'coin': 'COINS : -15.000 DT'
     },
     {
       'imageName': 'transfer',
       'title': 'Transfer',
-      'description': '11:26 PM . Mai 12,2022',
+      'description': '11:26 PM • Mai 12,2022',
       'xpText': 'XP : +500',
       'coin': 'COINS : -20.000 DT'
     },
@@ -153,7 +150,7 @@ class _ListTransactionState extends State<ListTransaction> {
         Row(
           children: [
             Image.asset(
-              'images/$imageName.png',
+              'images/pngs/$imageName.png',
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 8.0),
@@ -163,28 +160,35 @@ class _ListTransactionState extends State<ListTransaction> {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                Text(description),
-              ],
-            ),
-            const Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  xpText,
-                  style: const TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.green,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15.0,
                   ),
                 ),
                 Text(
                     style: const TextStyle(
-                      fontSize: 12.0,
+                      fontSize: 10.0,
+                      color: Colors.grey,
+                    ),
+                    description),
+              ],
+            ),
+            const Spacer(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  xpText,
+                  style: const TextStyle(
+                    fontSize: 13.0,
+                    color: Colors.green,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                    style: const TextStyle(
+                      fontSize: 13.0,
                       color: Colors.red,
+                      fontWeight: FontWeight.w500,
                     ),
                     coin),
               ],

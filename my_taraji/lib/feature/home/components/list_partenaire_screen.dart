@@ -3,19 +3,19 @@ import 'package:my_taraji/core/theme/my_color.dart';
 
 void main() {
   runApp(const MaterialApp(
-    home: ListPartenaireScreen(),
+    home: ListPartenaire(),
   ));
 }
 
-class ListPartenaireScreen extends StatefulWidget {
-  const ListPartenaireScreen({Key? key}) : super(key: key);
+class ListPartenaire extends StatefulWidget {
+  const ListPartenaire({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _ListPartenaireScreenState createState() => _ListPartenaireScreenState();
+  _ListPartenaireState createState() => _ListPartenaireState();
 }
 
-class _ListPartenaireScreenState extends State<ListPartenaireScreen> {
+class _ListPartenaireState extends State<ListPartenaire> {
   List<CardItem> allCardItems = [
     CardItem(
         'Taraji Mobile',
@@ -146,7 +146,7 @@ class _ListPartenaireScreenState extends State<ListPartenaireScreen> {
           topRight: Radius.circular(15.0),
         ),
         child: Image.asset(
-          'images/$imageName.png',
+          'images/pngs/$imageName.png',
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),

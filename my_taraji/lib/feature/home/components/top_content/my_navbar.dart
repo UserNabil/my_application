@@ -1,6 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
 import 'package:flutter/material.dart';
-
 import '../../../../core/theme/my_color.dart';
 
 class MyNavBar extends StatefulWidget {
@@ -14,11 +12,11 @@ class MyNavBar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MyNavBarState createState() => _MyNavBarState();
+  MyNavBarState createState() => MyNavBarState();
 }
 
-class _MyNavBarState extends State<MyNavBar> {
-  int selectedIndex = 0;
+class MyNavBarState extends State<MyNavBar> {
+  int selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
