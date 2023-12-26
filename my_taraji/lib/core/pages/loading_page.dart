@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../feature/init/components/my_taraji_logo.dart';
+import '../../views/init/components/my_taraji_logo.dart';
 import '../theme/my_color.dart';
 
 class LoadingScreen extends StatefulWidget {

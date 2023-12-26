@@ -27,8 +27,8 @@ class MyProfile extends StatelessWidget {
 
   Future<Map<String, String>> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String name = prefs.getString('name') ?? 'John Doe';
-    final String coins = prefs.getString('coins') ?? '0';
+    final String name = prefs.getString('name') ?? 'Error';
+    final String coins = prefs.getString('coins') ?? 'Error';
     final String profileImagePath = prefs.getString('profileImagePath') ??
         'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
 
@@ -45,12 +45,10 @@ class MyProfile extends StatelessWidget {
       future: _getUserData(),
       builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // You can return a loading indicator here if needed.
           return const CircularProgressIndicator();
         }
 
         if (snapshot.hasError) {
-          // Handle error
           return Text('Error: ${snapshot.error}');
         }
 

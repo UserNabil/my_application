@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../../feature/init/page/init_screen.dart';
-import '../../feature/init/components/my_taraji_logo.dart';
+import '../../views/init/page/init_screen.dart';
+import '../../views/init/components/my_taraji_logo.dart';
 import '../components/input_field.dart';
 import '../components/my_button.dart';
 import '../theme/my_color.dart';

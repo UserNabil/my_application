@@ -24,7 +24,7 @@ class MyProgressBar extends StatelessWidget {
         width: width,
         backgroundColor: const Color.fromARGB(255, 220, 220, 220),
         foregrondColor: MyColors.yellow,
-        ratio: 0.5,
+        ratio: value,
         direction: Axis.horizontal,
         curve: Curves.fastLinearToSlowEaseIn,
         duration: const Duration(seconds: 3),

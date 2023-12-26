@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/feature/fanpay/components/don/my_don_screen.dart';
+import 'package:my_taraji/views/fanpay/components/don/my_don_screen.dart';
 import '../../../core/components/background_top.dart';
 import '../../../core/components/custom_card.dart';
 import '../../../core/components/top_navigation.dart';

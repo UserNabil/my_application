@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/feature/fanpay/page/fanpay_screen.dart';
-import 'package:my_taraji/feature/init/components/bottom_bar/bar.dart';
+import 'package:my_taraji/core/models/user_model.dart';
+import 'package:my_taraji/services/user_api.dart';
+import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
+import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../fanzone/page/fanzone_screen.dart';
 import '../../home/page/home_screen.dart';
 import '../../shop/page/shop_screen.dart';
@@ -26,6 +29,7 @@ class InitScreenState extends State<InitScreen> {
   void initState() {
     super.initState();
     liquidController = LiquidController();
+    onInitData();
   }
 
   void updateCurrentIndex(int index) {
@@ -33,6 +37,24 @@ class InitScreenState extends State<InitScreen> {
       setState(() {
         currentSelectedIndex = index;
       });
+    }
+  }
+
+  void onInitData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String baseUrl = 'http://localhost:5074';
+    var apiService = ApiService(baseUrl);
+
+    try {
+      final UserData userData = await apiService.getUserData('api/v1/users');
+      prefs.setString('id', userData.id);
+      prefs.setString('currentToken', userData.currentToken);
+      prefs.setString('coins', userData.myRewards.coins.toString());
+      prefs.setString('name', userData.pseudo);
+      prefs.setString('xp', userData.myGamification.expPoints.toString());
+      prefs.setString('phone', userData.phone);
+    } catch (e) {
+      print('Error: $e');
     }
   }
 

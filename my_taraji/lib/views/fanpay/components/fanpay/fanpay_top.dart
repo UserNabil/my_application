@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_taraji/core/components/custom_card.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/feature/init/components/my_profile.dart';
-import 'package:my_taraji/feature/init/components/my_taraji_logo.dart';
+import 'package:my_taraji/views/init/components/my_profile.dart';
+import 'package:my_taraji/views/init/components/my_taraji_logo.dart';
 
 import '../../../../core/components/background_top.dart';
 
 class TopFanPay extends StatefulWidget {
-  const TopFanPay({super.key});
+  const TopFanPay({super.key, required this.userData});
+  final Map<String, String> userData;
 
   @override
   TopFanPayState createState() => TopFanPayState();
@@ -18,19 +19,19 @@ class TopFanPayState extends State<TopFanPay> {
   int myIndex = 1;
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       height: 450,
       child: Stack(
         children: [
-          CustomContainer(
+          const CustomContainer(
             colorTo: MyColors.blue,
             colorFrom: MyColors.blueDark,
           ),
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyTarajiLogo(
@@ -47,8 +48,8 @@ class TopFanPayState extends State<TopFanPay> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                AllCards(),
+                const SizedBox(height: 20),
+                AllCards(userData: widget.userData),
               ],
             ),
           ),
@@ -59,7 +60,8 @@ class TopFanPayState extends State<TopFanPay> {
 }
 
 class AllCards extends StatelessWidget {
-  const AllCards({super.key});
+  const AllCards({super.key, required this.userData});
+  final Map<String, String> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,7 @@ class AllCards extends StatelessWidget {
               color: MyColors.orange,
               width: 347,
               height: 237)),
-      const PaymentCard()
+      PaymentCard(userData: userData)
     ];
     return Expanded(
       child: Stack(
@@ -104,7 +106,8 @@ class AllCards extends StatelessWidget {
 }
 
 class PaymentCard extends StatelessWidget {
-  const PaymentCard({super.key});
+  const PaymentCard({super.key, required this.userData});
+  final Map<String, String> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -113,12 +116,12 @@ class PaymentCard extends StatelessWidget {
         height: 240,
         child: Stack(
           children: [
-            const Positioned(
+            Positioned(
                 left: 24,
                 top: 50,
                 child: Text(
-                  'JOHN DOE',
-                  style: TextStyle(
+                  userData['name']!.toUpperCase(),
+                  style: const TextStyle(
                     color: MyColors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,

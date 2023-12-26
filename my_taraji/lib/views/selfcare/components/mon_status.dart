@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/my_color.dart';
 import '../../home/components/top_content/my_progress.dart';
 
@@ -11,8 +12,52 @@ class MonStatus extends StatefulWidget {
 }
 
 class MonStatusState extends State<MonStatus> {
+  Future<Map<String, String>> _getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String xp = prefs.getString('xp') ?? 'Error';
+    final String name = prefs.getString("name") ?? 'Error';
+    final String coins = prefs.getString("coins") ?? 'Error';
+    final String profileImagePath = prefs.getString('profileImagePath') ??
+        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
+    final String phone = prefs.getString('phone') ?? 'Error';
+
+    return {
+      'xp': xp,
+      'name': name,
+      'coins': coins,
+      'profileImagePath': profileImagePath,
+      'phone': phone,
+    };
+  }
+
+  double calculateXp(int xp, int total) {
+    return (xp / total) * 100;
+  }
+
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _getUserData(),
+      builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        final userData = snapshot.data!;
+        return buildStatut(userData);
+      },
+    );
+  }
+
+  Widget buildStatut(Map<String, String> userData) {
+    final String xp = userData['xp']!;
+    final String name = userData['name']!;
+    final String coins = userData['coins']!;
+    final String profileImagePath = userData['profileImagePath']!;
+    final String phone = userData['phone']!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -39,11 +84,11 @@ class MonStatusState extends State<MonStatus> {
         const SizedBox(height: 20),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ClipOval(
-              child: Image.asset(
-                'images/pngs/user.png',
+              child: Image(
+                image: NetworkImage(profileImagePath),
                 fit: BoxFit.cover,
                 width: 60.0,
                 height: 60.0,
@@ -51,21 +96,22 @@ class MonStatusState extends State<MonStatus> {
             ),
             const SizedBox(width: 13.0),
             // Text
-            const Column(
+            Column(
               children: [
-                Text('Alise Ramond',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 15.0),
-                Text('+216 20 789 245'),
+                Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 15.0),
+                Text(phone),
               ],
             ),
             const SizedBox(width: 13.0),
             // Text
-            const Column(
+            Column(
               children: [
-                Text('605 Coins', style: TextStyle(color: Colors.green)),
-                SizedBox(height: 15.0),
-                Text('Silver', style: TextStyle(color: MyColors.red)),
+                Text('$coins Coins',
+                    style: const TextStyle(color: Colors.green)),
+                const SizedBox(height: 15.0),
+                Text(int.parse(xp) < 100 ? 'Silver' : 'gold',
+                    style: const TextStyle(color: MyColors.red)),
               ],
             ),
           ],
@@ -85,7 +131,7 @@ class MonStatusState extends State<MonStatus> {
                 ),
               ],
             ),
-            const Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -93,19 +139,23 @@ class MonStatusState extends State<MonStatus> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('605', style: TextStyle(fontSize: 9.0)),
-                    SizedBox(width: 140.0),
-                    Text('1000', style: TextStyle(fontSize: 9.0)),
+                    Text(xp, style: const TextStyle(fontSize: 9.0)),
+                    const SizedBox(width: 140.0),
+                    const Text('100', style: TextStyle(fontSize: 9.0)),
                   ],
                 ),
-                MyProgressBar(value: 75, width: 180, height: 15),
+                MyProgressBar(
+                    value: calculateXp(int.parse(xp), 100) / 100,
+                    width: 180,
+                    height: 15),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('65%', style: TextStyle(fontSize: 9.0)),
-                    SizedBox(width: 140.0),
-                    Text('100%', style: TextStyle(fontSize: 9.0)),
+                    Text(calculateXp(int.parse(xp), 100).toString(),
+                        style: const TextStyle(fontSize: 9.0)),
+                    const SizedBox(width: 140.0),
+                    const Text('100%', style: TextStyle(fontSize: 9.0)),
                   ],
                 ),
               ],
