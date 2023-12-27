@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/feature/challenge/coin-challenge/pages/step_one_coin_challenge_screen.dart';
-import 'package:my_taraji/feature/home/components/top_content/my_progress.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 void main() {
