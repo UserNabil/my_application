@@ -1,17 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/my_color.dart';
 import 'my_progress.dart';
 
 class MyCardLevel extends StatelessWidget {
   const MyCardLevel({Key? key}) : super(key: key);
 
+  Future<Map<String, String>> _getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String xp = prefs.getString('xp') ?? 'Error';
+
+    return {
+      'xp': xp,
+    };
+  }
+
+  double calculateXp(int xp, int total) {
+    return (xp / total) * 100;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return FutureBuilder(
+      future: _getUserData(),
+      builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        final userData = snapshot.data!;
+        return buildGamification(userData);
+      },
+    );
+  }
+
+  Widget buildGamification(Map<String, String> userData) {
+    final String xp = userData['xp']!;
+
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         //Top
-        Column(
+        const Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,10 +72,10 @@ class MyCardLevel extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Niveau actuel",
+                const Text("Niveau actuel",
                     style: TextStyle(fontSize: 11, color: MyColors.grey)),
-                Text("SILVER",
-                    style: TextStyle(
+                Text(int.parse(xp) < 100 ? "SILVER" : "GOLD",
+                    style: const TextStyle(
                         fontSize: 25,
                         color: MyColors.grey,
                         fontWeight: FontWeight.w700)),
@@ -56,17 +89,17 @@ class MyCardLevel extends StatelessWidget {
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Points",
+                            const Text("Points",
                                 style: TextStyle(
                                     fontSize: 11, color: MyColors.red)),
-                            Text("0",
-                                style: TextStyle(
+                            Text(xp,
+                                style: const TextStyle(
                                     fontSize: 18,
                                     color: MyColors.red,
                                     fontWeight: FontWeight.w700)),
                           ]),
-                      SizedBox(width: 10),
-                      Image(
+                      const SizedBox(width: 10),
+                      const Image(
                           image: AssetImage("images/pngs/taraji.png"),
                           width: 50),
                     ]),
@@ -77,7 +110,7 @@ class MyCardLevel extends StatelessWidget {
         // Bottom
         Column(
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Silver",
@@ -95,24 +128,29 @@ class MyCardLevel extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                MyProgressBar(value: 75, width: 285, height: 15),
+                MyProgressBar(
+                    value: calculateXp(int.parse(xp), 100) / 100,
+                    width: 285,
+                    height: 15),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("XP:2840/5000",
-                    style: TextStyle(
+                Text("XP:" + xp + "/100",
+                    style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
                         color: MyColors.black)),
-                Text("74,3%",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                        color: MyColors.black))
+                Text(
+                  calculateXp(int.parse(xp), 100).toString() + " %",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                      color: MyColors.black),
+                )
               ],
-            )
+            ),
           ],
         )
       ],

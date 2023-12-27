@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/input_field.dart';
-import '../../feature/init/components/my_taraji_logo.dart';
+import '../../views/init/components/my_taraji_logo.dart';
 import '../theme/my_color.dart';
 import '../components/my_button.dart';
 

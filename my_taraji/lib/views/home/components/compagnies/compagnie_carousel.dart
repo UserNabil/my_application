@@ -1,43 +1,38 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'compagnie_card.dart';
 import 'compagnie_list.dart';
 
 class ListCompagnes extends StatefulWidget {
-  const ListCompagnes({Key? key}) : super(key: key);
+  const ListCompagnes({super.key, required this.compagnes});
+  final List<Campaign> compagnes;
 
   @override
   ListCompagnesState createState() => ListCompagnesState();
 }
 
 class ListCompagnesState extends State<ListCompagnes> {
-  final List<Map<String, String>> newsDataList = [
-    {
-      'imagePath': 'images/pngs/compaigns1.jpg',
-      'title': 'Gagner 200Mo de connexion internet',
-      'subtitle':
-          'Vous recevrez vos 200Mo directement sur votre numéro Orange et non sur JAYEG',
-      'compagneName': 'Divertissement',
-      'coins': '200',
-    },
-    {
-      'imagePath': 'images/pngs/compaigns2.jpg',
-      'title': 'Valider votre Email',
-      'subtitle':
-          'Activer votre compte et profitez de réductions sur chaque commande',
-      'compagneName': 'Affaires et industrielle',
-      'coins': '150',
-    },
-    {
-      'imagePath': 'images/pngs/compaigns3.jpg',
-      'title': 'Valider votre numéro de téléphone',
-      'subtitle':
-          'Activer votre compte et profitez de réductions sur chaque commande',
-      'compagneName': 'Affaires et industrielle',
-      'coins': '100',
-    },
-  ];
+  List<Campaign> _campaigns = [];
+  @override
+  void initState() {
+    super.initState();
+    _loadCampaigns();
+  }
+
+  void _loadCampaigns() async {
+    _saveCampaigns();
+    List<Campaign> loadedCampaigns = await getCampaigns();
+    setState(() {
+      _campaigns = loadedCampaigns;
+    });
+  }
+
+  void _saveCampaigns() {
+    if (widget.compagnes.isEmpty) return;
+    saveCampaigns(widget.compagnes);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +59,7 @@ class ListCompagnesState extends State<ListCompagnes> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => AllCompagnesPage(
-                        compagnes: newsDataList,
+                        compagnes: _campaigns,
                       ),
                     ),
                   );
@@ -86,21 +81,21 @@ class ListCompagnesState extends State<ListCompagnes> {
           margin: EdgeInsets.zero,
           child: CarouselSlider(
             options: CarouselOptions(
-              // height: 195,
+              height: 195,
               enlargeCenterPage: true,
               autoPlay: true,
               autoPlayInterval: const Duration(milliseconds: 3000),
               enlargeFactor: 0.2,
             ),
             items: [
-              for (final newsData in newsDataList)
+              for (final newsData in _campaigns)
                 CompaignCard(
                   context: context,
-                  compagneName: newsData['compagneName']!,
-                  title: newsData['title']!,
-                  subtitle: newsData['subtitle']!,
-                  imagePath: newsData['imagePath']!,
-                  coins: newsData['coins']!,
+                  compagneName: newsData.compagneName,
+                  title: newsData.title,
+                  subtitle: newsData.subtitle,
+                  imagePath: newsData.imagePath,
+                  coins: newsData.coins,
                   titleFontSize: 15.0,
                   subtitleFontSize: 12.0,
                   isLister: false,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:my_taraji/feature/selfcare/components/list_commande.dart';
+import 'package:my_taraji/views/selfcare/components/list_commande.dart';
 import '../../../../core/models/row_item.dart';
 import '../../../../core/theme/my_color.dart';
 import '../../../init/components/my_profile.dart';

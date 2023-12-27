@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/input_field.dart';
-import '../../feature/init/components/my_taraji_logo.dart';
+import '../../views/init/components/my_taraji_logo.dart';
 import '../theme/my_color.dart';
 import '../components/my_button.dart';
 
