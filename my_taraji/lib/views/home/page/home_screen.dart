@@ -1,49 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
+import 'package:my_taraji/services/service_api.dart';
 import '../components/top_content/my_top.dart';
-import '../components/compagnies/compagnie_carousel.dart';
+import '../components/campagnies/compagnie_carousel.dart';
 import '../components/list_news_screen.dart';
 import '../components/list_partenaire_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   static const routeName = '/home';
 
   @override
-  Widget build(BuildContext context) {
-    List<Campaign> compagnes = [
-      // Campaign(
-      //   id: '1',
-      //   imagePath: 'images/pngs/compaigns1.jpg',
-      //   title: 'Gagner 200Mo de connexion internet',
-      //   subtitle:
-      //       'Vous recevrez vos 200Mo directement sur votre numéro Orange et non sur JAYEG',
-      //   description: '',
-      //   coins: "200",
-      //   compagneName: 'Divertissement',
-      // ),
-      // Campaign(
-      //   id: '2',
-      //   imagePath: 'images/pngs/compaigns2.jpg',
-      //   title: 'Valider votre Email',
-      //   subtitle:
-      //       'Activer votre compte et profitez de réductions sur chaque commande',
-      //   description: '',
-      //   coins: "150",
-      //   compagneName: 'Affaires et industrielle',
-      // ),
-      // Campaign(
-      //   id: '3',
-      //   imagePath: 'images/pngs/compaigns3.jpg',
-      //   title: 'Valider votre numéro de téléphone',
-      //   subtitle:
-      //       'Activer votre compte et profitez de réductions sur chaque commande',
-      //   description: '',
-      //   coins: "100",
-      //   compagneName: 'Affaires et industrielle',
-      // )
-    ];
+  HomeScreenState createState() => HomeScreenState();
+}
 
+class HomeScreenState extends State<HomeScreen> {
+  late List<Campaign> compagnes = [];
+
+  Future<void> onInitData() async {
+    String baseUrl = 'http://localhost:5074';
+    var apiService = ApiService(baseUrl);
+
+    try {
+      final List<Campaign> campaigns = await apiService
+          .getAllCampaigns('api/v1/campaigns/targetedAudience?Page=0&Limit=10');
+
+      if (mounted) {
+        setState(() {
+          compagnes = campaigns;
+        });
+      }
+
+      saveCampaigns(campaigns);
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    onInitData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<Widget> widgetsToDisplay = [
       const TopScreen(),
       ListCompagnes(compagnes: compagnes),

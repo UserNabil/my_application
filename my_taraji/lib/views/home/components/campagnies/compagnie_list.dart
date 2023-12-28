@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/views/home/components/compagnies/compagnie_card.dart';
+import 'package:my_taraji/views/home/components/campagnies/compagnie_card.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 
 class AllCompagnesPage extends StatelessWidget {
@@ -11,7 +11,7 @@ class AllCompagnesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Toutes les Compagnes'),
+        title: const Text('Toutes les Campagnes'),
       ),
       body: ListView.builder(
         itemCount: compagnes.length,
@@ -23,11 +23,11 @@ class AllCompagnesPage extends StatelessWidget {
                 height: 195,
                 child: CompaignCard(
                   context: context,
-                  compagneName: compagnie.compagneName,
+                  compagneName: compagnie.theme,
                   title: compagnie.title,
                   subtitle: compagnie.subtitle,
-                  imagePath: compagnie.imagePath,
-                  coins: compagnie.coins,
+                  imagePath: compagnie.imageUri,
+                  coins: compagnie.score,
                   titleFontSize: 15.0,
                   subtitleFontSize: 12.0,
                   isLister: true,
