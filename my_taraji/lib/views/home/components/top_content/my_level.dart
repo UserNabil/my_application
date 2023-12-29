@@ -75,9 +75,11 @@ class MyCardLevel extends StatelessWidget {
                 const Text("Niveau actuel",
                     style: TextStyle(fontSize: 11, color: MyColors.grey)),
                 Text(int.parse(xp) < 100 ? "SILVER" : "GOLD",
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 25,
-                        color: MyColors.grey,
+                        color: int.parse(xp) < 100
+                            ? MyColors.grey
+                            : MyColors.yellow,
                         fontWeight: FontWeight.w700)),
               ],
             ),
@@ -129,7 +131,9 @@ class MyCardLevel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 MyProgressBar(
-                    value: calculateXp(int.parse(xp), 100) / 100,
+                    value: calculateXp(
+                            int.parse(xp), int.parse(xp) > 100 ? 1000 : 100) /
+                        100,
                     width: 285,
                     height: 15),
               ],
@@ -137,13 +141,13 @@ class MyCardLevel extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("XP:" + xp + "/100",
+                Text("XP:$xp/${int.parse(xp) > 100 ? 1000 : 100}",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
                         color: MyColors.black)),
                 Text(
-                  calculateXp(int.parse(xp), 100).toString() + " %",
+                  "${calculateXp(int.parse(xp), int.parse(xp) > 100 ? 1000 : 100)} %",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 11,

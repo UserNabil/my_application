@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/models/user_model.dart';
 import 'package:my_taraji/services/service_api.dart';
 import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
@@ -11,7 +12,7 @@ import '../../selfcare/page/selfcare_screen.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 
 class InitScreen extends StatefulWidget {
-  const InitScreen({Key? key}) : super(key: key);
+  const InitScreen({super.key});
 
   static String routeName = "/";
 
@@ -42,17 +43,23 @@ class InitScreenState extends State<InitScreen> {
 
   void onInitData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String baseUrl = 'https://localhost:44355';
+    String baseUrl = 'https://localhost:5074';
     var apiService = ApiService(baseUrl);
 
     try {
       final UserData userData = await apiService.getUserData('api/v1/users');
+      final List<Campaign> campaigns = await apiService
+          .getAllCampaigns('api/v1/campaigns/targetedAudience?Page=0&Limit=10');
       prefs.setString('id', userData.id);
       prefs.setString('currentToken', userData.currentToken);
       prefs.setString('coins', userData.myRewards.coins.toString());
       prefs.setString('name', userData.pseudo);
       prefs.setString('xp', userData.myGamification.expPoints.toString());
       prefs.setString('phone', userData.phone);
+      campaigns.forEach((campaign) {
+        prefs.setBool(campaign.id, true);
+      });
+      saveCampaigns(campaigns);
     } catch (e) {
       print('Error: $e');
     }

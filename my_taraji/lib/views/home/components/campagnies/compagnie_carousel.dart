@@ -2,38 +2,19 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'compagnie_card.dart';
 import 'compagnie_list.dart';
 
 class ListCompagnes extends StatefulWidget {
-  const ListCompagnes({super.key, required this.compagnes});
-  final List<Campaign> compagnes;
+  const ListCompagnes({super.key, required this.campagnes});
+  final List<Campaign> campagnes;
 
   @override
   ListCompagnesState createState() => ListCompagnesState();
 }
 
 class ListCompagnesState extends State<ListCompagnes> {
-  List<Campaign> _campaigns = [];
-  @override
-  void initState() {
-    super.initState();
-    _loadCampaigns();
-  }
-
-  void _loadCampaigns() async {
-    _saveCampaigns();
-    List<Campaign> loadedCampaigns = await getCampaigns();
-    setState(() {
-      _campaigns = loadedCampaigns;
-    });
-  }
-
-  void _saveCampaigns() {
-    if (widget.compagnes.isEmpty) return;
-    saveCampaigns(widget.compagnes);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,7 +40,7 @@ class ListCompagnesState extends State<ListCompagnes> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => AllCompagnesPage(
-                        compagnes: _campaigns,
+                        compagnes: widget.campagnes,
                       ),
                     ),
                   );
@@ -88,14 +69,10 @@ class ListCompagnesState extends State<ListCompagnes> {
               enlargeFactor: 0.2,
             ),
             items: [
-              for (final newsData in _campaigns)
+              for (final campaign in widget.campagnes)
                 CompaignCard(
                   context: context,
-                  compagneName: newsData.theme,
-                  title: newsData.title,
-                  subtitle: newsData.subtitle,
-                  imagePath: newsData.imageUri,
-                  coins: newsData.score,
+                  campaign: campaign,
                   titleFontSize: 15.0,
                   subtitleFontSize: 12.0,
                   isLister: false,

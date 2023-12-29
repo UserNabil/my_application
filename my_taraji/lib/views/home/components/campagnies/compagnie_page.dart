@@ -1,57 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 
 import 'pagination_form.dart';
 
 class CompaignPage extends StatelessWidget {
-  final String compagneName;
-  final String title;
-  final String subtitle;
-  final String imagePath;
-  final String coins;
+  final Campaign campaign;
 
   const CompaignPage({
     super.key,
-    required this.compagneName,
-    required this.title,
-    required this.subtitle,
-    required this.imagePath,
-    required this.coins,
+    required this.campaign,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actionsIconTheme: IconThemeData(color: MyColors.yellow),
+        actionsIconTheme: const IconThemeData(color: MyColors.yellow),
         title: const Text('Détails de la campagne'),
       ),
-      body: CompaignPageDetails(
-        compagneName: compagneName,
-        title: title,
-        subtitle: subtitle,
-        imagePath: imagePath,
-        coins: coins,
-      ),
+      body: CompaignPageDetails(campaign: campaign),
       backgroundColor: MyColors.black,
     );
   }
 }
 
 class CompaignPageDetails extends StatelessWidget {
-  final String compagneName;
-  final String title;
-  final String subtitle;
-  final String imagePath;
-  final String coins;
+  final Campaign campaign;
 
   const CompaignPageDetails({
     super.key,
-    required this.compagneName,
-    required this.title,
-    required this.subtitle,
-    required this.imagePath,
-    required this.coins,
+    required this.campaign,
   });
 
   @override
@@ -61,7 +40,7 @@ class CompaignPageDetails extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(imagePath),
+              image: AssetImage(campaign.imageUri),
               alignment: Alignment.topCenter,
               opacity: 0.8,
             ),
@@ -85,7 +64,7 @@ class CompaignPageDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  campaign.title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18.0,
@@ -93,7 +72,7 @@ class CompaignPageDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  subtitle,
+                  campaign.subtitle,
                   style: const TextStyle(
                     fontSize: 14.0,
                   ),
@@ -107,7 +86,7 @@ class CompaignPageDetails extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 5, bottom: 5),
                   child: Text(
-                    compagneName,
+                    campaign.theme,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                     style: const TextStyle(
@@ -119,7 +98,7 @@ class CompaignPageDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  'Coins gagnés : $coins',
+                  'Coins gagnés : ${campaign.score}',
                   style: const TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.bold,
@@ -127,7 +106,7 @@ class CompaignPageDetails extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                PaginationForm(title: title),
+                PaginationForm(campaign: campaign),
               ],
             ),
           ),

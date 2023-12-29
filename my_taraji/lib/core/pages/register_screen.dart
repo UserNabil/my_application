@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Connectez-vous pour continuer',
+                                'Inscrivez vous pour continuer',
                                 style: TextStyle(
                                   color: MyColors.yellow,
                                   fontSize: 16,

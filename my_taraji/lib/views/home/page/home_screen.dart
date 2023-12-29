@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
-import 'package:my_taraji/services/service_api.dart';
+// import 'package:my_taraji/services/service_api.dart';
 import 'package:my_taraji/views/home/components/challenges/challenge_carousel.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import '../components/top_content/my_top.dart';
 import '../components/campagnies/compagnie_carousel.dart';
 import '../components/list_news_screen.dart';
@@ -32,37 +33,25 @@ class HomeScreenState extends State<HomeScreen> {
         challengeName: "Quiz Réveillon 2024",
         coins: "200"),
   ];
-  Future<void> onInitData() async {
-    String baseUrl = 'http://localhost:5074';
-    var apiService = ApiService(baseUrl);
-
-    try {
-      final List<Campaign> campaigns = await apiService
-          .getAllCampaigns('api/v1/campaigns/targetedAudience?Page=0&Limit=10');
-
-      if (mounted) {
-        setState(() {
-          compagnes = campaigns;
-        });
-      }
-
-      saveCampaigns(campaigns);
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    onInitData();
+    _loadCampaigns();
+  }
+
+  void _loadCampaigns() async {
+    List<Campaign> loadedCampaigns = await getCampaigns();
+    setState(() {
+      compagnes = loadedCampaigns;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetsToDisplay = [
       const TopScreen(),
-      ListCompagnes(compagnes: compagnes),
+      ListCompagnes(campagnes: compagnes),
       ListChallenges(challenges: challenges),
       const ListNews(),
       const ListPartenaire(),

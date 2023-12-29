@@ -23,11 +23,7 @@ class AllCompagnesPage extends StatelessWidget {
                 height: 195,
                 child: CompaignCard(
                   context: context,
-                  compagneName: compagnie.theme,
-                  title: compagnie.title,
-                  subtitle: compagnie.subtitle,
-                  imagePath: compagnie.imageUri,
-                  coins: compagnie.score,
+                  campaign: compagnie,
                   titleFontSize: 15.0,
                   subtitleFontSize: 12.0,
                   isLister: true,

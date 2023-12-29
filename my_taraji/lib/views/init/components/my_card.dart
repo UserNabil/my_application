@@ -42,29 +42,29 @@ class Cards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const Center(
-          child: Padding(
-              padding: EdgeInsets.only(top: 15),
-              child: CustomCard(
-                  svgUrl: '', color: MyColors.white, width: 347, height: 237)),
-        ),
-        const Center(
-          child: Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: CustomCard(
-                  svgUrl: '', color: MyColors.white, width: 347, height: 237)),
-        ),
-        const Center(
-          child: Padding(
-              padding: EdgeInsets.only(top: 5),
-              child: CustomCard(
-                  svgUrl: '', color: MyColors.white, width: 347, height: 237)),
-        ),
-        const Center(
-            child: CustomCard(
-                svgUrl: '', color: MyColors.white, width: 347, height: 237)),
-        Center(child: MyCard(index: index))
+        _buildCustomCard(topPadding: 15),
+        _buildCustomCard(topPadding: 10),
+        _buildCustomCard(topPadding: 5),
+        _buildCustomCard(topPadding: 0),
+        Center(child: MyCard(index: index)),
       ],
+    );
+  }
+
+  Widget _buildCustomCard({required double topPadding}) {
+    const cardWidth = 347.0;
+    const cardHeight = 237.0;
+
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.only(top: topPadding),
+        child: const CustomCard(
+          svgUrl: '',
+          color: MyColors.white,
+          width: cardWidth,
+          height: cardHeight,
+        ),
+      ),
     );
   }
 }

@@ -20,15 +20,17 @@ class Campaign {
     required this.theme,
   });
 
-  factory Campaign.fromJson(Map<String, dynamic> json) {
+  factory Campaign.fromJson(Map<String, dynamic> jsonApi) {
+    Map<String, dynamic> json = jsonApi;
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
-    String imgNumber = json['campaign']['title'] == "Email" ? "2" : "3";
+    String imgNumber = json['campaign']['title'] == "Email" ? "2" : "3",
+        desc = json['campaign']['description'].toString().replaceAll(exp, '');
     return Campaign(
       id: json['campaign']['_id'],
       imageUri: /*json['imageUri']*/ "images/pngs/compaigns$imgNumber.jpg",
       title: json['campaign']['title'],
-      subtitle: json['campaign']['description'].toString().replaceAll(exp, ''),
-      description: json['campaign']['description'],
+      subtitle: desc,
+      description: desc,
       score: json['campaign']['reward']['coins'].toString(),
       theme: json['campaign']['tag'][0],
     );
