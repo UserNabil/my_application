@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/feature/challenge/coin-challenge/pages/leader_bord_screen.dart';
+import 'package:my_taraji/feature/challenge/coin-challenge/pages/question_one_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 void main() {
@@ -20,12 +21,12 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
+    //  var height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           width: width,
-          height: height,
+          // height: height,
           padding: const EdgeInsets.only(left: 30, right: 30),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -171,16 +172,6 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                 ),
               ),
               const SizedBox(height: 150),
-              // SizedBox(
-              //   // height: 300,
-              //   // width: 150,
-              //   child: Image.asset(
-              //     'images/pngs/club.png', // Remplacez par le chemin de votre image
-              //     fit: BoxFit.cover,
-              //     width: 217,
-              //     height: 327,
-              //   ),
-              // ),
               Stack(
                 children: [
                   Container(
@@ -249,6 +240,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                   ),
                 ],
               ),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -322,7 +314,12 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const QuestionOneCoinChallenge()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     primary: MyColors.red,
