@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/feature/challenge/coin-challenge/pages/step_one_coin_challenge_screen.dart';
+import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
+import 'package:my_taraji/views/fanzone/page/fanzone_screen.dart';
+import 'package:my_taraji/views/home/page/home_screen.dart';
+import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
+import 'package:my_taraji/views/init/page/init_screen.dart';
+import 'package:my_taraji/views/selfcare/page/selfcare_screen.dart';
+import 'package:my_taraji/views/shop/page/shop_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 void main() {
@@ -17,6 +24,22 @@ class LeaderBord extends StatefulWidget {
 }
 
 class LeaderBordState extends State<LeaderBord> {
+  int currentSelectedIndex = 0;
+  void updateCurrentIndex(int index) {
+    if (index != currentSelectedIndex) {
+      setState(() {
+        currentSelectedIndex = index;
+      });
+    }
+  }
+
+  final pages = const [
+    HomeScreen(),
+    MySelfCare(),
+    MyFanPay(),
+    MyFanZone(),
+    MyShop(),
+  ];
   final List<Map<String, String>> cardDataList = [
     {
       'backgroundColor': "0xFFC1242D",
@@ -207,9 +230,9 @@ class LeaderBordState extends State<LeaderBord> {
               colors: [MyColors.redDarker, MyColors.red],
             ),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(50),
-              topRight: Radius.circular(50),
-            ),
+                // topLeft: Radius.circular(50),
+                // topRight: Radius.circular(50),
+                ),
           ),
           alignment: Alignment.center,
           child: Column(
@@ -326,21 +349,35 @@ class LeaderBordState extends State<LeaderBord> {
               Container(
                 margin: const EdgeInsets.only(top: 20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // Navigate to another page here
+                        // Naviguer vers la page précédente ici
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const StepOneCoinChallenge()),
+                            builder: (context) => const InitScreen(),
+                          ),
                         );
                       },
                       child: Image.asset(
-                        'images/pngs/Next.png', // Replace with your button image asset
-
+                        'images/pngs/Presedent.png', // Remplacez par le chemin de votre image
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Naviguer vers une autre page ici
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const StepOneCoinChallenge(),
+                          ),
+                        );
+                      },
+                      child: Image.asset(
+                        'images/pngs/Next.png', // Remplacez par le chemin de votre image
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -390,6 +427,15 @@ class LeaderBordState extends State<LeaderBord> {
                       data['imageColor']!,
                     ),
                     const SizedBox(height: 10),
+                    // Align(
+                    //   alignment: Alignment.bottomCenter,
+                    //   child: MyBottomBar(
+                    //     active: items[currentSelectedIndex],
+                    //     onTap: (item) {
+                    //       updateCurrentIndex(item.index);
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
             ],

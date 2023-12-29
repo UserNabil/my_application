@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
+import 'package:my_taraji/views/home/components/challenges/challenge_carousel.dart';
 import '../components/top_content/my_top.dart';
 import '../components/compagnies/compagnie_carousel.dart';
 import '../components/list_news_screen.dart';
@@ -43,10 +45,24 @@ class HomeScreen extends StatelessWidget {
       //   compagneName: 'Affaires et industrielle',
       // )
     ];
-
+    List<Challenge> challenges = [
+      Challenge(
+          imagePath: "images/pngs/imagetaraji2.png",
+          title: "Challenge Jeu Coin",
+          subtitle: "Subtitle for Challenge 1",
+          challengeName: "Challenge Jeu Coin",
+          coins: "100"),
+      Challenge(
+          imagePath: "images/pngs/imagetaraji1.png",
+          title: "Challenge 2",
+          subtitle: "Subtitle for Challenge 2",
+          challengeName: "Challenge 2 Name",
+          coins: "100"),
+    ];
     List<Widget> widgetsToDisplay = [
       const TopScreen(),
       ListCompagnes(compagnes: compagnes),
+      ListChallenges(challenges: challenges),
       const ListNews(),
       const ListPartenaire(),
     ];
