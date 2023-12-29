@@ -21,16 +21,16 @@ class HomeScreenState extends State<HomeScreen> {
   List<Challenge> challenges = [
     Challenge(
         imagePath: "images/pngs/imagetaraji2.png",
-        title: "Challenge Jeu Coin",
+        title: "Gagner des coins pour la coupe d'Afrique",
         subtitle: "Subtitle for Challenge 1",
-        challengeName: "Challenge Jeu Coin",
+        challengeName: "Quiz Coupe d'Afrique 2024",
         coins: "100"),
     Challenge(
         imagePath: "images/pngs/imagetaraji1.png",
-        title: "Challenge 2",
+        title: "Gagner des cadeaux pour le réveillon",
         subtitle: "Subtitle for Challenge 2",
-        challengeName: "Challenge 2 Name",
-        coins: "100"),
+        challengeName: "Quiz Réveillon 2024",
+        coins: "200"),
   ];
   Future<void> onInitData() async {
     String baseUrl = 'http://localhost:5074';

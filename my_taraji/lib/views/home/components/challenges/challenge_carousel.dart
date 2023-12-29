@@ -86,7 +86,7 @@ class ListChallengesState extends State<ListChallenges> {
                   subtitle: newsData.subtitle,
                   imagePath: newsData.imagePath,
                   coins: newsData.coins,
-                  titleFontSize: 15.0,
+                  titleFontSize: 13.0,
                   subtitleFontSize: 12.0,
                   isLister: false,
                 ),
