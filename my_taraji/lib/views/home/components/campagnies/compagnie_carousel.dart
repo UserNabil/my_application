@@ -84,7 +84,7 @@ class ListCompagnesState extends State<ListCompagnes> {
               height: 195,
               enlargeCenterPage: true,
               autoPlay: true,
-              autoPlayInterval: const Duration(milliseconds: 3000),
+              autoPlayInterval: const Duration(milliseconds: 5000),
               enlargeFactor: 0.2,
             ),
             items: [
