@@ -3,46 +3,68 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Campaign {
   String id;
-  String imagePath;
+  String imageUri;
   String title;
   String subtitle;
   String description;
-  String coins;
-  String compagneName;
+  String score;
+  String theme;
 
   Campaign({
     required this.id,
-    required this.imagePath,
+    required this.imageUri,
     required this.title,
     required this.subtitle,
     required this.description,
-    required this.coins,
-    required this.compagneName,
+    required this.score,
+    required this.theme,
   });
+
+  factory Campaign.fromJson(Map<String, dynamic> json) {
+    RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
+    String imgNumber = json['campaign']['title'] == "Email" ? "2" : "3";
+    return Campaign(
+      id: json['campaign']['_id'],
+      imageUri: /*json['imageUri']*/ "images/pngs/compaigns$imgNumber.jpg",
+      title: json['campaign']['title'],
+      subtitle: json['campaign']['description'].toString().replaceAll(exp, ''),
+      description: json['campaign']['description'],
+      score: json['campaign']['reward']['coins'].toString(),
+      theme: json['campaign']['tag'][0],
+    );
+  }
 
   factory Campaign.fromMap(Map<String, dynamic> map) {
     return Campaign(
       id: map['id'],
-      imagePath: map['imagePath'],
+      imageUri: map['imageUri'],
       title: map['title'],
       subtitle: map['subtitle'],
       description: map['description'],
-      coins: map['coins'],
-      compagneName: map['compagneName'],
+      score: map['score'],
+      theme: map['theme'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'imagePath': imagePath,
+      'imageUri': imageUri,
       'title': title,
       'subtitle': subtitle,
       'description': description,
-      'coins': coins,
-      'compagneName': compagneName,
+      'score': score,
+      'theme': theme,
     };
   }
+}
+
+List<Campaign> fromJsonList(List<dynamic>? jsonList) {
+  if (jsonList == null) {
+    return [];
+  }
+
+  return jsonList.map((json) => Campaign.fromJson(json)).toList();
 }
 
 void saveCampaigns(List<Campaign> campaigns) async {

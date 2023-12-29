@@ -46,7 +46,7 @@ class ListCompagnesState extends State<ListCompagnes> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Compagnes',
+                'Campagnes',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,
@@ -91,11 +91,11 @@ class ListCompagnesState extends State<ListCompagnes> {
               for (final newsData in _campaigns)
                 CompaignCard(
                   context: context,
-                  compagneName: newsData.compagneName,
+                  compagneName: newsData.theme,
                   title: newsData.title,
                   subtitle: newsData.subtitle,
-                  imagePath: newsData.imagePath,
-                  coins: newsData.coins,
+                  imagePath: newsData.imageUri,
+                  coins: newsData.score,
                   titleFontSize: 15.0,
                   subtitleFontSize: 12.0,
                   isLister: false,

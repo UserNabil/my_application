@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/user_model.dart';
-import 'package:my_taraji/feature/challenge/coin-challenge/pages/leader_bord_screen.dart';
-import 'package:my_taraji/services/user_api.dart';
+import 'package:my_taraji/services/service_api.dart';
 import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
 import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
