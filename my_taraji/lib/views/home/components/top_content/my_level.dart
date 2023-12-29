@@ -112,16 +112,16 @@ class MyCardLevel extends StatelessWidget {
         // Bottom
         Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Silver",
-                    style: TextStyle(
+                Text(int.parse(xp) > 100 ? "Gold" : "Silver",
+                    style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
                         color: MyColors.black)),
-                Text("Gold",
-                    style: TextStyle(
+                Text(int.parse(xp) > 100 ? "Diamond" : "Gold",
+                    style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 11,
                         color: MyColors.black))

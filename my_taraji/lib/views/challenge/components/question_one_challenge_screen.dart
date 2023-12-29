@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/feature/challenge/coin-challenge/pages/step_one_coin_challenge_screen.dart';
+import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 void main() {
@@ -28,7 +28,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(

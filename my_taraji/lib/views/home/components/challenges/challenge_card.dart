@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/feature/challenge/coin-challenge/pages/leader_bord_screen.dart';
+import 'package:my_taraji/views/challenge/pages/leader_bord_screen.dart';
 
 class ChallengeCard extends StatelessWidget {
   const ChallengeCard({

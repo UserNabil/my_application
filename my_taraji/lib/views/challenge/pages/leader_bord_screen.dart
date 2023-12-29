@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/feature/challenge/coin-challenge/pages/step_one_coin_challenge_screen.dart';
+import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
 import 'package:my_taraji/views/fanzone/page/fanzone_screen.dart';
 import 'package:my_taraji/views/home/page/home_screen.dart';
-import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
+// import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
 import 'package:my_taraji/views/selfcare/page/selfcare_screen.dart';
 import 'package:my_taraji/views/shop/page/shop_screen.dart';
