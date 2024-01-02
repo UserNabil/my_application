@@ -1,100 +1,100 @@
 class UserData {
   final String id;
-  final String currentToken;
-  final bool onBoardingDone;
-  final String birthday;
-  final String loggedIn;
-  final String gender;
-  final String civility;
-  final String profession;
-  final String studyLevel;
-  final String friendInvitationCode;
-  final String situation;
-  final String language;
-  final List<dynamic> ignoreCampaigns;
-  final LegalPolicies legalPolicies;
   final MyRewards myRewards;
   final MyGamification myGamification;
-  final List<dynamic> campaignInProgress;
   final String pseudo;
-  final Address address;
   final String phone;
-  final List<String> roles;
-  final List<dynamic> interests;
-  final List<dynamic> friendInvitationCodeHistory;
-  final List<dynamic> fidelityHistory;
-  final List<dynamic> followedCommunities;
-  final List<dynamic> profileSettings;
-  final List<dynamic> badges;
-  final List<dynamic> campaignAnswers;
-  final String createdAt;
-  final String updatedAt;
+  // final String currentToken;
+  // final bool onBoardingDone;
+  // final String birthday;
+  // final String loggedIn;
+  // final String gender;
+  // final String civility;
+  // final String profession;
+  // final String studyLevel;
+  // final String friendInvitationCode;
+  // final String situation;
+  // final String language;
+  // final List<dynamic> ignoreCampaigns;
+  // final LegalPolicies legalPolicies;
+  // final List<dynamic> campaignInProgress;
+  // final Address address;
+  // final List<String> roles;
+  // final List<dynamic> interests;
+  // final List<dynamic> friendInvitationCodeHistory;
+  // final List<dynamic> fidelityHistory;
+  // final List<dynamic> followedCommunities;
+  // final List<dynamic> profileSettings;
+  // final List<dynamic> badges;
+  // final List<dynamic> campaignAnswers;
+  // final String createdAt;
+  // final String updatedAt;
 
   UserData({
     required this.id,
-    required this.currentToken,
-    required this.onBoardingDone,
-    required this.birthday,
-    required this.loggedIn,
-    required this.gender,
-    required this.civility,
-    required this.profession,
-    required this.studyLevel,
-    required this.friendInvitationCode,
-    required this.situation,
-    required this.language,
-    required this.ignoreCampaigns,
-    required this.legalPolicies,
     required this.myRewards,
     required this.myGamification,
-    required this.campaignInProgress,
     required this.pseudo,
-    required this.address,
     required this.phone,
-    required this.roles,
-    required this.interests,
-    required this.friendInvitationCodeHistory,
-    required this.fidelityHistory,
-    required this.followedCommunities,
-    required this.profileSettings,
-    required this.badges,
-    required this.campaignAnswers,
-    required this.createdAt,
-    required this.updatedAt,
+    // required this.currentToken,
+    // required this.onBoardingDone,
+    // required this.birthday,
+    // required this.loggedIn,
+    // required this.gender,
+    // required this.civility,
+    // required this.profession,
+    // required this.studyLevel,
+    // required this.friendInvitationCode,
+    // required this.situation,
+    // required this.language,
+    // required this.ignoreCampaigns,
+    // required this.legalPolicies,
+    // required this.campaignInProgress,
+    // required this.address,
+    // required this.roles,
+    // required this.interests,
+    // required this.friendInvitationCodeHistory,
+    // required this.fidelityHistory,
+    // required this.followedCommunities,
+    // required this.profileSettings,
+    // required this.badges,
+    // required this.campaignAnswers,
+    // required this.createdAt,
+    // required this.updatedAt,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
       id: json['user']['_id'],
-      currentToken: json['user']['currentToken'],
-      onBoardingDone: json['user']['onBoardingDone'],
-      birthday: json['user']['birthday'],
-      loggedIn: json['user']['loggedIn'],
-      gender: json['user']['gender'],
-      civility: json['user']['civility'],
-      profession: json['user']['profession'],
-      studyLevel: json['user']['studyLevel'],
-      friendInvitationCode: json['user']['friendInvitationCode'],
-      situation: json['user']['situation'],
-      language: json['user']['language'],
-      ignoreCampaigns: json['user']['ignoreCampaigns'],
-      legalPolicies: LegalPolicies.fromJson(json['user']['legalPolicies']),
       myRewards: MyRewards.fromJson(json['user']['myRewards']),
       myGamification: MyGamification.fromJson(json['user']['myGamification']),
-      campaignInProgress: json['user']['campaignInProgress'],
       pseudo: json['user']['pseudo'],
-      address: Address.fromJson(json['user']['address']),
       phone: json['user']['phone'],
-      roles: json['user']['roles'].cast<String>(),
-      interests: json['user']['interests'],
-      friendInvitationCodeHistory: json['user']['friendInvitationCodeHistory'],
-      fidelityHistory: json['user']['fidelityHistory'],
-      followedCommunities: json['user']['followedCommunities'],
-      profileSettings: json['user']['profileSettings'],
-      badges: json['user']['badges'],
-      campaignAnswers: json['user']['campaignAnswers'],
-      createdAt: json['user']['createdAt'],
-      updatedAt: json['user']['updatedAt'],
+      // currentToken: json['user']['currentToken'],
+      // onBoardingDone: json['user']['onBoardingDone'],
+      // birthday: json['user']['birthday'],
+      // loggedIn: json['user']['loggedIn'],
+      // gender: json['user']['gender'],
+      // civility: json['user']['civility'],
+      // profession: json['user']['profession'],
+      // studyLevel: json['user']['studyLevel'],
+      // friendInvitationCode: json['user']['friendInvitationCode'],
+      // situation: json['user']['situation'],
+      // language: json['user']['language'],
+      // ignoreCampaigns: json['user']['ignoreCampaigns'],
+      // legalPolicies: LegalPolicies.fromJson(json['user']['legalPolicies']),
+      // campaignInProgress: json['user']['campaignInProgress'],
+      // address: Address.fromJson(json['user']['address']),
+      // roles: json['user']['roles'].cast<String>(),
+      // interests: json['user']['interests'],
+      // friendInvitationCodeHistory: json['user']['friendInvitationCodeHistory'],
+      // fidelityHistory: json['user']['fidelityHistory'],
+      // followedCommunities: json['user']['followedCommunities'],
+      // profileSettings: json['user']['profileSettings'],
+      // badges: json['user']['badges'],
+      // campaignAnswers: json['user']['campaignAnswers'],
+      // createdAt: json['user']['createdAt'],
+      // updatedAt: json['user']['updatedAt'],
     );
   }
 }
@@ -162,27 +162,27 @@ class LegalPolicyHistory {
 }
 
 class MyRewards {
-  final String id;
+  // final String id;
   final int coins;
-  final List<dynamic> redeemHistory;
-  final String createdAt;
-  final String updatedAt;
+  // final List<dynamic> redeemHistory;
+  // final String createdAt;
+  // final String updatedAt;
 
   MyRewards({
-    required this.id,
+    // required this.id,
     required this.coins,
-    required this.redeemHistory,
-    required this.createdAt,
-    required this.updatedAt,
+    // required this.redeemHistory,
+    // required this.createdAt,
+    // required this.updatedAt,
   });
 
   factory MyRewards.fromJson(Map<String, dynamic> json) {
     return MyRewards(
-      id: json['_id'],
+      // id: json['_id'],
       coins: json['coins'],
-      redeemHistory: json['redeemHistory'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      // redeemHistory: json['redeemHistory'],
+      // createdAt: json['createdAt'],
+      // updatedAt: json['updatedAt'],
     );
   }
 }

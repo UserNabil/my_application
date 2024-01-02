@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/models/user_model.dart';
 import 'package:my_taraji/services/service_api.dart';
@@ -25,6 +26,7 @@ class InitScreenState extends State<InitScreen> {
   int currentSelectedIndex = 0;
   int lastKnownPage = 0;
   bool isDragging = false;
+  var apiService = ApiService();
 
   @override
   void initState() {
@@ -43,26 +45,19 @@ class InitScreenState extends State<InitScreen> {
 
   void onInitData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String baseUrl = 'https://localhost:5074';
-    var apiService = ApiService(baseUrl);
-
-    try {
-      final UserData userData = await apiService.getUserData('api/v1/users');
-      final List<Campaign> campaigns = await apiService
-          .getAllCampaigns('api/v1/campaigns/targetedAudience?Page=0&Limit=10');
-      prefs.setString('id', userData.id);
-      prefs.setString('currentToken', userData.currentToken);
-      prefs.setString('coins', userData.myRewards.coins.toString());
-      prefs.setString('name', userData.pseudo);
-      prefs.setString('xp', userData.myGamification.expPoints.toString());
-      prefs.setString('phone', userData.phone);
-      campaigns.forEach((campaign) {
-        prefs.setBool(campaign.id, true);
-      });
-      saveCampaigns(campaigns);
-    } catch (e) {
-      print('Error: $e');
+    UserData userData = await apiService.getUserData();
+    List<Challenge> challenges = await apiService.getAllChallenges();
+    List<Campaign> campaigns = await apiService.getAllCampaigns();
+    for (var campaign in campaigns) {
+      prefs.setBool(campaign.id, true);
     }
+    prefs.setString('id', userData.id);
+    prefs.setString('coins', userData.myRewards.coins.toString());
+    prefs.setString('name', userData.pseudo);
+    prefs.setString('xp', userData.myGamification.expPoints.toString());
+    prefs.setString('phone', userData.phone);
+    saveChallenges(challenges);
+    saveCampaigns(campaigns);
   }
 
   final pages = const [

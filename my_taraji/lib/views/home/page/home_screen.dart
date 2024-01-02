@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
-// import 'package:my_taraji/services/service_api.dart';
 import 'package:my_taraji/views/home/components/challenges/challenge_carousel.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:my_taraji/views/home/components/all_content_home/list_campagnies_challenge.dart';
 import '../components/top_content/my_top.dart';
 import '../components/campagnies/compagnie_carousel.dart';
 import '../components/list_news_screen.dart';
@@ -19,20 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   late List<Campaign> compagnes = [];
-  List<Challenge> challenges = [
-    Challenge(
-        imagePath: "images/pngs/imagetaraji2.png",
-        title: "Gagner des coins pour la coupe d'Afrique",
-        subtitle: "Subtitle for Challenge 1",
-        challengeName: "Quiz Coupe d'Afrique 2024",
-        coins: "100"),
-    Challenge(
-        imagePath: "images/pngs/imagetaraji1.png",
-        title: "Gagner des cadeaux pour le réveillon",
-        subtitle: "Subtitle for Challenge 2",
-        challengeName: "Quiz Réveillon 2024",
-        coins: "200"),
-  ];
+  late List<Challenge> challenges = [];
 
   @override
   void initState() {
@@ -42,8 +28,11 @@ class HomeScreenState extends State<HomeScreen> {
 
   void _loadCampaigns() async {
     List<Campaign> loadedCampaigns = await getCampaigns();
+    List<Challenge> loadedChallenges = await getChallenges();
+
     setState(() {
       compagnes = loadedCampaigns;
+      challenges = loadedChallenges;
     });
   }
 
@@ -51,8 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     List<Widget> widgetsToDisplay = [
       const TopScreen(),
-      ListCompagnes(campagnes: compagnes),
-      ListChallenges(challenges: challenges),
+      selectContent(context),
       const ListNews(),
       const ListPartenaire(),
     ];
@@ -75,5 +63,21 @@ class HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  Widget selectContent(BuildContext context) {
+    if (compagnes.isNotEmpty && challenges.isNotEmpty) {
+      return AllContent(
+        campagnes: compagnes,
+        challenges: challenges,
+      );
+    } else {
+      return Column(
+        children: [
+          if (compagnes.isNotEmpty) ListCompagnes(campagnes: compagnes),
+          if (challenges.isNotEmpty) ListChallenges(challenges: challenges),
+        ],
+      );
+    }
   }
 }

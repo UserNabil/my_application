@@ -6,9 +6,9 @@ class ChallengeCard extends StatelessWidget {
   const ChallengeCard({
     super.key,
     required this.context,
-    required this.imagePath,
+    required this.imageUrl,
     required this.title,
-    required this.subtitle,
+    required this.description,
     required this.challengeName,
     required this.titleFontSize,
     required this.subtitleFontSize,
@@ -16,9 +16,9 @@ class ChallengeCard extends StatelessWidget {
     required this.isLister,
   });
   final BuildContext context;
-  final String imagePath;
+  final String imageUrl;
   final String title;
-  final String subtitle;
+  final String description;
   final String challengeName;
   final double titleFontSize;
   final double subtitleFontSize;
@@ -27,7 +27,7 @@ class ChallengeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return buildCarouselItem(imagePath, title, subtitle, challengeName,
+    return buildCarouselItem(imageUrl, title, description, challengeName,
         titleFontSize, subtitleFontSize, coins);
   }
 

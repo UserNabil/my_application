@@ -61,7 +61,7 @@ class Campaign {
   }
 }
 
-List<Campaign> fromJsonList(List<dynamic>? jsonList) {
+List<Campaign> fromJsonListCampaign(List<dynamic>? jsonList) {
   if (jsonList == null) {
     return [];
   }

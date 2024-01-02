@@ -13,28 +13,16 @@ class ListChallenges extends StatefulWidget {
 }
 
 class ListChallengesState extends State<ListChallenges> {
-  List<Challenge> _challenges = [];
-  @override
-  void initState() {
-    super.initState();
-    _loadCampaigns();
-  }
-
-  void _loadCampaigns() async {
-    _saveCampaigns();
-    List<Challenge> loadedCampaigns = await getChallenges();
-    setState(() {
-      _challenges = loadedCampaigns;
-    });
-  }
-
-  void _saveCampaigns() {
-    if (widget.challenges.isEmpty) return;
-    saveChallenges(widget.challenges);
-  }
-
   @override
   Widget build(BuildContext context) {
+    if (widget.challenges.isEmpty) {
+      return Container();
+    } else {
+      return buildContainer(context);
+    }
+  }
+
+  Widget buildContainer(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -52,18 +40,6 @@ class ListChallengesState extends State<ListChallenges> {
                   color: MyColors.yellow,
                 ),
               ),
-              // InkWell(
-              //   onTap: () {},
-              //   child: const Text(
-              //     'VOIR TOUS',
-              //     style: TextStyle(
-              //       backgroundColor: MyColors.transparent,
-              //       fontSize: 12.0,
-              //       fontWeight: FontWeight.w500,
-              //       color: MyColors.grey,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -78,14 +54,14 @@ class ListChallengesState extends State<ListChallenges> {
               enlargeFactor: 0.2,
             ),
             items: [
-              for (final newsData in _challenges)
+              for (final newsData in widget.challenges)
                 ChallengeCard(
                   context: context,
-                  challengeName: newsData.challengeName,
+                  challengeName: newsData.title,
                   title: newsData.title,
-                  subtitle: newsData.subtitle,
-                  imagePath: newsData.imagePath,
-                  coins: newsData.coins,
+                  description: newsData.description,
+                  imageUrl: "images/pngs/challenge1.jpg",
+                  coins: newsData.title,
                   titleFontSize: 13.0,
                   subtitleFontSize: 12.0,
                   isLister: false,

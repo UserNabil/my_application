@@ -1,83 +1,74 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/models/user_model.dart';
 
 class ApiService {
-  final String baseUrl;
+  late String baseUrl = "http://localhost:5074";
 
-  ApiService(this.baseUrl);
+  ApiService();
 
-  Future<UserData> getUserData(String path) async {
+  Future<UserData> getUserData() async {
+    const path = "api/v1/users";
     final url = Uri.parse('$baseUrl/$path');
-    final response = await http.get(url);
-    final Map<String, dynamic> jsonData = json.decode(response.body);
-    final userData = UserData.fromJson(jsonData);
-    return userData;
 
-    // try {
-    //   final response = await http.get(url);
-
-    //   if (response.statusCode == 200) {
-    //     final Map<String, dynamic> jsonData = json.decode(response.body);
-    //     final userData = UserData.fromJson(jsonData);
-    //     return userData;
-    //   } else {
-    //     throw Exception('Failed to load user data');
-    //   }
-    // } catch (e) {
-    //   throw Exception(e);
-    // }
+    try {
+      final response = await http.get(url);
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      final userData = UserData.fromJson(jsonData);
+      return userData;
+    } catch (e) {
+      throw Exception('Failed to connect to the server for user data $e');
+    }
   }
 
-  Future<List<Campaign>> getAllCampaigns(String path) async {
+  Future<List<Campaign>> getAllCampaigns() async {
+    const path = "api/v1/campaigns/targetedAudience?Page=0&Limit=10";
     final url = Uri.parse('$baseUrl/$path');
     List<Campaign> campaigns = [];
-    final response = await http.get(url);
-    final List<dynamic> jsonData = json.decode(response.body);
-    campaigns = fromJsonList(jsonData);
-    return campaigns;
-    // try {
-    //   final response = await http.get(url);
-    //   final List<dynamic> jsonData = json.decode(response.body);
-    //   campaigns = fromJsonList(jsonData);
-    //   return campaigns;
-    // } catch (e) {
-    //   throw Exception(e);
-    //   // throw Exception('Failed to connect to the server $e');
-    // }
+
+    try {
+      final response = await http.get(url);
+      final List<dynamic> jsonData = json.decode(response.body);
+      campaigns = fromJsonListCampaign(jsonData);
+      return campaigns;
+    } catch (e) {
+      throw Exception('Failed to connect to the server for campaign data $e');
+    }
   }
 
-  Future<Campaign> getCampaignById(String path, String id) async {
-    // final url = Uri.parse('$baseUrl/$path/$id');
-    return Campaign(
-        id: "",
-        imageUri: "",
-        title: "",
-        subtitle: "",
-        description: "",
-        score: "",
-        theme: "");
-    // try {
-    //   final response = await http.get(url);
+  Future<Campaign> getCampaignById(String id) async {
+    const path = "";
+    final url = Uri.parse('$baseUrl/$path/$id');
+    try {
+      final response = await http.get(url);
 
-    //   if (response.statusCode == 200) {
-    //     final Map<String, dynamic> jsonData = json.decode(response.body);
-    //     print(jsonData);
-    //     Campaign campaign = /*Campaign.fromJson(jsonData)*/ Campaign(
-    //         id: "",
-    //         imageUri: "",
-    //         title: "",
-    //         subtitle: "",
-    //         description: "",
-    //         score: "",
-    //         theme: "");
-    //     return campaign;
-    //   } else {
-    //     throw Exception('Failed to load campaign data');
-    //   }
-    // } catch (e) {
-    //   throw Exception('Failed to connect to the server');
-    // }
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+        Campaign campaign = Campaign.fromJson(jsonData);
+        return campaign;
+      } else {
+        throw Exception('Failed to load campaign data');
+      }
+    } catch (e) {
+      throw Exception(
+          'Failed to connect to the server for campaign data by id $e');
+    }
+  }
+
+  Future<List<Challenge>> getAllChallenges() async {
+    const path = "api/v1/challenges?Page=0&Limit=10";
+    final url = Uri.parse('$baseUrl/$path');
+    List<Challenge> challenges = [];
+
+    try {
+      var response = await http.get(url);
+      final dynamic jsonData = json.decode(response.body);
+      challenges = fromJsonListChallenge(jsonData['data']);
+      return challenges;
+    } catch (e) {
+      throw Exception('Failed to connect to the server for challenge data $e');
+    }
   }
 }
