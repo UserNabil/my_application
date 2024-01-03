@@ -42,7 +42,7 @@ class InitScreenState extends State<InitScreen> {
 
   void onInitData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String baseUrl = 'https://localhost:44355';
+    String baseUrl = 'http://localhost:5074';
     var apiService = ApiService(baseUrl);
 
     try {
