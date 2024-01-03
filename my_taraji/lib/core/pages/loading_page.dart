@@ -21,10 +21,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void startTimer() {
     Timer(
-      const Duration(seconds: 5),
+      const Duration(seconds: 2),
       () {
         setState(() {
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushNamed(context, '/');
         });
       },
     );

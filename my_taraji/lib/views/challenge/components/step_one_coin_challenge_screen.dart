@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/feature/challenge/coin-challenge/pages/leader_bord_screen.dart';
-import 'package:my_taraji/feature/challenge/coin-challenge/pages/question_one_challenge_screen.dart';
+import 'package:my_taraji/views/challenge/pages/leader_bord_screen.dart';
+import 'package:my_taraji/views/challenge/components/question_one_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 void main() {
@@ -174,7 +174,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
               const SizedBox(height: 150),
               Stack(
                 children: [
-                  Container(
+                  const SizedBox(
                     height: 300,
                     width: 250,
                   ),
@@ -223,7 +223,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                       },
                       style: ElevatedButton.styleFrom(
                         fixedSize: const Size(10, 10),
-                        primary: MyColors.yellow,
+                        backgroundColor: MyColors.yellow,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
@@ -322,7 +322,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: MyColors.red,
+                    backgroundColor: MyColors.red,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),

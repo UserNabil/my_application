@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 class PhoneInput extends StatelessWidget {
-  const PhoneInput({super.key});
+  const PhoneInput({super.key, required this.phoneController});
+  final TextEditingController phoneController;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: phoneController,
       decoration: const InputDecoration(
         // border: OutlineInputBorder(),
         labelText: 'Numéro de téléphone',

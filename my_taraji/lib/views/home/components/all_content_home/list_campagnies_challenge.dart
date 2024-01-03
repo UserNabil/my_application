@@ -1,26 +1,26 @@
-import 'compagnie_card.dart';
-import 'compagnie_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/views/home/components/all_content_home/all_content_list.dart';
+import 'package:my_taraji/views/home/components/campagnies/compagnie_card.dart';
+import 'package:my_taraji/views/home/components/challenges/challenge_card.dart';
 
-class ListCompagnes extends StatefulWidget {
-  const ListCompagnes({super.key, required this.campagnes});
+class AllContent extends StatefulWidget {
+  const AllContent(
+      {super.key, required this.campagnes, required this.challenges});
   final List<Campaign> campagnes;
+  final List<Challenge> challenges;
 
   @override
-  ListCompagnesState createState() => ListCompagnesState();
+  AllContentState createState() => AllContentState();
 }
 
-class ListCompagnesState extends State<ListCompagnes> {
+class AllContentState extends State<AllContent> {
   @override
   Widget build(BuildContext context) {
-    if (widget.campagnes.isEmpty) {
-      return Container();
-    } else {
-      return buildContainer(context);
-    }
+    return buildContainer(context);
   }
 
   Widget buildContainer(BuildContext context) {
@@ -34,7 +34,7 @@ class ListCompagnesState extends State<ListCompagnes> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Campagnes',
+                'Campagnes & Challenges',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,
@@ -46,8 +46,9 @@ class ListCompagnesState extends State<ListCompagnes> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AllCompagnesPage(
+                      builder: (context) => AllContentPage(
                         compagnes: widget.campagnes,
+                        challenges: widget.challenges,
                       ),
                     ),
                   );
@@ -76,14 +77,28 @@ class ListCompagnesState extends State<ListCompagnes> {
               enlargeFactor: 0.2,
             ),
             items: [
-              for (final campaign in widget.campagnes)
-                CompaignCard(
+              ...widget.campagnes.map(
+                (campaign) => CompaignCard(
                   context: context,
                   campaign: campaign,
                   titleFontSize: 15.0,
                   subtitleFontSize: 12.0,
                   isLister: false,
                 ),
+              ),
+              ...widget.challenges.map(
+                (challenge) => ChallengeCard(
+                  context: context,
+                  challengeName: challenge.title,
+                  title: challenge.title,
+                  description: challenge.description,
+                  imageUrl: "images/pngs/challenge1.jpg",
+                  coins: challenge.title,
+                  titleFontSize: 13.0,
+                  subtitleFontSize: 12.0,
+                  isLister: false,
+                ),
+              ),
             ],
           ),
         ),

@@ -10,7 +10,7 @@ class NumberInput extends StatelessWidget {
     return TextFormField(
       decoration: const InputDecoration(
         // border: OutlineInputBorder(),
-        labelText: 'Age',
+        labelText: 'Code de vérification',
         prefixIcon: Icon(Icons.numbers),
       ),
       keyboardType: TextInputType.emailAddress,

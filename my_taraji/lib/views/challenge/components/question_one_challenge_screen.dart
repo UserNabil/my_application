@@ -1,63 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/feature/challenge/coin-challenge/pages/step_one_coin_challenge_screen.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 void main() {
   runApp(const MaterialApp(
     home: QuestionOneCoinChallenge(),
   ));
-}
-
-class DiamondShapeBackground extends StatelessWidget {
-  final double width;
-  final double height;
-  final Widget child;
-
-  DiamondShapeBackground({
-    required this.width,
-    required this.height,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 0.0), // Fond transparent
-        shape: BoxShape.rectangle,
-      ),
-      child: ClipPath(
-        clipper: DiamondClipper(),
-        child: Container(
-          color: MyColors.yellow, // Couleur du losange
-          child: child,
-        ),
-      ),
-    );
-  }
-}
-
-class DiamondClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    path.moveTo(size.width / 2, 0);
-    path.lineTo(size.width, size.height / 2);
-    path.lineTo(size.width / 2, size.height);
-    path.lineTo(0, size.height / 2);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
-  }
 }
 
 class QuestionOneCoinChallenge extends StatefulWidget {
@@ -79,7 +28,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -196,10 +144,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                          onPressed: () {
-                            _showDiamondPopup('50/50',
-                                'Réduit les choix à deux,\naméliorant les chances\ndu participant de choisir\ncorrectement.');
-                          },
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 50),
                             primary: MyColors.yellow,
@@ -312,46 +257,5 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         ),
       ),
     );
-  }
-
-  void _showDiamondPopup(String title, String contenu) {
-    YYDialog().build(context)
-      ..width = 300
-      ..height = 300
-      ..widget(DiamondShapeBackground(
-        width: 300,
-        height: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Titre en haut de la popup
-            Padding(
-              padding:
-                  const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            // Contenu au centre de la popup
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                contenu,
-                style: const TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ))
-      ..show();
   }
 }
