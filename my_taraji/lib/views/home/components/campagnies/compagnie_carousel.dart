@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 
-class ListCompagnes extends StatefulWidget {
-  const ListCompagnes({super.key, required this.campagnes});
+class ListCarouselCompagnes extends StatefulWidget {
+  const ListCarouselCompagnes({super.key, required this.campagnes});
   final List<Campaign> campagnes;
 
   @override
-  ListCompagnesState createState() => ListCompagnesState();
+  ListCarouselCompagnesState createState() => ListCarouselCompagnesState();
 }
 
-class ListCompagnesState extends State<ListCompagnes> {
+class ListCarouselCompagnesState extends State<ListCarouselCompagnes> {
   @override
   Widget build(BuildContext context) {
     if (widget.campagnes.isEmpty) {

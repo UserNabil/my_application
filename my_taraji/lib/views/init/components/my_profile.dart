@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/user_model.dart';
+import 'package:my_taraji/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/my_color.dart';
 import 'my_taraji_logo.dart';
@@ -26,7 +28,15 @@ class MyProfile extends StatelessWidget {
   }) : super(key: key);
 
   Future<Map<String, String>> _getUserData() async {
+    var apiService = UserService();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    UserData userData = await apiService.getUserData();
+    prefs.setString('id', userData.id);
+    prefs.setString('coins', userData.myRewards.coins.toString());
+    prefs.setString('name', userData.pseudo);
+    prefs.setString('xp', userData.myGamification.expPoints.toString());
+    prefs.setString('phone', userData.phone);
     final String name = prefs.getString('name') ?? 'Error';
     final String coins = prefs.getString('coins') ?? 'Error';
     final String profileImagePath = prefs.getString('profileImagePath') ??
@@ -45,7 +55,7 @@ class MyProfile extends StatelessWidget {
       future: _getUserData(),
       builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator(color: MyColors.yellow);
         }
 
         if (snapshot.hasError) {

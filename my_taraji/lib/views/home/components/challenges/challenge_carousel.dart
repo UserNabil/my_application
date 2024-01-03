@@ -4,15 +4,15 @@ import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/views/home/components/challenges/challenge_card.dart';
 
-class ListChallenges extends StatefulWidget {
-  const ListChallenges({super.key, required this.challenges});
+class ListCarouselChallenges extends StatefulWidget {
+  const ListCarouselChallenges({super.key, required this.challenges});
   final List<Challenge> challenges;
 
   @override
-  ListChallengesState createState() => ListChallengesState();
+  ListCarouselChallengesState createState() => ListCarouselChallengesState();
 }
 
-class ListChallengesState extends State<ListChallenges> {
+class ListCarouselChallengesState extends State<ListCarouselChallenges> {
   @override
   Widget build(BuildContext context) {
     if (widget.challenges.isEmpty) {

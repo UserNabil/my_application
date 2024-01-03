@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Campaign {
   String id;
-  String imageUri;
+  String imageUrl;
   String title;
   String subtitle;
   String description;
@@ -12,7 +12,7 @@ class Campaign {
 
   Campaign({
     required this.id,
-    required this.imageUri,
+    required this.imageUrl,
     required this.title,
     required this.subtitle,
     required this.description,
@@ -20,38 +20,46 @@ class Campaign {
     required this.theme,
   });
 
-  factory Campaign.fromJson(Map<String, dynamic> jsonApi) {
-    Map<String, dynamic> json = jsonApi;
+  factory Campaign.fromJson(Map<String, dynamic> json) {
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
-    String imgNumber = json['campaign']['title'] == "Email" ? "2" : "3",
-        desc = json['campaign']['description'].toString().replaceAll(exp, '');
+    Map<String, String> titleToImageNumber = {
+      "Email": "2",
+      "Téléphone": "3",
+      "Social Media": "4"
+    };
+
+    String imgNumber = titleToImageNumber[json['title']] ?? '1';
+    String desc = json['description'].toString().replaceAll(exp, '');
     return Campaign(
-      id: json['campaign']['_id'],
-      imageUri: /*json['imageUri']*/ "images/pngs/compaigns$imgNumber.jpg",
-      title: json['campaign']['title'],
+      id: json['_id'] ?? '',
+      imageUrl: "images/pngs/compaigns$imgNumber.jpg",
+      title: json['title'] ?? '',
       subtitle: desc,
       description: desc,
-      score: json['campaign']['reward']['coins'].toString(),
-      theme: json['campaign']['tag'][0],
+      score: (json['reward'] != null && json['reward']['coins'] != null)
+          ? json['reward']['coins'].toString()
+          : '',
+      theme:
+          (json['tag'] != null && json['tag'].isNotEmpty) ? json['tag'][0] : '',
     );
   }
 
   factory Campaign.fromMap(Map<String, dynamic> map) {
     return Campaign(
-      id: map['id'],
-      imageUri: map['imageUri'],
-      title: map['title'],
-      subtitle: map['subtitle'],
-      description: map['description'],
-      score: map['score'],
-      theme: map['theme'],
+      id: map['campaign']['id'] ?? '',
+      imageUrl: map['campaign']['imageUri'] ?? '',
+      title: map['campaign']['title'] ?? '',
+      subtitle: map['campaign']['subtitle'] ?? '',
+      description: map['campaign']['description'] ?? '',
+      score: map['campaign']['score'] ?? '',
+      theme: map['campaign']['theme'] ?? '',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'imageUri': imageUri,
+      'imageUri': imageUrl,
       'title': title,
       'subtitle': subtitle,
       'description': description,
@@ -62,11 +70,11 @@ class Campaign {
 }
 
 List<Campaign> fromJsonListCampaign(List<dynamic>? jsonList) {
-  if (jsonList == null) {
+  if (jsonList == null || jsonList.isEmpty) {
     return [];
+  } else {
+    return jsonList.map((json) => Campaign.fromJson(json['campaign'])).toList();
   }
-
-  return jsonList.map((json) => Campaign.fromJson(json)).toList();
 }
 
 void saveCampaigns(List<Campaign> campaigns) async {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
+import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/services/campaign_service.dart';
+import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/home/components/challenges/challenge_carousel.dart';
 import 'package:my_taraji/views/home/components/all_content_home/list_campagnies_challenge.dart';
 import '../components/top_content/my_top.dart';
@@ -17,23 +20,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  late List<Campaign> compagnes = [];
-  late List<Challenge> challenges = [];
-
   @override
   void initState() {
     super.initState();
-    _loadCampaigns();
   }
 
-  void _loadCampaigns() async {
-    List<Campaign> loadedCampaigns = await getCampaigns();
-    List<Challenge> loadedChallenges = await getChallenges();
+  Future<AllDataContent> _loadCampaigns() async {
+    var challengeService = ChallengeService();
+    var campaignService = CampaignService();
+    List<Campaign> loadedCampaigns = await campaignService.getAllCampaigns();
+    List<Challenge> loadedChallenges =
+        await challengeService.getAllChallenges();
+    saveCampaigns(loadedCampaigns);
+    saveChallenges(loadedChallenges);
 
-    setState(() {
-      compagnes = loadedCampaigns;
-      challenges = loadedChallenges;
-    });
+    AllDataContent allContent = AllDataContent(
+      campagnes: loadedCampaigns,
+      challenges: loadedChallenges,
+    );
+    return allContent;
   }
 
   @override
@@ -66,18 +71,57 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget selectContent(BuildContext context) {
-    if (compagnes.isNotEmpty && challenges.isNotEmpty) {
-      return AllContent(
-        campagnes: compagnes,
-        challenges: challenges,
-      );
-    } else {
-      return Column(
-        children: [
-          if (compagnes.isNotEmpty) ListCompagnes(campagnes: compagnes),
-          if (challenges.isNotEmpty) ListChallenges(challenges: challenges),
-        ],
-      );
-    }
+    return FutureBuilder(
+      future: _loadCampaigns(),
+      builder: (context, AsyncSnapshot<AllDataContent> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox(
+            height: 100,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: MyColors.yellow,
+              ),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return const SizedBox(
+            height: 100,
+            child: Center(
+              child: Text(
+                'Erreur de connexion',
+                style: TextStyle(
+                  color: MyColors.red,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          );
+        }
+
+        AllDataContent allDataContent = snapshot.data!;
+        if (allDataContent.campagnes.isNotEmpty &&
+            allDataContent.challenges.isNotEmpty) {
+          return AllContent(
+            campagnes: allDataContent.campagnes,
+            challenges: allDataContent.challenges,
+          );
+        } else {
+          return Column(
+            children: [
+              ListCarouselCompagnes(campagnes: allDataContent.campagnes),
+              ListCarouselChallenges(challenges: allDataContent.challenges),
+            ],
+          );
+        }
+      },
+    );
   }
+}
+
+class AllDataContent {
+  final List<Campaign> campagnes;
+  final List<Challenge> challenges;
+  AllDataContent({required this.campagnes, required this.challenges});
 }

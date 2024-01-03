@@ -8,8 +8,8 @@ class MyCardLevel extends StatelessWidget {
 
   Future<Map<String, String>> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String xp = prefs.getString('xp') ?? 'Error';
-
+    final String xp = prefs.getString('xp') ?? '0';
+    await Future.delayed(const Duration(seconds: 1));
     return {
       'xp': xp,
     };
@@ -25,7 +25,12 @@ class MyCardLevel extends StatelessWidget {
       future: _getUserData(),
       builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const SizedBox(
+            height: 100,
+            child: Center(
+              child: CircularProgressIndicator(color: MyColors.yellow),
+            ),
+          );
         }
 
         if (snapshot.hasError) {
@@ -38,8 +43,7 @@ class MyCardLevel extends StatelessWidget {
   }
 
   Widget buildGamification(Map<String, String> userData) {
-    final String xp = userData['xp']!;
-
+    String xp = userData['xp']!;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
