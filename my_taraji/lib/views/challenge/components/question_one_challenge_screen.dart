@@ -15,7 +15,7 @@ class DiamondShapeBackground extends StatelessWidget {
   final double height;
   final Widget child;
 
-  DiamondShapeBackground({
+  const DiamondShapeBackground({
     required this.width,
     required this.height,
     required this.child,
