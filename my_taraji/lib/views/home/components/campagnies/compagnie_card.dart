@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/services/campaign_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:my_taraji/services/service_api.dart';
 
 import 'compagnie_modal.dart';
 import 'compagnie_page.dart';
@@ -27,6 +27,7 @@ class CompaignCard extends StatefulWidget {
 }
 
 class CompaignCardState extends State<CompaignCard> {
+  var campaignService = CampaignService();
   bool? isCardAvailable = false;
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class CompaignCardState extends State<CompaignCard> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           image: DecorationImage(
-            image: AssetImage(campaign.imageUri),
+            image: AssetImage(campaign.imageUrl),
             fit: BoxFit.cover,
           ),
         ),
@@ -165,24 +166,19 @@ class CompaignCardState extends State<CompaignCard> {
 
   Future<void> goToCompagneDetails(
       BuildContext context, Campaign campaign) async {
-    // String baseUrl = 'http://localhost:5074';
-    // var apiService = ApiService(baseUrl);
-
-    // try {
-    //   final Campaign campaignApi =
-    //       await apiService.getCampaignById('api/v1/campaigns', campaign.id);
-    //   print(campaignApi);
-    // } catch (e) {
-    //   print('Error: $e');
-    // }
-
-    // ignore: use_build_context_synchronously
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CompaignPage(campaign: campaign),
-      ),
-    );
+    try {
+      final Campaign campaignApi =
+          await campaignService.getCampaignById(campaign.id);
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CompaignPage(campaign: campaignApi),
+        ),
+      );
+    } catch (e) {
+      throw Exception('Failed to load campaign data by id $e');
+    }
   }
 
   void showCompagneModal(BuildContext context, String compagneName,

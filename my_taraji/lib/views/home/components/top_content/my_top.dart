@@ -30,22 +30,24 @@ class TopScreenState extends State<TopScreen> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyTarajiLogo(
-                      logoImagePath: 'images/pngs/taraji.png',
-                      firstText: 'My',
-                      secondText: 'Taraji',
-                      logoSize: 40,
-                      textSize: 17,
-                      textPosition: TextPosition.right,
-                    ),
-                    MyProfile(
-                      greetingText: 'Bonjour',
-                      textPosition: TextPosition.left,
-                    ),
-                  ],
+                const Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyTarajiLogo(
+                        logoImagePath: 'images/pngs/taraji.png',
+                        firstText: 'My',
+                        secondText: 'Taraji',
+                        logoSize: 40,
+                        textSize: 17,
+                        textPosition: TextPosition.right,
+                      ),
+                      MyProfile(
+                        greetingText: 'Bonjour',
+                        textPosition: TextPosition.left,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 20),
                 MyNavBar(

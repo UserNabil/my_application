@@ -34,7 +34,7 @@ class AllContentState extends State<AllContent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Campagnes & Challenges',
+                'Campagnes',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,

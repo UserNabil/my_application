@@ -40,7 +40,7 @@ class CompaignPageDetails extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(campaign.imageUri),
+              image: AssetImage(campaign.imageUrl),
               alignment: Alignment.topCenter,
               opacity: 0.8,
             ),
