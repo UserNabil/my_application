@@ -5,11 +5,11 @@ import '../../../../core/theme/my_color.dart';
 
 class Item extends StatelessWidget {
   const Item({
-    Key? key,
+    super.key,
     required this.item,
     required this.onTap,
     required this.active,
-  }) : super(key: key);
+  });
 
   final MenuItem item;
   final Function(MenuItem) onTap;
@@ -54,6 +54,7 @@ class Item extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     'images/icons/${item.fileName}.svg',
+                    // ignore: deprecated_member_use
                     color: color,
                     width: 22,
                     height: 22,

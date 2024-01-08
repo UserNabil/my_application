@@ -10,13 +10,13 @@ class CompaignModal extends StatelessWidget {
   final String coins;
 
   const CompaignModal({
-    Key? key,
+    super.key,
     required this.compagneName,
     required this.title,
     required this.subtitle,
     required this.imagePath,
     required this.coins,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

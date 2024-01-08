@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+// import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:my_taraji/core/models/next_question_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
@@ -65,7 +65,7 @@ class DiamondClipper extends CustomClipper<Path> {
 }
 
 class QuestionOneCoinChallenge extends StatefulWidget {
-  const QuestionOneCoinChallenge({Key? key}) : super(key: key);
+  const QuestionOneCoinChallenge({super.key});
 
   @override
   QuestionOneCoinChallengeState createState() =>
@@ -393,42 +393,42 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   }
 
   void _showDiamondPopup(String title, String contenu) {
-    YYDialog().build(context)
-      ..width = 300
-      ..height = 300
-      ..widget(DiamondShapeBackground(
-        width: 300,
-        height: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                contenu,
-                style: const TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ))
-      ..show();
+    // YYDialog().build(context)
+    //   ..width = 300
+    //   ..height = 300
+    //   ..widget(DiamondShapeBackground(
+    //     width: 300,
+    //     height: 300,
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         Padding(
+    //           padding:
+    //               const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
+    //           child: Text(
+    //             title,
+    //             style: const TextStyle(
+    //               fontSize: 20.0,
+    //               color: Colors.white,
+    //             ),
+    //             textAlign: TextAlign.center,
+    //           ),
+    //         ),
+    //         Padding(
+    //           padding: const EdgeInsets.all(8.0),
+    //           child: Text(
+    //             contenu,
+    //             style: const TextStyle(
+    //               fontSize: 15.0,
+    //               color: Colors.white,
+    //             ),
+    //             textAlign: TextAlign.center,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ))
+    //   ..show();
   }
 
   @override

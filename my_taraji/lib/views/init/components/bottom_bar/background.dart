@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/my_color.dart';
 
 class BackgroundBar extends StatelessWidget {
-  const BackgroundBar({Key? key, required this.currentIndex}) : super(key: key);
+  const BackgroundBar({super.key, required this.currentIndex});
   final int currentIndex;
 
   @override

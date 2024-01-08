@@ -6,11 +6,11 @@ class ChoiceInput extends StatefulWidget {
   final bool isRadio; // New flag to indicate radio or multi-choice behavior
 
   const ChoiceInput({
-    Key? key,
+    super.key,
     this.options = const ['Option 1', 'Option 2', 'Option 3'],
     this.selectedOptions = const ['Option 1'],
     required this.isRadio,
-  }) : super(key: key);
+  });
 
   @override
   ChoiceInputState createState() => ChoiceInputState();

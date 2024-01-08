@@ -1,23 +1,26 @@
 import 'dart:convert';
+import 'package:my_taraji/core/models/campaign_type_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Campaign {
   String id;
   String imageUrl;
   String title;
-  String subtitle;
   String description;
-  String score;
-  String theme;
+  int rewardCoins;
+  String tag;
+  CampaignType? campaignType;
+  List<QuestionCampaign>? questionCampaign;
 
   Campaign({
     required this.id,
     required this.imageUrl,
     required this.title,
-    required this.subtitle,
     required this.description,
-    required this.score,
-    required this.theme,
+    required this.rewardCoins,
+    required this.tag,
+    this.campaignType,
+    this.questionCampaign,
   });
 
   factory Campaign.fromJson(Map<String, dynamic> json) {
@@ -28,43 +31,44 @@ class Campaign {
       "Social Media": "4"
     };
 
-    String imgNumber = titleToImageNumber[json['title']] ?? '1';
-    String desc = json['description'].toString().replaceAll(exp, '');
+    String imgNumber = titleToImageNumber[json['Title']] ?? '1';
+    String desc = json['Description'].toString().replaceAll(exp, '');
+
     return Campaign(
-      id: json['_id'] ?? '',
+      id: json['Id'] ?? '',
       imageUrl: "images/pngs/compaigns$imgNumber.jpg",
-      title: json['title'] ?? '',
-      subtitle: desc,
+      title: json['Title'] ?? '',
       description: desc,
-      score: (json['reward'] != null && json['reward']['coins'] != null)
-          ? json['reward']['coins'].toString()
-          : '',
-      theme:
-          (json['tag'] != null && json['tag'].isNotEmpty) ? json['tag'][0] : '',
+      rewardCoins: json['RewardCoins'] ?? '',
+      tag: json['Tag'] ?? '',
+      campaignType: json['CampaignType'] != null
+          ? CampaignType.fromJson(json['CampaignType'])
+          : null,
+      questionCampaign: json['Questions'] != null
+          ? fromJsonListQuestion(json['Questions'])
+          : null,
     );
   }
 
   factory Campaign.fromMap(Map<String, dynamic> map) {
     return Campaign(
-      id: map['campaign']['id'] ?? '',
-      imageUrl: map['campaign']['imageUri'] ?? '',
-      title: map['campaign']['title'] ?? '',
-      subtitle: map['campaign']['subtitle'] ?? '',
-      description: map['campaign']['description'] ?? '',
-      score: map['campaign']['score'] ?? '',
-      theme: map['campaign']['theme'] ?? '',
+      id: map['id'] ?? '',
+      imageUrl: map['imageUri'] ?? '',
+      title: map['title'] ?? '',
+      description: map['description'] ?? '',
+      rewardCoins: map['rewardCoins'] ?? '',
+      tag: map['tag'] ?? '',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'imageUri': imageUrl,
+      'imageUrl': imageUrl,
       'title': title,
-      'subtitle': subtitle,
       'description': description,
-      'score': score,
-      'theme': theme,
+      'rewardCoins': rewardCoins,
+      'tag': tag,
     };
   }
 }
@@ -73,7 +77,7 @@ List<Campaign> fromJsonListCampaign(List<dynamic>? jsonList) {
   if (jsonList == null || jsonList.isEmpty) {
     return [];
   } else {
-    return jsonList.map((json) => Campaign.fromJson(json['campaign'])).toList();
+    return jsonList.map((json) => Campaign.fromJson(json)).toList();
   }
 }
 

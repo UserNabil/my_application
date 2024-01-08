@@ -6,10 +6,10 @@ class MyNavBar extends StatefulWidget {
   final ValueChanged<int> onItemSelected;
 
   const MyNavBar({
-    Key? key,
+    super.key,
     required this.items,
     required this.onItemSelected,
-  }) : super(key: key);
+  });
 
   @override
   MyNavBarState createState() => MyNavBarState();

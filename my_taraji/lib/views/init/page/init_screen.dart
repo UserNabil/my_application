@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:my_taraji/core/models/user_model.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
 import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../fanzone/page/fanzone_screen.dart';
 import '../../home/page/home_screen.dart';
 import '../../shop/page/shop_screen.dart';
@@ -28,6 +31,38 @@ class InitScreenState extends State<InitScreen> {
   void initState() {
     super.initState();
     liquidController = LiquidController();
+    getCurrentLocation();
+  }
+
+  getCurrentLocation() async {
+    final GeolocatorPlatform geolocator = GeolocatorPlatform.instance;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    try {
+      LocationSettings locationSettings =
+          const LocationSettings(accuracy: LocationAccuracy.high);
+      Position position = await geolocator.getCurrentPosition(
+          locationSettings: locationSettings);
+
+      setState(() {
+        prefs.setDouble('latitude', position.latitude);
+        prefs.setDouble('longitude', position.longitude);
+      });
+    } catch (e) {
+      throw Exception('getCurrentLocation error : $e');
+    }
+  }
+
+  void getUserData() async {
+    var userService = UserService();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    UserData userData = await userService.getUserData();
+    prefs.setString('id', userData.id);
+    prefs.setString('coins', userData.myRewards.coins.toString());
+    prefs.setString('name', userData.pseudo);
+    prefs.setString('xp', userData.myGamification.expPoints.toString());
+    prefs.setString('phone', userData.phone);
   }
 
   void updateCurrentIndex(int index) {

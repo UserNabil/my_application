@@ -1,14 +1,15 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard(
-      {Key? key,
+      {super.key,
       required this.svgUrl,
       required this.color,
       required this.width,
-      required this.height})
-      : super(key: key);
+      required this.height});
   final String svgUrl;
   final Color color;
   final double width;

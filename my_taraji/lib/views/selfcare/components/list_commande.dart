@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/theme/my_color.dart';
 
 class ListCommande extends StatefulWidget {
-  const ListCommande({Key? key}) : super(key: key);
+  const ListCommande({super.key});
 
   @override
   ListCommandeState createState() => ListCommandeState();

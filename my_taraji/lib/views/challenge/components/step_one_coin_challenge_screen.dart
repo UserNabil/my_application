@@ -11,7 +11,7 @@ void main() {
 }
 
 class StepOneCoinChallenge extends StatefulWidget {
-  const StepOneCoinChallenge({Key? key}) : super(key: key);
+  const StepOneCoinChallenge({super.key});
 
   @override
   StepOneCoinChallengeState createState() => StepOneCoinChallengeState();

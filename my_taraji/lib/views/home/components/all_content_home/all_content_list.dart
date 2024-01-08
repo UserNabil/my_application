@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/challenge_model.dart';
-import 'package:my_taraji/views/home/components/campagnies/compagnie_card.dart';
+import 'package:my_taraji/views/home/components/campaigns/campaign_card.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 
 import '../challenges/challenge_card.dart';
 
 class AllContentPage extends StatelessWidget {
   const AllContentPage({
-    Key? key,
+    super.key,
     required this.compagnes,
     required this.challenges,
-  }) : super(key: key);
+  });
 
   final List<Campaign> compagnes;
   final List<Challenge> challenges;

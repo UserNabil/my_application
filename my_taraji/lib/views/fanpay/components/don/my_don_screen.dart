@@ -10,7 +10,7 @@ void main() {
 }
 
 class MyDon extends StatefulWidget {
-  const MyDon({Key? key}) : super(key: key);
+  const MyDon({super.key});
 
   @override
   MyDonState createState() => MyDonState();

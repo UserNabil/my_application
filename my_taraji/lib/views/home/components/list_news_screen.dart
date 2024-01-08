@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 
 class ListNews extends StatefulWidget {
-  const ListNews({Key? key}) : super(key: key);
+  const ListNews({super.key});
 
   @override
   ListNewsState createState() => ListNewsState();

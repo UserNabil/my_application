@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
@@ -6,8 +7,9 @@ import 'package:my_taraji/services/campaign_service.dart';
 import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/home/components/challenges/challenge_carousel.dart';
 import 'package:my_taraji/views/home/components/all_content_home/list_campagnies_challenge.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../components/top_content/my_top.dart';
-import '../components/campagnies/compagnie_carousel.dart';
+import '../components/campaigns/campaign_carousel.dart';
 import '../components/list_news_screen.dart';
 import '../components/list_partenaire_screen.dart';
 
@@ -31,6 +33,11 @@ class HomeScreenState extends State<HomeScreen> {
     List<Campaign> loadedCampaigns = await campaignService.getAllCampaigns();
     List<Challenge> loadedChallenges =
         await challengeService.getAllChallenges();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    for (var campaign in loadedCampaigns) {
+      prefs.setBool(campaign.id, true);
+    }
     saveCampaigns(loadedCampaigns);
     saveChallenges(loadedChallenges);
 
@@ -86,15 +93,28 @@ class HomeScreenState extends State<HomeScreen> {
         }
 
         if (snapshot.hasError) {
-          return const SizedBox(
+          return SizedBox(
             height: 100,
             child: Center(
-              child: Text(
-                'Erreur de connexion',
-                style: TextStyle(
-                  color: MyColors.red,
-                  fontSize: 20,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyColors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      TablerIcons.refresh,
+                      color: MyColors.red,
+                    ),
+                  ),
+                ],
               ),
             ),
           );

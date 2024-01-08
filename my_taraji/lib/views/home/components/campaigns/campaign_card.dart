@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/services/campaign_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'compagnie_modal.dart';
-import 'compagnie_page.dart';
+import 'campaign_page.dart';
 
 class CompaignCard extends StatefulWidget {
   const CompaignCard({
@@ -27,8 +24,8 @@ class CompaignCard extends StatefulWidget {
 }
 
 class CompaignCardState extends State<CompaignCard> {
-  var campaignService = CampaignService();
   bool? isCardAvailable = false;
+
   @override
   Widget build(BuildContext context) {
     return buildCarouselItem(
@@ -64,7 +61,6 @@ class CompaignCardState extends State<CompaignCard> {
           : null,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        // Remove const BoxConstraints.expand()
         constraints: widget.isLister ? null : const BoxConstraints.expand(),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
@@ -103,7 +99,7 @@ class CompaignCardState extends State<CompaignCard> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          campaign.theme,
+                          campaign.tag,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -127,7 +123,7 @@ class CompaignCardState extends State<CompaignCard> {
                     SizedBox(
                       width: 150,
                       child: Text(
-                        campaign.subtitle,
+                        campaign.description,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style: TextStyle(
@@ -164,35 +160,12 @@ class CompaignCardState extends State<CompaignCard> {
     );
   }
 
-  Future<void> goToCompagneDetails(
-      BuildContext context, Campaign campaign) async {
-    try {
-      final Campaign campaignApi =
-          await campaignService.getCampaignById(campaign.id);
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CompaignPage(campaign: campaignApi),
-        ),
-      );
-    } catch (e) {
-      throw Exception('Failed to load campaign data by id $e');
-    }
-  }
-
-  void showCompagneModal(BuildContext context, String compagneName,
-      String title, String subtitle, String imagePath, String coins) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return CompaignModal(
-            compagneName: compagneName,
-            title: title,
-            subtitle: subtitle,
-            imagePath: imagePath,
-            coins: coins);
-      },
+  void goToCompagneDetails(BuildContext context, Campaign campaign) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CompaignPage(campaign: campaign),
+      ),
     );
   }
 }

@@ -12,7 +12,7 @@ class MyInputField extends StatefulWidget {
   final TextEditingController controller;
 
   const MyInputField({
-    Key? key,
+    super.key,
     required this.label,
     required this.placeholder,
     this.isEmail = false,
@@ -20,7 +20,7 @@ class MyInputField extends StatefulWidget {
     this.isRequired = false,
     this.keyboardType = TextInputType.text,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api
