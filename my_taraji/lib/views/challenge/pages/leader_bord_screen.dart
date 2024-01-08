@@ -17,7 +17,7 @@ void main() {
 }
 
 class LeaderBord extends StatefulWidget {
-  const LeaderBord({Key? key}) : super(key: key);
+  const LeaderBord({super.key});
 
   @override
   LeaderBordState createState() => LeaderBordState();

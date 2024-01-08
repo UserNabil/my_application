@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/theme/my_color.dart';
 
 class ListTransaction extends StatefulWidget {
-  const ListTransaction({Key? key}) : super(key: key);
+  const ListTransaction({super.key});
 
   @override
   ListTransactionState createState() => ListTransactionState();

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AnimationSelfCareMenu extends StatefulWidget {
   const AnimationSelfCareMenu({
-    Key? key,
+    super.key,
     required this.child,
     required this.animationDirection,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double animationDirection;

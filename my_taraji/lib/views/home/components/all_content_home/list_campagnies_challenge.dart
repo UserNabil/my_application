@@ -4,7 +4,7 @@ import 'package:my_taraji/core/models/challenge_model.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/views/home/components/all_content_home/all_content_list.dart';
-import 'package:my_taraji/views/home/components/campagnies/compagnie_card.dart';
+import 'package:my_taraji/views/home/components/campaigns/campaign_card.dart';
 import 'package:my_taraji/views/home/components/challenges/challenge_card.dart';
 
 class AllContent extends StatefulWidget {

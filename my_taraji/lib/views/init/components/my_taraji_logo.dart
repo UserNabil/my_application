@@ -17,14 +17,14 @@ class MyTarajiLogo extends StatelessWidget {
   final TextPosition textPosition;
 
   const MyTarajiLogo({
-    Key? key,
+    super.key,
     required this.logoImagePath,
     required this.firstText,
     required this.secondText,
     required this.logoSize,
     required this.textSize,
     this.textPosition = TextPosition.bottom,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

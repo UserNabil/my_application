@@ -12,6 +12,7 @@ class Slider extends StatelessWidget {
       child: Center(
         child: SvgPicture.asset(
           'images/icons/${(currentIndex == 0 ? 'current_left' : currentIndex == 4 ? 'current_right' : 'current')}.svg',
+          // ignore: deprecated_member_use
           color: currentIndex == 2 ? MyColors.blueDark : MyColors.redDarker,
         ),
       ),

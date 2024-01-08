@@ -5,7 +5,7 @@ import '../../../core/theme/my_color.dart';
 import '../../home/components/top_content/my_progress.dart';
 
 class MonStatus extends StatefulWidget {
-  const MonStatus({Key? key}) : super(key: key);
+  const MonStatus({super.key});
 
   @override
   MonStatusState createState() => MonStatusState();

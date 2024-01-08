@@ -4,7 +4,7 @@ import '../../../../core/theme/my_color.dart';
 import 'my_progress.dart';
 
 class MyCardLevel extends StatelessWidget {
-  const MyCardLevel({Key? key}) : super(key: key);
+  const MyCardLevel({super.key});
 
   Future<Map<String, String>> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -167,7 +167,7 @@ class MyCardLevel extends StatelessWidget {
 }
 
 class MyLevel extends StatelessWidget {
-  const MyLevel({Key? key}) : super(key: key);
+  const MyLevel({super.key});
 
   @override
   Widget build(BuildContext context) {

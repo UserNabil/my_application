@@ -8,7 +8,7 @@ void main() {
 }
 
 class ListPartenaire extends StatefulWidget {
-  const ListPartenaire({Key? key}) : super(key: key);
+  const ListPartenaire({super.key});
 
   @override
   // ignore: library_private_types_in_public_api

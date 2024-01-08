@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+// import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
@@ -16,6 +16,7 @@ class DiamondShapeBackground extends StatelessWidget {
   final Widget child;
 
   const DiamondShapeBackground({
+    super.key,
     required this.width,
     required this.height,
     required this.child,
@@ -60,7 +61,7 @@ class DiamondClipper extends CustomClipper<Path> {
 }
 
 class QuestionOneCoinChallenge extends StatefulWidget {
-  const QuestionOneCoinChallenge({Key? key}) : super(key: key);
+  const QuestionOneCoinChallenge({super.key});
 
   @override
   QuestionOneCoinChallengeState createState() =>
@@ -78,7 +79,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -201,7 +201,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                           },
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 50),
-                            primary: MyColors.yellow,
+                            backgroundColor: MyColors.yellow,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -222,7 +222,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 50),
-                            primary: MyColors.yellow,
+                            backgroundColor: MyColors.yellow,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -238,7 +238,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 50),
-                            primary: MyColors.yellow,
+                            backgroundColor: MyColors.yellow,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -263,15 +263,14 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                       // Add your button onPressed logic here
                     },
                     style: ElevatedButton.styleFrom(
+                      foregroundColor: MyColors.yellow,
+                      backgroundColor: Colors.transparent,
                       fixedSize: const Size(310, 50),
                       elevation: 4.0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                         side: const BorderSide(color: Colors.white, width: 2.0),
-                      ),
-                      primary: Colors.transparent,
-                      onPrimary: MyColors
-                          .yellow, // Couleur de fond lorsque le bouton est pressé
+                      ), // Couleur de fond lorsque le bouton est pressé
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -292,7 +291,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(150, 30),
-                  primary: MyColors.yellow,
+                  backgroundColor: MyColors.yellow,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -314,43 +313,43 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   }
 
   void _showDiamondPopup(String title, String contenu) {
-    YYDialog().build(context)
-      ..width = 300
-      ..height = 300
-      ..widget(DiamondShapeBackground(
-        width: 300,
-        height: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Titre en haut de la popup
-            Padding(
-              padding:
-                  const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            // Contenu au centre de la popup
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                contenu,
-                style: const TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ))
-      ..show();
+    // YYDialog().build(context)
+    //   ..width = 300
+    //   ..height = 300
+    //   ..widget(DiamondShapeBackground(
+    //     width: 300,
+    //     height: 300,
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         // Titre en haut de la popup
+    //         Padding(
+    //           padding:
+    //               const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
+    //           child: Text(
+    //             title,
+    //             style: const TextStyle(
+    //               fontSize: 20.0,
+    //               color: Colors.white,
+    //             ),
+    //             textAlign: TextAlign.center,
+    //           ),
+    //         ),
+    //         // Contenu au centre de la popup
+    //         Padding(
+    //           padding: const EdgeInsets.all(8.0),
+    //           child: Text(
+    //             contenu,
+    //             style: const TextStyle(
+    //               fontSize: 15.0,
+    //               color: Colors.white,
+    //             ),
+    //             textAlign: TextAlign.center,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ))
+    //   ..show();
   }
 }

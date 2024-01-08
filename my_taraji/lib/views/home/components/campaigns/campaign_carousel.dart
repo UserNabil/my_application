@@ -1,5 +1,5 @@
-import 'compagnie_card.dart';
-import 'compagnie_list.dart';
+import 'campaign_card.dart';
+import 'campaign_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';

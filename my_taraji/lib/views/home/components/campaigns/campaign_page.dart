@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-
+import 'package:my_taraji/services/campaign_service.dart';
 import 'pagination_form.dart';
 
 class CompaignPage extends StatelessWidget {
@@ -20,21 +21,95 @@ class CompaignPage extends StatelessWidget {
         title: const Text('Détails de la campagne'),
       ),
       body: CompaignPageDetails(campaign: campaign),
-      backgroundColor: MyColors.black,
+      backgroundColor: MyColors.white,
     );
   }
 }
 
-class CompaignPageDetails extends StatelessWidget {
+class CompaignPageDetails extends StatefulWidget {
   final Campaign campaign;
+
+  @override
+  CompaignPageDetailsState createState() => CompaignPageDetailsState();
 
   const CompaignPageDetails({
     super.key,
     required this.campaign,
   });
+}
+
+class CompaignPageDetailsState extends State<CompaignPageDetails> {
+  late Campaign campaignFromApi = widget.campaign;
+  var campaignService = CampaignService();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<Campaign> display(BuildContext context, Campaign campaign) async {
+    campaignFromApi = await campaignService.getCampaignById(widget.campaign.id);
+    return campaignFromApi;
+  }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: display(context, widget.campaign),
+      builder: (context, AsyncSnapshot<Campaign> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 100,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: MyColors.yellow,
+                  ),
+                ),
+              )
+            ],
+          );
+        }
+
+        if (snapshot.hasError) {
+          return SizedBox(
+            height: 100,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: MyColors.transparent,
+                      backgroundColor: MyColors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      TablerIcons.refresh,
+                      color: MyColors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        Campaign campaign = snapshot.data!;
+        return buildContent(campaign);
+      },
+    );
+  }
+
+  Widget buildContent(Campaign campaign) {
     return Stack(
       children: [
         Container(
@@ -42,7 +117,7 @@ class CompaignPageDetails extends StatelessWidget {
             image: DecorationImage(
               image: AssetImage(campaign.imageUrl),
               alignment: Alignment.topCenter,
-              opacity: 0.8,
+              opacity: 1,
             ),
           ),
         ),
@@ -72,7 +147,7 @@ class CompaignPageDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  campaign.subtitle,
+                  campaignFromApi.description,
                   style: const TextStyle(
                     fontSize: 14.0,
                   ),
@@ -86,7 +161,7 @@ class CompaignPageDetails extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 5, bottom: 5),
                   child: Text(
-                    campaign.theme,
+                    campaign.tag,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                     style: const TextStyle(
@@ -98,7 +173,7 @@ class CompaignPageDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  'Coins gagnés : ${campaign.score}',
+                  'Coins gagnés : ${campaign.rewardCoins}',
                   style: const TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.bold,

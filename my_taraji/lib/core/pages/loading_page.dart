@@ -5,7 +5,7 @@ import '../../views/init/components/my_taraji_logo.dart';
 import '../theme/my_color.dart';
 
 class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
+  const LoadingScreen({super.key});
   static const routeName = '/loading';
 
   @override

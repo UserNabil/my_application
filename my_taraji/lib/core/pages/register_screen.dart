@@ -7,7 +7,7 @@ import '../theme/my_color.dart';
 import '../components/my_button.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
   static const routeName = '/register';
 
   @override

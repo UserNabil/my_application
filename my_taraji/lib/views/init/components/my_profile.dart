@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/core/models/user_model.dart';
-import 'package:my_taraji/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/my_color.dart';
 import 'my_taraji_logo.dart';
@@ -16,7 +14,7 @@ class MyProfile extends StatelessWidget {
   final Color coinsTextColor;
 
   const MyProfile({
-    Key? key,
+    super.key,
     this.textPosition = TextPosition.left,
     this.greetingText = '',
     this.photoSize = 50.0,
@@ -25,18 +23,10 @@ class MyProfile extends StatelessWidget {
     this.greetingTextColor = MyColors.grey,
     this.nameTextColor = MyColors.white,
     this.coinsTextColor = MyColors.white,
-  }) : super(key: key);
+  });
 
-  Future<Map<String, String>> _getUserData() async {
-    var apiService = UserService();
+  Future<Map<String, String>> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    UserData userData = await apiService.getUserData();
-    prefs.setString('id', userData.id);
-    prefs.setString('coins', userData.myRewards.coins.toString());
-    prefs.setString('name', userData.pseudo);
-    prefs.setString('xp', userData.myGamification.expPoints.toString());
-    prefs.setString('phone', userData.phone);
     final String name = prefs.getString('name') ?? 'Error';
     final String coins = prefs.getString('coins') ?? 'Error';
     final String profileImagePath = prefs.getString('profileImagePath') ??
@@ -52,14 +42,14 @@ class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getUserData(),
+      future: getUserData(),
       builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(color: MyColors.yellow);
         }
 
         if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return const Text('Error', style: TextStyle(color: MyColors.red));
         }
 
         final userData = snapshot.data!;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/views/home/components/campagnies/compagnie_card.dart';
+import 'package:my_taraji/views/home/components/campaigns/campaign_card.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 
 class AllCompagnesPage extends StatelessWidget {
   final List<Campaign> compagnes;
 
-  const AllCompagnesPage({Key? key, required this.compagnes}) : super(key: key);
+  const AllCompagnesPage({super.key, required this.compagnes});
 
   @override
   Widget build(BuildContext context) {
