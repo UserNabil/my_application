@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+import 'package:my_taraji/core/models/next_question_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
@@ -16,6 +20,7 @@ class DiamondShapeBackground extends StatelessWidget {
   final Widget child;
 
   const DiamondShapeBackground({
+    super.key,
     required this.width,
     required this.height,
     required this.child,
@@ -27,13 +32,13 @@ class DiamondShapeBackground extends StatelessWidget {
       width: width,
       height: height,
       decoration: const BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 0.0), // Fond transparent
+        color: Color.fromRGBO(255, 255, 255, 0.0),
         shape: BoxShape.rectangle,
       ),
       child: ClipPath(
         clipper: DiamondClipper(),
         child: Container(
-          color: MyColors.yellow, // Couleur du losange
+          color: MyColors.yellow,
           child: child,
         ),
       ),
@@ -68,22 +73,73 @@ class QuestionOneCoinChallenge extends StatefulWidget {
 }
 
 class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
-  final List<String> cardTexts = [
-    '2015',
-    '2017',
-    '2019',
-    '2021',
-  ];
+  ChallengeQuestionResult? question;
+  int selectedChoiceIndex = -1;
+  double ratio = 0.0;
+  Color progressBarColor = MyColors.blue;
+  late Timer countdownTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadQuestion();
+  }
+
+  void startTimer(double counterTime) {
+    const oneSecond = Duration(seconds: 1);
+    countdownTimer = Timer.periodic(
+      oneSecond,
+      (timer) {
+        setState(() {
+          counterTime--;
+          ratio = 1 - (counterTime / 60);
+          double pourcentagered = (question!.nextQuestion.counterTime) / 4;
+          double pourcentageorange = (question!.nextQuestion.counterTime) / 2;
+          if (counterTime <= pourcentagered) {
+            progressBarColor = MyColors.redLight;
+          } else if (counterTime <= pourcentageorange) {
+            progressBarColor = MyColors.orange;
+          } else {
+            progressBarColor = MyColors.blue;
+          }
+        });
+
+        if (counterTime == 0) {
+          countdownTimer.cancel();
+        }
+      },
+    );
+  }
+
+  Future<void> _loadQuestion() async {
+    try {
+      var challengeService = ChallengeService();
+      ChallengeQuestionResult loadedQuestion = await challengeService
+          .getNextQuestionByStepId("659563b47428f60708a9bd68");
+      setState(() {
+        question = loadedQuestion;
+      });
+      double remainingTime = loadedQuestion.nextQuestion.counterTime.toDouble();
+
+      startTimer(remainingTime);
+    } catch (e) {
+      print('Failed to load next question data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
+    var cardHeight = 200.0; // Ajustez la hauteur de la carte selon vos besoins
+    //var screenHeight = MediaQuery.of(context).size.height;
+    // double ratio = 0.0;
+    // // if (question != null) {
+    // ratio = 1 - (question!.nextQuestion.counterTime.toDouble() / 60);
+    // // }
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           width: width,
-          //height: height,
           padding: const EdgeInsets.only(left: 30, right: 30),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -94,7 +150,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
           ),
           alignment: Alignment.center,
           child: Column(
-            //   crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
                 padding: const EdgeInsets.only(top: 50),
@@ -119,19 +174,22 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                       ],
                     ),
                     const SizedBox(width: 100),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'Question 1',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.normal,
-                            decoration: TextDecoration.none,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                        if (question != null)
+                          Text(
+                            question!.nextQuestion.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.none,
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        else
+                          const CircularProgressIndicator(),
                       ],
                     ),
                   ],
@@ -140,17 +198,23 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
               const SizedBox(height: 20),
               SizedBox(
                 child: SimpleAnimationProgressBar(
+                  reverseAlignment: true,
                   height: 10,
-                  width: 700,
-                  backgroundColor: const Color.fromARGB(255, 220, 220, 220),
-                  foregrondColor: MyColors.blue,
-                  ratio: 0.5,
+                  width: width,
+                  backgroundColor: progressBarColor,
+                  foregrondColor: const Color.fromARGB(255, 220, 220, 220),
+                  ratio: ratio,
                   direction: Axis.horizontal,
                   curve: Curves.fastLinearToSlowEaseIn,
-                  duration: const Duration(seconds: 3),
+                  duration: Duration(
+                      seconds: (question != null &&
+                              question!.nextQuestion != null)
+                          ? question!.nextQuestion!.counterTime?.toInt() ?? 0
+                          : 0),
+
                   borderRadius: BorderRadius.circular(10),
-                  gradientColor: const LinearGradient(
-                      colors: [MyColors.blue, MyColors.blue]),
+                  //   gradientColor: const LinearGradient(
+                  //       colors: [MyColors.blue, MyColors.blue]),
                 ),
               ),
               const SizedBox(height: 40),
@@ -163,26 +227,29 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: SizedBox(
-                      height: 200,
-                      width: width - 50, // Ajustez la largeur selon vos besoins
+                      height: cardHeight,
+                      width: width - 50,
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         color: Colors.white,
-                        child: const Padding(
-                          padding: EdgeInsets.all(16.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                'En quelle année,\nKylian Mbappé a-t-il\nle rejoint le club du\nParis Saint-Germain\n?',
-                                style: TextStyle(
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                              if (question != null)
+                                Text(
+                                  question!.nextQuestion.description,
+                                  style: const TextStyle(
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                )
+                              else
+                                const CircularProgressIndicator(),
                             ],
                           ),
                         ),
@@ -201,7 +268,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                           },
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 50),
-                            primary: MyColors.yellow,
+                            backgroundColor: MyColors.yellow,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -215,14 +282,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                            width:
-                                10), // Ajustez l'espacement selon vos besoins
+                        const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 50),
-                            primary: MyColors.yellow,
+                            backgroundColor: MyColors.yellow,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -231,14 +296,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                             'images/pngs/eye.png',
                           ),
                         ),
-                        const SizedBox(
-                            width:
-                                10), // Ajustez l'espacement selon vos besoins
+                        const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 50),
-                            primary: MyColors.yellow,
+                            backgroundColor: MyColors.yellow,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -253,46 +316,62 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                 ],
               ),
               const SizedBox(height: 30),
-              for (String cardText in cardTexts)
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical:
-                          8.0), // Ajouter un espace vertical entre les boutons
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Add your button onPressed logic here
-                    },
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(310, 50),
-                      elevation: 4.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        side: const BorderSide(color: Colors.white, width: 2.0),
-                      ),
-                      primary: Colors.transparent,
-                      onPrimary: MyColors
-                          .yellow, // Couleur de fond lorsque le bouton est pressé
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        cardText,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+              if (question != null)
+                Column(
+                  children: question!.nextQuestion.choices.map((choice) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedChoiceIndex =
+                                question!.nextQuestion.choices.indexOf(choice);
+                          });
+                        },
+                        child: SizedBox(
+                          width: width - 50,
+                          child: Card(
+                            color: selectedChoiceIndex ==
+                                    question!.nextQuestion.choices
+                                        .indexOf(choice)
+                                ? MyColors.yellow.withOpacity(
+                                    0.7) // Couleur avec opacité réduite
+                                : Colors
+                                    .transparent, // Transparent si non sélectionné
+                            elevation: 4.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: const BorderSide(
+                                color: Colors.white,
+                                width: 2.0,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                choice.value,
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
                         ),
-                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                ),
+                    );
+                  }).toList(),
+                )
+              else
+                const CircularProgressIndicator(),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(150, 30),
-                  primary: MyColors.yellow,
+                  backgroundColor: MyColors.yellow,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -301,7 +380,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                   'Valider',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14.0, // Ajustez la taille de la police ici
+                    fontSize: 14.0,
                   ),
                 ),
               ),
@@ -323,7 +402,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Titre en haut de la popup
             Padding(
               padding:
                   const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
@@ -336,7 +414,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                 textAlign: TextAlign.center,
               ),
             ),
-            // Contenu au centre de la popup
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -352,5 +429,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         ),
       ))
       ..show();
+  }
+
+  @override
+  void dispose() {
+    countdownTimer
+        .cancel(); // Annuler le timer lors de la suppression du widget
+    super.dispose();
   }
 }

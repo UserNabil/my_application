@@ -1,67 +1,86 @@
-class NextQuestion {
-  // String title;
-  // String description;
-  // String imageUrl;
-  // int stepNumber;
-  // Company company;
-  // List<CheckPoint> checkPoints;
-  // List<WiningRank> winingRanks;
-  // String id;
+class ChallengeQuestionResult {
+  NextQuestion nextQuestion;
 
-  NextQuestion(
-      //{
-      // required this.title,
-      // required this.description,
-      // required this.imageUrl,
-      // required this.stepNumber,
-      // required this.company,
-      // required this.checkPoints,
-      // required this.winingRanks,
-      // required this.id,
-      // }
-      );
+  ChallengeQuestionResult({required this.nextQuestion});
 
-  factory NextQuestion.fromJson(Map<String, dynamic> jsonApi) {
+  factory ChallengeQuestionResult.fromJson(Map<String, dynamic> jsonApi) {
     Map<String, dynamic> json = jsonApi;
-    return NextQuestion(
-        // title: json['title'],
-        // description: json['description'],
-        // imageUrl: json['imageUrl'],
-        // stepNumber: json['stepNumber'],
-        // company: Company.fromMap(json['company']),
-        // checkPoints: List<CheckPoint>.from(
-        //     json['checkPoints']?.map((x) => CheckPoint.fromMap(x)) ?? []),
-        // winingRanks: List<WiningRank>.from(
-        //     json['winingRanks']?.map((x) => WiningRank.fromMap(x)) ?? []),
-        // id: json['_id'],
-        );
+    return ChallengeQuestionResult(
+      nextQuestion: NextQuestion.fromMap(json['nextQuestion']),
+    );
   }
 
-  factory NextQuestion.fromMap(Map<String, dynamic> map) {
-    return NextQuestion(
-        // title: map['title'],
-        // description: map['description'],
-        // imageUrl: map['imageUrl'],
-        // stepNumber: map['stepNumber'],
-        // company: Company.fromMap(map['company']),
-        // checkPoints: List<CheckPoint>.from(
-        //     map['checkPoints']?.map((x) => CheckPoint.fromMap(x)) ?? []),
-        // winingRanks: List<WiningRank>.from(
-        //     map['winingRanks']?.map((x) => WiningRank.fromMap(x)) ?? []),
-        // id: map['_id'],
-        );
+  factory ChallengeQuestionResult.fromMap(Map<String, dynamic> map) {
+    return ChallengeQuestionResult(
+      nextQuestion: NextQuestion.fromMap(map['nextQuestion']),
+    );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      // 'title': title,
-      // 'description': description,
-      // 'imageUrl': imageUrl,
-      // 'stepNumber': stepNumber,
-      // 'company': company.toMap(),
-      // 'checkPoints': List<dynamic>.from(checkPoints.map((x) => x.toMap())),
-      // 'winingRanks': List<dynamic>.from(winingRanks.map((x) => x.toMap())),
-      // '_id': id,
+      'nextQuestion': nextQuestion.toMap(),
     };
+  }
+}
+
+class NextQuestion {
+  String title;
+  String description;
+  int counterTime;
+  int rewardPoints;
+  List<ChallengeQuestionChoiceItem> choices;
+  String id;
+  String createdAt;
+  String updatedAt;
+  NextQuestion({
+    required this.title,
+    required this.description,
+    required this.counterTime,
+    required this.rewardPoints,
+    required this.choices,
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory NextQuestion.fromMap(Map<String, dynamic> jsonApi) {
+    Map<String, dynamic> json = jsonApi;
+    return NextQuestion(
+      id: json['_id'],
+      title: json['title'],
+      description: json['description'],
+      counterTime: json['counterTime'],
+      rewardPoints: json['rewardPoints'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      choices: List<ChallengeQuestionChoiceItem>.from(
+          json['choices']?.map((x) => ChallengeQuestionChoiceItem.fromMap(x)) ??
+              []),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      '_id': id,
+      'title': title,
+      'description': description,
+      'counterTime': counterTime,
+      'rewardPoints': rewardPoints,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'choices': choices,
+    };
+  }
+}
+
+class ChallengeQuestionChoiceItem {
+  String id;
+  String value;
+  ChallengeQuestionChoiceItem({required this.id, required this.value});
+  factory ChallengeQuestionChoiceItem.fromMap(Map<String, dynamic> map) {
+    return ChallengeQuestionChoiceItem(id: map['_id'], value: map['value']);
+  }
+  Map<String, dynamic> toMap() {
+    return {'_id': id, 'value': value};
   }
 }

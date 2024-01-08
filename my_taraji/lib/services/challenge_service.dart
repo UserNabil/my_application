@@ -22,7 +22,7 @@ class ChallengeService {
     }
   }
 
-  Future<NextQuestion> getNextQuestionByStepId(String stepid) async {
+  Future<ChallengeQuestionResult> getNextQuestionByStepId(String stepid) async {
     const path = "api/v1/challenges/next-question";
     final url = Uri.parse('$baseUrl/$path/$stepid');
     try {
@@ -30,7 +30,8 @@ class ChallengeService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        NextQuestion nextQuestion = NextQuestion.fromJson(jsonData);
+        ChallengeQuestionResult nextQuestion =
+            ChallengeQuestionResult.fromJson(jsonData);
         return nextQuestion;
       } else {
         throw Exception('Failed to load next question data');
