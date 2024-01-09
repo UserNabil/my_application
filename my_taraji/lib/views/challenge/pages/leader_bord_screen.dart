@@ -10,20 +10,25 @@ import 'package:my_taraji/views/selfcare/page/selfcare_screen.dart';
 import 'package:my_taraji/views/shop/page/shop_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: LeaderBord(),
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: LeaderBord(""),
+//   ));
+// }
 
 class LeaderBord extends StatefulWidget {
-  const LeaderBord({super.key});
+  final String challengeId;
+  const LeaderBord(this.challengeId, {super.key});
 
   @override
-  LeaderBordState createState() => LeaderBordState();
+  LeaderBordState createState() =>
+      // ignore: no_logic_in_create_state
+      LeaderBordState(challengeid: challengeId);
 }
 
 class LeaderBordState extends State<LeaderBord> {
+  final String challengeid;
+  LeaderBordState({required this.challengeid});
   int currentSelectedIndex = 0;
   void updateCurrentIndex(int index) {
     if (index != currentSelectedIndex) {
@@ -372,7 +377,8 @@ class LeaderBordState extends State<LeaderBord> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const StepOneCoinChallenge(),
+                            builder: (context) =>
+                                StepOneCoinChallenge(challengeid),
                           ),
                         );
                       },

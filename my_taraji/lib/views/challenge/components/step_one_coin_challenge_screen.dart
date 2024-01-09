@@ -1,23 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/challenge_by_id_model.dart'
+    as ChallengeById;
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/pages/leader_bord_screen.dart';
 import 'package:my_taraji/views/challenge/components/question_one_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: StepOneCoinChallenge(),
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: StepOneCoinChallenge("6595376beb16ee594ceb90d8"),
+//   ));
+// }
 
 class StepOneCoinChallenge extends StatefulWidget {
-  const StepOneCoinChallenge({super.key});
+  final String challengeId;
+
+  const StepOneCoinChallenge(this.challengeId, {Key? key}) : super(key: key);
 
   @override
-  StepOneCoinChallengeState createState() => StepOneCoinChallengeState();
+  StepOneCoinChallengeState createState() =>
+      // ignore: no_logic_in_create_state
+      StepOneCoinChallengeState(challengeid: challengeId);
 }
 
 class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
+  final String challengeid;
+  ChallengeById.ChallengeById? challenge;
+  ChallengeById.Step? currentstep;
+  StepOneCoinChallengeState({required this.challengeid});
+  @override
+  void initState() {
+    super.initState();
+    _loadChallenge();
+  }
+
+  Future<void> _loadChallenge() async {
+    try {
+      var challengeService = ChallengeService();
+      ChallengeById.ChallengeById loadedChallenge =
+          await challengeService.getChallengeById(challengeid);
+      List<ChallengeById.Step> unfinishedSteps =
+          loadedChallenge.steps.where((step) => step.status != "done").toList();
+
+      if (unfinishedSteps.isNotEmpty) {
+        currentstep = unfinishedSteps.first;
+      }
+
+      setState(() {
+        challenge = loadedChallenge;
+      });
+    } catch (e) {
+      print('Failed to load challenge data by id: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -161,7 +198,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LeaderBord()),
+                              builder: (context) => LeaderBord(challengeid)),
                         );
                       },
                       child: Image.asset(
@@ -190,21 +227,27 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'NIVEAU 1',
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Text(
-                              'Vous pouvez gagner \n jusqu\'à 150 Coins',
-                              style: TextStyle(
-                                color: MyColors.red,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
+                            if (currentstep != null)
+                              Text(
+                                currentstep!.title,
+                                style: const TextStyle(
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            else
+                              const CircularProgressIndicator(),
+                            if (currentstep != null)
+                              Text(
+                                'Vous pouvez gagner \n jusqu\'à ${currentstep!.stepTotal} Coins',
+                                style: const TextStyle(
+                                  color: MyColors.red,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              )
+                            else
+                              const CircularProgressIndicator(),
                             Image.asset(
                               'images/pngs/Illustration.png',
                             ),
@@ -317,8 +360,8 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const QuestionOneCoinChallenge()),
+                          builder: (context) => QuestionOneCoinChallenge(
+                              currentstep!.id, challengeid)),
                     );
                   },
                   style: ElevatedButton.styleFrom(

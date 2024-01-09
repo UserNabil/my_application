@@ -1,50 +1,52 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-// import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+import 'package:my_taraji/core/models/challenge_answer_request_model.dart';
 import 'package:my_taraji/core/models/next_question_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
+import 'package:my_taraji/views/challenge/components/response_question_screen.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: QuestionOneCoinChallenge(),
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: QuestionOneCoinChallenge(
+//         "659564607428f60708a9be76", "6595376beb16ee594ceb90d8"),
+//   ));
+// }
 
-class DiamondShapeBackground extends StatelessWidget {
-  final double width;
-  final double height;
-  final Widget child;
+// class DiamondShapeBackground extends StatelessWidget {
+//   final double width;
+//   final double height;
+//   final Widget child;
 
-  const DiamondShapeBackground({
-    super.key,
-    required this.width,
-    required this.height,
-    required this.child,
-  });
+//   const DiamondShapeBackground({
+//     Key? key,
+//     required this.width,
+//     required this.height,
+//     required this.child,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 0.0),
-        shape: BoxShape.rectangle,
-      ),
-      child: ClipPath(
-        clipper: DiamondClipper(),
-        child: Container(
-          color: MyColors.yellow,
-          child: child,
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: width,
+//       height: height,
+//       decoration: const BoxDecoration(
+//         color: Color.fromRGBO(255, 255, 255, 0.0),
+//         shape: BoxShape.rectangle,
+//       ),
+//       child: ClipPath(
+//         clipper: DiamondClipper(),
+//         child: Container(
+//           color: MyColors.yellow,
+//           child: child,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class DiamondClipper extends CustomClipper<Path> {
   @override
@@ -65,31 +67,43 @@ class DiamondClipper extends CustomClipper<Path> {
 }
 
 class QuestionOneCoinChallenge extends StatefulWidget {
-  const QuestionOneCoinChallenge({super.key});
+  final String stepId;
+  final String challengeId;
+// Add this variable
+  const QuestionOneCoinChallenge(this.stepId, this.challengeId, {Key? key})
+      : super(key: key);
 
   @override
   QuestionOneCoinChallengeState createState() =>
-      QuestionOneCoinChallengeState();
+      QuestionOneCoinChallengeState(stepid: stepId, challengeid: challengeId);
 }
 
 class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
+  final String stepid;
+  final String challengeid;
+  bool isLoading = false;
+  bool isApiCalled = false;
+  QuestionOneCoinChallengeState(
+      {required this.stepid, required this.challengeid});
   ChallengeQuestionResult? question;
+  String answerResponse = "";
   int selectedChoiceIndex = -1;
+  String selectedChoice = "";
   double ratio = 0.0;
   Color progressBarColor = MyColors.blue;
-  late Timer countdownTimer;
-
+  Timer? countdownTimer;
+  late DateTime startdate;
   @override
   void initState() {
     super.initState();
     _loadQuestion();
   }
 
-  void startTimer(double counterTime) {
+  Future<void> startTimer(double counterTime) async {
     const oneSecond = Duration(seconds: 1);
     countdownTimer = Timer.periodic(
       oneSecond,
-      (timer) {
+      (timer) async {
         setState(() {
           counterTime--;
           ratio = 1 - (counterTime / 60);
@@ -104,8 +118,61 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
           }
         });
 
-        if (counterTime == 0) {
-          countdownTimer.cancel();
+        if (counterTime == 0 && !isApiCalled) {
+          isApiCalled = true;
+          try {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            double latitude = prefs.getDouble('latitude')!;
+            double longitude = prefs.getDouble('longitude')!;
+            GeoLocation userGeolocation =
+                GeoLocation(longitude: longitude, latitude: latitude);
+            Answer answer = Answer(
+                questionId: question!.nextQuestion.id,
+                value: "*",
+                answerTime: question!.nextQuestion.counterTime,
+                questionTypeId: "",
+                score: 0);
+            List<Answer> answers = [answer];
+            ChallengeAnswerRequest answerRequest = ChallengeAnswerRequest(
+                userId: "",
+                answerStatus: "",
+                score: 0,
+                extraTimeUsed: 0,
+                spyUsed: 0,
+                fiftyUsed: 0,
+                deviceConfiguration: "",
+                geoLocation: userGeolocation,
+                answers: answers);
+            print('GeoLocation: ${userGeolocation.toMap()}');
+            print('Answer: ${answer.toMap()}');
+            print('ChallengeAnswerRequest: ${answerRequest.toMap()}');
+            var challengeService = ChallengeService();
+            String response = await challengeService.submitChallengeAnswers(
+                answerRequest, stepid);
+
+            setState(() {
+              answerResponse = response;
+              print('answer response data: $answerResponse');
+              // if (answerResponse == "0") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResponseQuestionChallenge(
+                    stepid: stepid,
+                    challengeid: challengeid,
+                    textQuestion: question!.nextQuestion.title,
+                    message: "Dommage",
+                    image: const AssetImage('images/pngs/dommage.png'),
+                    description: "vous avez perdu\nTemps terminé",
+                  ),
+                ),
+              );
+              // }
+            });
+            cancelTimer();
+          } catch (e) {
+            print('Failed to submit answer response data: $e');
+          }
         }
       },
     );
@@ -114,17 +181,100 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   Future<void> _loadQuestion() async {
     try {
       var challengeService = ChallengeService();
-      ChallengeQuestionResult loadedQuestion = await challengeService
-          .getNextQuestionByStepId("659563b47428f60708a9bd68");
+      ChallengeQuestionResult? loadedQuestion =
+          await challengeService.getNextQuestionByStepId(stepid);
       setState(() {
         question = loadedQuestion;
       });
-      double remainingTime = loadedQuestion.nextQuestion.counterTime.toDouble();
+      print("question ${question!.nextQuestion.toMap()}");
+      if (question == null) {
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StepOneCoinChallenge(challengeid),
+          ),
+        );
+      } else {
+        double remainingTime =
+            loadedQuestion!.nextQuestion.counterTime.toDouble();
 
-      startTimer(remainingTime);
+        startTimer(remainingTime);
+        startdate = DateTime.now();
+      }
     } catch (e) {
       print('Failed to load next question data: $e');
     }
+  }
+
+  Future<void> _submitChallengeAnswer() async {
+    try {
+      DateTime currentDate = DateTime.now();
+      Duration difference = currentDate.difference(startdate);
+      // Extract the difference in seconds
+      int differenceInSeconds = difference.inSeconds;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      print(prefs.get('latitude'));
+      double latitude = prefs.getDouble('latitude')!;
+
+      double longitude = prefs.getDouble('longitude')!;
+
+      print('longitude: $longitude');
+      GeoLocation userGeolocation =
+          GeoLocation(longitude: longitude, latitude: latitude);
+      Answer answer = Answer(
+          questionId: question!.nextQuestion.id,
+          value: selectedChoice,
+          answerTime: differenceInSeconds,
+          questionTypeId: "",
+          score: 0);
+
+      List<Answer> answers = [answer];
+      ChallengeAnswerRequest answerRequest = ChallengeAnswerRequest(
+          userId: "",
+          answerStatus: "",
+          score: 0,
+          extraTimeUsed: 0,
+          spyUsed: 0,
+          fiftyUsed: 0,
+          deviceConfiguration: "",
+          geoLocation: userGeolocation,
+          answers: answers);
+      print('GeoLocation: ${userGeolocation.toMap()}');
+      print('Answer: ${answer.toMap()}');
+      print('ChallengeAnswerRequest: ${answerRequest.toMap()}');
+
+      var challengeService = ChallengeService();
+      String response =
+          await challengeService.submitChallengeAnswers(answerRequest, stepid);
+
+      setState(() {
+        answerResponse = response;
+        print('answer response data: $answerResponse');
+        // if (answerResponse == "0") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResponseQuestionChallenge(
+              stepid: stepid,
+              challengeid: challengeid,
+              textQuestion: question!.nextQuestion.title,
+              message: "Bien Joué !",
+              image: const AssetImage('images/pngs/Check.png'),
+              description: "Vous avez gagné",
+            ),
+          ),
+        );
+        isApiCalled = true;
+        // }
+      });
+    } catch (e) {
+      print('Failed to submit answer response data: $e');
+    }
+  }
+
+  void cancelTimer() {
+    countdownTimer?.cancel(); // Use null-aware operator to avoid null exception
   }
 
   @override
@@ -160,11 +310,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            cancelTimer();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const StepOneCoinChallenge()),
+                                      StepOneCoinChallenge(challengeid)),
                             );
                           },
                           child: Image.asset(
@@ -327,6 +478,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                             selectedChoiceIndex =
                                 question!.nextQuestion.choices.indexOf(choice);
                           });
+                          selectedChoice =
+                              choice.value; // Update the global variable
                         },
                         child: SizedBox(
                           width: width - 50,
@@ -368,7 +521,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                 const CircularProgressIndicator(),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  _submitChallengeAnswer();
+                },
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(150, 30),
                   backgroundColor: MyColors.yellow,
@@ -433,8 +588,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
 
   @override
   void dispose() {
-    countdownTimer
-        .cancel(); // Annuler le timer lors de la suppression du widget
+    cancelTimer();
     super.dispose();
   }
 }
