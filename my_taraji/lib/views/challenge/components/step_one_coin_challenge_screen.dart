@@ -3,6 +3,9 @@ import 'package:my_taraji/core/models/challenge_by_id_model.dart'
     as ChallengeById;
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
+import 'package:my_taraji/views/challenge/components/response_last_step_screen.dart';
+import 'package:my_taraji/views/challenge/components/response_question_screen.dart';
+import 'package:my_taraji/views/challenge/components/response_step_screen.dart';
 import 'package:my_taraji/views/challenge/pages/leader_bord_screen.dart';
 import 'package:my_taraji/views/challenge/components/question_one_challenge_screen.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
@@ -25,6 +28,7 @@ class StepOneCoinChallenge extends StatefulWidget {
 }
 
 class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
+  bool laststep = false;
   final String challengeid;
   ChallengeById.ChallengeById? challenge;
   ChallengeById.Step? currentstep;
@@ -42,7 +46,9 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
           await challengeService.getChallengeById(challengeid);
       List<ChallengeById.Step> unfinishedSteps =
           loadedChallenge.steps.where((step) => step.status != "done").toList();
-
+      if (unfinishedSteps.length == 1) {
+        laststep = true;
+      }
       if (unfinishedSteps.isNotEmpty) {
         currentstep = unfinishedSteps.first;
       }
@@ -85,7 +91,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                 child: Row(
                   children: [
                     SizedBox(
-                      height: 60,
+                      height: 50,
                       child: ClipOval(
                         child: Image.asset(
                           'images/pngs/profile.jpg',
@@ -94,70 +100,73 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                       ),
                     ),
                     const SizedBox(width: 20),
-                    SizedBox(
-                      width: 150,
-                      height: 20,
-                      child: Stack(
-                        children: [
-                          SimpleAnimationProgressBar(
-                            height: 20,
-                            width: 180,
-                            backgroundColor:
-                                const Color.fromARGB(255, 220, 220, 220),
-                            foregrondColor: MyColors.yellow,
-                            ratio: 0.5,
-                            direction: Axis.horizontal,
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            duration: const Duration(seconds: 3),
-                            borderRadius: BorderRadius.circular(10),
-                            gradientColor: const LinearGradient(colors: [
-                              Color.fromARGB(255, 220, 220, 220),
-                              MyColors.yellow
-                            ]),
-                          ),
-                          const Positioned(
-                            left:
-                                50, // Set the left property to the width of the progress bar
-                            top: 0,
-                            bottom: 0,
-                            child: Center(
-                              child: Text(
-                                '78xp', // Replace with the actual percentage value
-                                style: TextStyle(
-                                  color: Colors.white, // Choose the text color
-                                  fontSize: 10.0, // Choose the font size
-                                  fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: SizedBox(
+                        height: 20,
+                        child: Stack(
+                          children: [
+                            SimpleAnimationProgressBar(
+                              height: 20,
+                              width: MediaQuery.of(context).size.width *
+                                  0.8, // Utilisation de 80% de la largeur de l'écran
+                              backgroundColor:
+                                  const Color.fromARGB(255, 220, 220, 220),
+                              foregrondColor: MyColors.yellow,
+                              ratio: 0.3,
+                              direction: Axis.horizontal,
+                              curve: Curves.fastLinearToSlowEaseIn,
+                              duration: const Duration(seconds: 3),
+                              borderRadius: BorderRadius.circular(10),
+                              gradientColor: const LinearGradient(colors: [
+                                Color.fromARGB(255, 220, 220, 220),
+                                MyColors.yellow
+                              ]),
+                            ),
+                            Positioned(
+                              left: MediaQuery.of(context).size.width * 0.4 -
+                                  (0.4 *
+                                      MediaQuery.of(context).size.width *
+                                      0.5), // Ajustement pour centrer le texte par rapport à la barre de progression
+                              top: 0,
+                              bottom: 0,
+                              child: const Center(
+                                child: Text(
+                                  '78xp',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            right:
-                                0, // Set the right property to position the black circle at the end
-                            top: 0,
-                            bottom: 0,
-                            child: Center(
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '12',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.0,
-                                      fontWeight: FontWeight.bold,
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              bottom: 0,
+                              child: Center(
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      '12',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -234,9 +243,9 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                                   fontSize: 17.0,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              )
-                            else
-                              const CircularProgressIndicator(),
+                              ),
+                            // else
+                            //   const CircularProgressIndicator(),
                             if (currentstep != null)
                               Text(
                                 'Vous pouvez gagner \n jusqu\'à ${currentstep!.stepTotal} Coins',
@@ -245,9 +254,9 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.normal,
                                 ),
-                              )
-                            else
-                              const CircularProgressIndicator(),
+                              ),
+                            // else
+                            //   const CircularProgressIndicator(),
                             Image.asset(
                               'images/pngs/Illustration.png',
                             ),
@@ -283,7 +292,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
             ],
           ),
         ),
@@ -310,7 +319,11 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                 width: 150,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      top: 30, left: 15, right: 0, bottom: 40),
+                    top: 30,
+                    left: 15,
+                    right: 0,
+                    bottom: 40,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -351,7 +364,8 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
               ),
             ),
             Positioned(
-              bottom: 160,
+              bottom: MediaQuery.of(context).size.height *
+                  0.25, // 10% de la hauteur de l'écran depuis le bas
               left: 0,
               right: 0,
               child: Center(
@@ -360,8 +374,13 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => QuestionOneCoinChallenge(
-                              currentstep!.id, challengeid)),
+                        builder: (context) => QuestionOneCoinChallenge(
+                          laststep,
+                          currentstep!.id,
+                          currentstep!.questionNumber,
+                          challengeid,
+                        ),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(

@@ -8,6 +8,7 @@ import 'package:my_taraji/views/home/page/home_screen.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
 import 'package:my_taraji/views/selfcare/page/selfcare_screen.dart';
 import 'package:my_taraji/views/shop/page/shop_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 // void main() {
@@ -30,6 +31,25 @@ class LeaderBordState extends State<LeaderBord> {
   final String challengeid;
   LeaderBordState({required this.challengeid});
   int currentSelectedIndex = 0;
+  String profileImagePath = "";
+  String xp = "";
+  String coins = "";
+  @override
+  void initState() {
+    super.initState();
+    getuserinfo();
+  }
+
+  Future<void> getuserinfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    profileImagePath = prefs.getString('profileImagePath') ??
+        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
+    coins = prefs.getString('coins')!;
+    xp = prefs.getString('xp')!;
+    print("coins $coins");
+    print("xp $xp");
+  }
+
   void updateCurrentIndex(int index) {
     if (index != currentSelectedIndex) {
       setState(() {
@@ -248,7 +268,7 @@ class LeaderBordState extends State<LeaderBord> {
                 child: Row(
                   children: [
                     SizedBox(
-                      height: 60,
+                      height: 50,
                       child: ClipOval(
                         child: Image.asset(
                           'images/pngs/profile.jpg',
@@ -257,77 +277,80 @@ class LeaderBordState extends State<LeaderBord> {
                       ),
                     ),
                     const SizedBox(width: 20),
-                    SizedBox(
-                      width: 150,
-                      height: 20,
-                      child: Stack(
-                        children: [
-                          SimpleAnimationProgressBar(
-                            height: 20,
-                            width: 180,
-                            backgroundColor:
-                                const Color.fromARGB(255, 220, 220, 220),
-                            foregrondColor: MyColors.yellow,
-                            ratio: 0.5,
-                            direction: Axis.horizontal,
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            duration: const Duration(seconds: 3),
-                            borderRadius: BorderRadius.circular(10),
-                            gradientColor: const LinearGradient(colors: [
-                              Color.fromARGB(255, 220, 220, 220),
-                              MyColors.yellow
-                            ]),
-                          ),
-                          const Positioned(
-                            left:
-                                50, // Set the left property to the width of the progress bar
-                            top: 0,
-                            bottom: 0,
-                            child: Center(
-                              child: Text(
-                                '78xp', // Replace with the actual percentage value
-                                style: TextStyle(
-                                  color: Colors.white, // Choose the text color
-                                  fontSize: 10.0, // Choose the font size
-                                  fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: SizedBox(
+                        height: 20,
+                        child: Stack(
+                          children: [
+                            SimpleAnimationProgressBar(
+                              height: 20,
+                              width: MediaQuery.of(context).size.width *
+                                  0.8, // Utilisation de 80% de la largeur de l'écran
+                              backgroundColor:
+                                  const Color.fromARGB(255, 220, 220, 220),
+                              foregrondColor: MyColors.yellow,
+                              ratio: 0.3,
+                              direction: Axis.horizontal,
+                              curve: Curves.fastLinearToSlowEaseIn,
+                              duration: const Duration(seconds: 3),
+                              borderRadius: BorderRadius.circular(10),
+                              gradientColor: const LinearGradient(colors: [
+                                Color.fromARGB(255, 220, 220, 220),
+                                MyColors.yellow
+                              ]),
+                            ),
+                            Positioned(
+                              left: MediaQuery.of(context).size.width * 0.4 -
+                                  (0.4 *
+                                      MediaQuery.of(context).size.width *
+                                      0.5), // Ajustement pour centrer le texte par rapport à la barre de progression
+                              top: 0,
+                              bottom: 0,
+                              child: Center(
+                                child: Text(
+                                  xp,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            right:
-                                0, // Set the right property to position the black circle at the end
-                            top: 0,
-                            bottom: 0,
-                            child: Center(
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '12',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.0,
-                                      fontWeight: FontWeight.bold,
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              bottom: 0,
+                              child: Center(
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      '12',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Coins',
                           style: TextStyle(
                             color: Colors.white,
@@ -337,13 +360,14 @@ class LeaderBordState extends State<LeaderBord> {
                           ),
                         ),
                         Text(
-                          '9932',
-                          style: TextStyle(
+                          coins,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.none,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),

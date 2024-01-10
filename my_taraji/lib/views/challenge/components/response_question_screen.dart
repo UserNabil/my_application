@@ -16,8 +16,10 @@ import 'package:my_taraji/views/challenge/components/question_one_challenge_scre
 // }
 
 class ResponseQuestionChallenge extends StatelessWidget {
+  final bool laststep;
   final String challengeid;
   final String stepid;
+  final int questionnumber;
   final String textQuestion;
   final String message;
   final ImageProvider<Object> image;
@@ -25,8 +27,10 @@ class ResponseQuestionChallenge extends StatelessWidget {
 
   const ResponseQuestionChallenge({
     Key? key,
+    required this.laststep,
     required this.challengeid,
     required this.stepid,
+    required this.questionnumber,
     required this.textQuestion,
     required this.message,
     required this.image,
@@ -85,11 +89,12 @@ class ResponseQuestionChallenge extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                         ),
+                        const SizedBox(height: 10),
                         // Deuxième ligne : image
                         Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          height: 100.0,
-                          width: 100.0,
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          height: 120.0,
+                          width: 140.0,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: image,
@@ -98,6 +103,7 @@ class ResponseQuestionChallenge extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
+                        const SizedBox(height: 20),
                         // Troisième ligne : description
                         Text(
                           description,
@@ -112,14 +118,14 @@ class ResponseQuestionChallenge extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 130),
+                const SizedBox(height: 100),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              QuestionOneCoinChallenge(stepid, challengeid)),
+                          builder: (context) => QuestionOneCoinChallenge(
+                              laststep, stepid, questionnumber, challengeid)),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -137,7 +143,7 @@ class ResponseQuestionChallenge extends StatelessWidget {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                const SizedBox(height: 140),
+                const SizedBox(height: 110),
               ],
             ),
           ),

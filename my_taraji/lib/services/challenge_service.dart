@@ -33,7 +33,6 @@ class ChallengeService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        print("jsondata : $jsonData");
         ChallengeQuestionResult nextQuestion =
             ChallengeQuestionResult.fromJson(jsonData);
         return nextQuestion;

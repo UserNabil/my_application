@@ -1,13 +1,19 @@
 class ChallengeQuestionResult {
-  NextQuestion nextQuestion;
+  NextQuestion? nextQuestion;
 
   ChallengeQuestionResult({required this.nextQuestion});
 
   factory ChallengeQuestionResult.fromJson(Map<String, dynamic> jsonApi) {
     Map<String, dynamic> json = jsonApi;
-    return ChallengeQuestionResult(
-      nextQuestion: NextQuestion.fromMap(json['nextQuestion']),
-    );
+    if (json['nextQuestion'] != null) {
+      return ChallengeQuestionResult(
+        nextQuestion: NextQuestion.fromMap(json['nextQuestion']),
+      );
+    } else {
+      return ChallengeQuestionResult(
+        nextQuestion: null,
+      );
+    }
   }
 
   factory ChallengeQuestionResult.fromMap(Map<String, dynamic> map) {
@@ -18,7 +24,7 @@ class ChallengeQuestionResult {
 
   Map<String, dynamic> toMap() {
     return {
-      'nextQuestion': nextQuestion.toMap(),
+      'nextQuestion': nextQuestion!.toMap(),
     };
   }
 }
