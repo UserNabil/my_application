@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_taraji/core/models/challenge_answer_request_model.dart';
-import 'package:my_taraji/core/models/challenge_answer_response_model.dart';
 import 'package:my_taraji/core/models/challenge_by_id_model.dart';
 import 'package:my_taraji/core/models/challenge_model.dart';
+import 'package:my_taraji/core/models/leader_bord_result.dart';
 import 'package:my_taraji/core/models/next_question_model.dart';
 
 class ChallengeService {
@@ -92,6 +92,27 @@ class ChallengeService {
     } catch (e) {
       throw Exception(
           'Failed to connect to the server for challenge data by id $e');
+    }
+  }
+
+  Future<LeaderBordResult> getLeaderBordInfoByChallengeId(
+      String challengeid) async {
+    const path = "api/v1/challenges/leader-board";
+    final url = Uri.parse('$baseUrl/$path/$challengeid');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+
+        LeaderBordResult leaderbord = LeaderBordResult.fromJson(jsonData);
+
+        return leaderbord;
+      } else {
+        throw Exception('Failed to load leader bord data by challenge id');
+      }
+    } catch (e) {
+      throw Exception(
+          'Failed to connect to the server for leader bord data by challenge id $e');
     }
   }
 }

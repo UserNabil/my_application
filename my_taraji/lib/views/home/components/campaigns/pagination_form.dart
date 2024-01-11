@@ -167,6 +167,7 @@ Widget myBottomBar(
           ),
           onPressed: () {
             if (formKey.currentState!.validate()) {
+              // ignore: avoid_print
               print(formKey.currentWidget.toString());
             }
           },

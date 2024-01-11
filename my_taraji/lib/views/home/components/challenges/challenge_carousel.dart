@@ -33,7 +33,7 @@ class ListCarouselChallengesState extends State<ListCarouselChallenges> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Challenges',
+                'Campagnes',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,

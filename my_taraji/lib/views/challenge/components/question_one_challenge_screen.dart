@@ -29,6 +29,7 @@ class QuestionOneCoinChallenge extends StatefulWidget {
       {super.key});
 
   @override
+  // ignore: no_logic_in_create_state
   QuestionOneCoinChallengeState createState() => QuestionOneCoinChallengeState(
       laststep: lastStep,
       stepid: stepId,
@@ -138,6 +139,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
             });
             cancelTimer();
           } catch (e) {
+            // ignore: avoid_print
             print('Failed to submit answer response data: $e');
           }
         }
@@ -159,9 +161,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ResponseLastStepChallenge(
+              builder: (context) => ResponseLastStepChallenge(
                 message: "Bravo",
-                image: AssetImage('images/pngs/Star.png'),
+                image: 'images/pngs/Star.png',
                 description: "Vous avez gagné \nChallenge terminé",
               ),
             ),
@@ -191,6 +193,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         startdate = DateTime.now();
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Failed to load next question data: $e');
     }
   }
@@ -259,6 +262,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         // }
       });
     } catch (e) {
+      // ignore: avoid_print
       print('Failed to submit answer response data: $e');
       setState(() {
         isLoading = false;
@@ -277,116 +281,59 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     double progressBarWidth = max(width - 50, 0.0);
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: width,
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              end: Alignment.topLeft,
-              colors: [MyColors.redDarker, MyColors.red],
-            ),
+      body: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+            colors: [MyColors.redDarker, MyColors.red],
           ),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 50),
-                child: Row(
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            cancelTimer();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      StepOneCoinChallenge(challengeid)),
-                            );
-                          },
-                          child: Image.asset(
-                            'images/pngs/IconLeft.png',
+                    Container(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  cancelTimer();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            StepOneCoinChallenge(challengeid)),
+                                  );
+                                },
+                                child: Image.asset(
+                                  'images/pngs/IconLeft.png',
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 100),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        if (question != null && question!.nextQuestion != null)
-                          Text(
-                            question!.nextQuestion!.title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.normal,
-                              decoration: TextDecoration.none,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        // else
-                        //   const CircularProgressIndicator(),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              SizedBox(
-                child: SimpleAnimationProgressBar(
-                  reverseAlignment: true,
-                  height: 10,
-                  width: progressBarWidth,
-                  backgroundColor: progressBarColor,
-                  foregrondColor: const Color.fromARGB(255, 220, 220, 220),
-                  ratio: ratio,
-                  direction: Axis.horizontal,
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  duration: Duration(
-                    seconds:
-                        (question != null && question!.nextQuestion != null)
-                            ? question!.nextQuestion!.counterTime?.toInt() ?? 0
-                            : 0,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-
-              const SizedBox(height: 40),
-              Stack(
-                children: [
-                  const SizedBox(
-                    height: 180,
-                    width: 150,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: cardHeight,
-                      width: width - 50,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          const SizedBox(width: 100),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               if (question != null &&
                                   question!.nextQuestion != null)
                                 Text(
-                                  question!.nextQuestion!.description,
+                                  question!.nextQuestion!.title,
                                   style: const TextStyle(
-                                    fontSize: 17.0,
+                                    color: Colors.white,
+                                    fontSize: 15.0,
                                     fontWeight: FontWeight.normal,
+                                    decoration: TextDecoration.none,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -394,159 +341,222 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                               //   const CircularProgressIndicator(),
                             ],
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: (width - 320) / 2,
-                    child: Row(
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      child: SimpleAnimationProgressBar(
+                        reverseAlignment: true,
+                        height: 10,
+                        width: progressBarWidth,
+                        backgroundColor: progressBarColor,
+                        foregrondColor:
+                            const Color.fromARGB(255, 220, 220, 220),
+                        ratio: ratio,
+                        direction: Axis.horizontal,
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        duration: Duration(
+                          seconds: (question != null &&
+                                  question!.nextQuestion != null)
+                              ? question!.nextQuestion!.counterTime.toInt()
+                              : 0,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Stack(
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // _showDiamondPopup('50/50',
-                            //     'Réduit les choix à deux,\naméliorant les chances\ndu participant de choisir\ncorrectement.');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(80, 50),
-                            backgroundColor: MyColors.yellow,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          child: const Text(
-                            '50/50',
-                            style: TextStyle(
+                        const SizedBox(
+                          height: 180,
+                          width: 150,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: SizedBox(
+                            height: cardHeight,
+                            width: width - 50,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (question != null &&
+                                        question!.nextQuestion != null)
+                                      Text(
+                                        question!.nextQuestion!.description,
+                                        style: const TextStyle(
+                                          fontSize: 17.0,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    // else
+                                    //   const CircularProgressIndicator(),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(80, 50),
-                            backgroundColor: MyColors.yellow,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          child: Image.asset(
-                            'images/pngs/eye.png',
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(80, 50),
-                            backgroundColor: MyColors.yellow,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          child: Image.asset(
-                            'images/pngs/watch.png',
+                        Positioned(
+                          top: 0,
+                          right: (width - 320) / 2,
+                          child: Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  // _showDiamondPopup('50/50',
+                                  //     'Réduit les choix à deux,\naméliorant les chances\ndu participant de choisir\ncorrectement.');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(80, 50),
+                                  backgroundColor: MyColors.yellow,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: const Text(
+                                  '50/50',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.0,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(80, 50),
+                                  backgroundColor: MyColors.yellow,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: Image.asset(
+                                  'images/pngs/eye.png',
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(80, 50),
+                                  backgroundColor: MyColors.yellow,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: Image.asset(
+                                  'images/pngs/watch.png',
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              if (question != null && question!.nextQuestion != null)
-                Column(
-                  children: question!.nextQuestion!.choices.map((choice) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedChoiceIndex =
-                                question!.nextQuestion!.choices.indexOf(choice);
-                          });
-                          selectedChoice =
-                              choice.value; // Update the global variable
-                        },
-                        child: SizedBox(
-                          width: width - 50,
-                          child: Card(
-                            color: selectedChoiceIndex ==
-                                    question!.nextQuestion!.choices
-                                        .indexOf(choice)
-                                ? MyColors.yellow.withOpacity(
-                                    0.7) // Couleur avec opacité réduite
-                                : Colors
-                                    .transparent, // Transparent si non sélectionné
-                            elevation: 4.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              side: const BorderSide(
-                                color: Colors.white,
-                                width: 2.0,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                choice.value,
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                    const SizedBox(height: 30),
+                    if (question != null && question!.nextQuestion != null)
+                      Column(
+                        children: question!.nextQuestion!.choices.map((choice) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedChoiceIndex = question!
+                                      .nextQuestion!.choices
+                                      .indexOf(choice);
+                                });
+                                selectedChoice =
+                                    choice.value; // Update the global variable
+                              },
+                              child: SizedBox(
+                                width: width - 50,
+                                child: Card(
+                                  color: selectedChoiceIndex ==
+                                          question!.nextQuestion!.choices
+                                              .indexOf(choice)
+                                      ? MyColors.yellow.withOpacity(
+                                          0.7) // Couleur avec opacité réduite
+                                      : Colors
+                                          .transparent, // Transparent si non sélectionné
+                                  elevation: 4.0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    side: const BorderSide(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      choice.value,
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
+                          );
+                        }).toList(),
+                      )
+                    else
+                      const CircularProgressIndicator(),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                        onPressed: isLoading
+                            ? () => {}
+                            : () => _submitChallengeAnswer(),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(150, 30),
+                          backgroundColor: MyColors.yellow,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              // else
-              //   const CircularProgressIndicator(),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                  onPressed:
-                      isLoading ? () => {} : () => _submitChallengeAnswer(),
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(150, 30),
-                    backgroundColor: MyColors.yellow,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      isLoading
-                          ? const SizedBox(
-                              width: 10,
-                              height: 10,
-                              child: CircularProgressIndicator(
-                                color: MyColors.white,
-                                strokeAlign: 1.0,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            isLoading
+                                ? const SizedBox(
+                                    width: 10,
+                                    height: 10,
+                                    child: CircularProgressIndicator(
+                                      color: MyColors.white,
+                                      strokeAlign: 1.0,
+                                    ),
+                                  )
+                                : Container(),
+                            Text(
+                              isLoading ? '' : 'Valider',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.0,
                               ),
-                            )
-                          : Container(),
-                      Text(
-                        isLoading ? '' : 'Valider',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ],
-                  )),
-
-              const SizedBox(height: 30),
-            ],
-          ),
+                            ),
+                          ],
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

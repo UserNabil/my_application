@@ -20,7 +20,6 @@ class ChallengeAnswerRequest {
       required this.answers});
 
   factory ChallengeAnswerRequest.fromJson(Map<String, dynamic> json) {
-    print("Hello from 'FromJson'");
     return ChallengeAnswerRequest(
         userId: json['userId'],
         answerStatus: json['answerStatus'],
@@ -34,7 +33,6 @@ class ChallengeAnswerRequest {
             json['answers']?.map((x) => Answer.fromMap(x)) ?? []));
   }
   factory ChallengeAnswerRequest.fromMap(Map<String, dynamic> map) {
-    print("Hello from 'FromMap'");
     return ChallengeAnswerRequest(
       userId: map['userId'],
       answerStatus: map['answerStatus'],

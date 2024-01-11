@@ -25,6 +25,7 @@ class ResponseQuestionChallenge extends StatelessWidget {
   final ImageProvider<Object> image;
   final String description;
 
+  // ignore: use_super_parameters
   const ResponseQuestionChallenge({
     Key? key,
     required this.laststep,
@@ -41,112 +42,123 @@ class ResponseQuestionChallenge extends StatelessWidget {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: width,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              end: Alignment.topLeft,
-              colors: [MyColors.redDarker, MyColors.red],
-            ),
+      body: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+            colors: [MyColors.redDarker, MyColors.red],
           ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 50),
-                // Premier conteneur avec le texte de la question
-                Container(
-                  margin: const EdgeInsets.all(16.0),
-                  child: Text(
-                    textQuestion,
-                    style: const TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.normal,
-                      color: MyColors.white,
-                    ),
-                  ),
-                ),
-                // Deuxième conteneur avec les trois lignes
-                Container(
-                  margin: const EdgeInsets.all(16.0),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Première ligne : message
-                        Text(
-                          message,
-                          style: const TextStyle(
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.bold,
-                            color: MyColors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 10),
-                        // Deuxième ligne : image
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10.0),
-                          height: 120.0,
-                          width: 140.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: image,
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        // Troisième ligne : description
-                        Text(
-                          description,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 50),
+                      // Premier conteneur avec le texte de la question
+                      Container(
+                        margin: const EdgeInsets.all(16.0),
+                        child: Text(
+                          textQuestion,
                           style: const TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.normal,
                             color: MyColors.white,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
+                      ),
+                      // Deuxième conteneur avec les trois lignes
+                      Container(
+                        margin: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Première ligne : message
+                              Text(
+                                message,
+                                style: const TextStyle(
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: MyColors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 10),
+                              // Deuxième ligne : image
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10.0),
+                                height: 120.0,
+                                width: 140.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: image,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              // Troisième ligne : description
+                              Text(
+                                description,
+                                style: const TextStyle(
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: MyColors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => QuestionOneCoinChallenge(
+                                    laststep,
+                                    stepid,
+                                    questionnumber,
+                                    challengeid)),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(280, 40),
+                          backgroundColor: MyColors.yellow,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: const Text(
+                          'Question suivante',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 100),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => QuestionOneCoinChallenge(
-                              laststep, stepid, questionnumber, challengeid)),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(280, 40),
-                    backgroundColor: MyColors.yellow,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: const Text(
-                    'Question suivante',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-                const SizedBox(height: 110),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
