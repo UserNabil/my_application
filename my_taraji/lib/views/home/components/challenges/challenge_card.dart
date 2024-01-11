@@ -14,6 +14,7 @@ class ChallengeCard extends StatelessWidget {
     required this.subtitleFontSize,
     required this.coins,
     required this.isLister,
+    required this.id,
   });
   final BuildContext context;
   final String imageUrl;
@@ -24,6 +25,7 @@ class ChallengeCard extends StatelessWidget {
   final double subtitleFontSize;
   final String coins;
   final bool isLister;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +129,7 @@ class ChallengeCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const LeaderBord(),
+        builder: (context) => LeaderBord(id),
       ),
     );
   }

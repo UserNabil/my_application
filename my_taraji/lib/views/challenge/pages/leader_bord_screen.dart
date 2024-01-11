@@ -1,30 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/leader_bord_result.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
-import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
-import 'package:my_taraji/views/fanzone/page/fanzone_screen.dart';
-import 'package:my_taraji/views/home/page/home_screen.dart';
-// import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
-import 'package:my_taraji/views/selfcare/page/selfcare_screen.dart';
-import 'package:my_taraji/views/shop/page/shop_screen.dart';
-import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
-
-void main() {
-  runApp(const MaterialApp(
-    home: LeaderBord(),
-  ));
-}
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:my_taraji/core/models/challenge_by_id_model.dart'
+    // ignore: library_prefixes
+    as ChallengeById;
+// void main() {
+//   runApp(const MaterialApp(
+//     home: LeaderBord(""),
+//   ));
+// }
 
 class LeaderBord extends StatefulWidget {
-  const LeaderBord({super.key});
+  final String challengeId;
+  const LeaderBord(this.challengeId, {super.key});
 
   @override
-  LeaderBordState createState() => LeaderBordState();
+  LeaderBordState createState() =>
+      // ignore: no_logic_in_create_state
+      LeaderBordState(challengeid: challengeId);
 }
 
 class LeaderBordState extends State<LeaderBord> {
+  final String challengeid;
+  LeaderBordState({required this.challengeid});
   int currentSelectedIndex = 0;
+  String profileImagePath = "";
+  String xp = "";
+  String coins = "";
+  String firstPlaceBackgroundColor = "0xFFC1242D";
+  String otherPlaceBackgroundColor = "0xFFFCC213";
+  String firstPlacebackgroundColorValue = "0xFFFCC213";
+  String otherPlacebackgroundColorValue = "0xFFC1242D";
+  String firstPlaceImageColor = "#FCC213";
+  String otherPlaceImageColor = "#C1242D";
+  bool hasstep = true;
+  ChallengeById.ChallengeById? challenge;
+  LeaderBordResult? leaderbord;
+  @override
+  void initState() {
+    super.initState();
+    _loadLeaderBordInfo();
+    _loadChallenge();
+  }
+
+  Future<void> getuserinfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    profileImagePath = prefs.getString('profileImagePath') ??
+        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
+    coins = prefs.getString('coins') ?? '0';
+    xp = prefs.getString('xp') ?? '0';
+  }
+
+  Future<void> _loadLeaderBordInfo() async {
+    try {
+      var challengeService = ChallengeService();
+      LeaderBordResult? loadedLeaderBord =
+          await challengeService.getLeaderBordInfoByChallengeId(challengeid);
+      setState(() {
+        leaderbord = loadedLeaderBord;
+      });
+
+      // ignore: avoid_print
+      print('leader bord: ${leaderbord!.toMap()}');
+    } catch (e) {
+      // ignore: avoid_print
+      print('Failed to load leader bord data: $e');
+    }
+  }
+
+  Future<void> _loadChallenge() async {
+    try {
+      var challengeService = ChallengeService();
+      ChallengeById.ChallengeById loadedChallenge =
+          await challengeService.getChallengeById(challengeid);
+      List<ChallengeById.Step> unfinishedSteps =
+          loadedChallenge.steps.where((step) => step.status != "done").toList();
+      setState(() {
+        if (unfinishedSteps.isEmpty) {
+          hasstep = false;
+        }
+      });
+      // ignore: avoid_print
+      print("has step $hasstep");
+    } catch (e) {
+      // ignore: avoid_print
+      print('Failed to load challenge data by id: $e');
+    }
+  }
+
   void updateCurrentIndex(int index) {
     if (index != currentSelectedIndex) {
       setState(() {
@@ -33,97 +100,17 @@ class LeaderBordState extends State<LeaderBord> {
     }
   }
 
-  final pages = const [
-    HomeScreen(),
-    MySelfCare(),
-    MyFanPay(),
-    MyFanZone(),
-    MyShop(),
-  ];
-  final List<Map<String, String>> cardDataList = [
-    {
-      'backgroundColor': "0xFFC1242D",
-      'text1': '1',
-      'image1': 'images/pngs/profile.jpg',
-      'text2': 'John DOE',
-      'image2': 'images/pngs/level.png',
-      'text3': '7542',
-      'backgroundColorValue': '0xFFFCC213',
-      'imageColor': '#FCC213'
-    },
-    {
-      'backgroundColor': "0xFFFCC213",
-      'text1': '2',
-      'image1': 'images/pngs/profile.jpg',
-      'text2': 'Jane SMITH',
-      'image2': 'images/pngs/level.png',
-      'text3': '8210',
-      'backgroundColorValue': '0xFFC1242D',
-      'imageColor': '#C1242D'
-    },
-    {
-      'backgroundColor': "0xFFFCC213",
-      'text1': '3',
-      'image1': 'images/pngs/profile.jpg',
-      'text2': 'Jane SMITH',
-      'image2': 'images/pngs/level.png',
-      'text3': '8210',
-      'backgroundColorValue': '0xFFC1242D',
-      'imageColor': '#C1242D'
-    },
-    {
-      'backgroundColor': "0xFFFCC213",
-      'text1': '4',
-      'image1': 'images/pngs/profile.jpg',
-      'text2': 'Jane SMITH',
-      'image2': 'images/pngs/level.png',
-      'text3': '8210',
-      'backgroundColorValue': '0xFFC1242D',
-      'imageColor': '#C1242D'
-    },
-    {
-      'backgroundColor': "0xFFFCC213",
-      'text1': '5',
-      'image1': 'images/pngs/profile.jpg',
-      'text2': 'Jane SMITH',
-      'image2': 'images/pngs/level.png',
-      'text3': '8210',
-      'backgroundColorValue': '0xFFC1242D',
-      'imageColor': '#C1242D'
-    },
-    {
-      'backgroundColor': "0xFFFCC213",
-      'text1': '6',
-      'image1': 'images/pngs/profile.jpg',
-      'text2': 'Jane SMITH',
-      'image2': 'images/pngs/level.png',
-      'text3': '8210',
-      'backgroundColorValue': '0xFFC1242D',
-      'imageColor': '#C1242D'
-    },
-    {
-      'backgroundColor': "0xFFFCC213",
-      'text1': '7',
-      'image1': 'images/pngs/profile.jpg',
-      'text2': 'Jane SMITH',
-      'image2': 'images/pngs/level.png',
-      'text3': '8210',
-      'backgroundColorValue': '0xFFC1242D',
-      'imageColor': '#C1242D'
-    },
-    // Add more data as needed
-  ];
   Color hexToColor(String code) {
     return Color(int.parse(code.replaceAll('#', '0xFF')));
   }
 
   Widget buildColoredCard(
     String backgroundColor,
-    String text1,
+    int text1,
     String image1,
     String text2,
     String image2,
-    String text3,
+    int text3,
     String backgroundColorValue,
     String imageColor,
   ) {
@@ -140,7 +127,7 @@ class LeaderBordState extends State<LeaderBord> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                text1,
+                text1.toString(),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14.0,
@@ -154,8 +141,8 @@ class LeaderBordState extends State<LeaderBord> {
                 width: 40, // Set a fixed width for the image container
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
-                  child: Image.asset(
-                    image1,
+                  child: Image(
+                    image: NetworkImage(profileImagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -198,7 +185,7 @@ class LeaderBordState extends State<LeaderBord> {
                 ),
                 padding: const EdgeInsets.all(6),
                 child: Text(
-                  text3,
+                  text3.toString(),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15.0,
@@ -217,229 +204,284 @@ class LeaderBordState extends State<LeaderBord> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    return FutureBuilder(
+      future: getuserinfo(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Container();
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("loading");
+        }
+
+        return buildContent(context);
+      },
+    );
+  }
+
+  Widget buildContent(BuildContext context) {
+    //var width = MediaQuery.of(context).size.width;
+    // if (leaderbord != null) {
+    //   return const SizedBox(
+    //     height: 100,
+    //     child: Center(
+    //       child: CircularProgressIndicator(
+    //         color: MyColors.yellow,
+    //       ),
+    //     ),
+    //   );
+    // }
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: width,
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              end: Alignment.topLeft,
-              colors: [MyColors.redDarker, MyColors.red],
-            ),
-            borderRadius: BorderRadius.only(
-                // topLeft: Radius.circular(50),
-                // topRight: Radius.circular(50),
-                ),
+      body: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+            colors: [MyColors.redDarker, MyColors.red],
           ),
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 16),
-                child: Row(
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      height: 60,
-                      child: ClipOval(
-                        child: Image.asset(
-                          'images/pngs/profile.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    SizedBox(
-                      width: 150,
-                      height: 20,
-                      child: Stack(
+                    Container(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SimpleAnimationProgressBar(
-                            height: 20,
-                            width: 180,
-                            backgroundColor:
-                                const Color.fromARGB(255, 220, 220, 220),
-                            foregrondColor: MyColors.yellow,
-                            ratio: 0.5,
-                            direction: Axis.horizontal,
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            duration: const Duration(seconds: 3),
-                            borderRadius: BorderRadius.circular(10),
-                            gradientColor: const LinearGradient(colors: [
-                              Color.fromARGB(255, 220, 220, 220),
-                              MyColors.yellow
-                            ]),
+                          SizedBox(
+                            child: ClipOval(
+                              child: Image(
+                                image: NetworkImage(profileImagePath),
+                                fit: BoxFit.cover,
+                                width: 60.0,
+                                height: 60.0,
+                              ),
+                            ),
                           ),
-                          const Positioned(
-                            left:
-                                50, // Set the left property to the width of the progress bar
-                            top: 0,
-                            bottom: 0,
-                            child: Center(
-                              child: Text(
-                                '78xp', // Replace with the actual percentage value
+                          const SizedBox(width: 20),
+                          // Expanded(
+                          //   child: SizedBox(
+                          //     height: 20,
+                          //     child: Stack(
+                          //       children: [
+                          //         SimpleAnimationProgressBar(
+                          //           height: 20,
+                          //           width: MediaQuery.of(context).size.width *
+                          //               0.8, // Utilisation de 80% de la largeur de l'écran
+                          //           backgroundColor: const Color.fromARGB(
+                          //               255, 220, 220, 220),
+                          //           foregrondColor: MyColors.yellow,
+                          //           ratio: 0.3,
+                          //           direction: Axis.horizontal,
+                          //           curve: Curves.fastLinearToSlowEaseIn,
+                          //           duration: const Duration(seconds: 3),
+                          //           borderRadius: BorderRadius.circular(10),
+                          //           gradientColor: const LinearGradient(
+                          //               colors: [
+                          //                 Color.fromARGB(255, 220, 220, 220),
+                          //                 MyColors.yellow
+                          //               ]),
+                          //         ),
+                          //         Positioned(
+                          //           left: MediaQuery.of(context).size.width *
+                          //                   0.4 -
+                          //               (0.4 *
+                          //                   MediaQuery.of(context).size.width *
+                          //                   0.5), // Ajustement pour centrer le texte par rapport à la barre de progression
+                          //           top: 0,
+                          //           bottom: 0,
+                          //           child: Center(
+                          //             child: Text(
+                          //               "${xp}xp",
+                          //               style: const TextStyle(
+                          //                 color: Colors.white,
+                          //                 fontSize: 10.0,
+                          //                 fontWeight: FontWeight.bold,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //         Positioned(
+                          //           right: 0,
+                          //           top: 0,
+                          //           bottom: 0,
+                          //           child: Center(
+                          //             child: Container(
+                          //               width: 20,
+                          //               height: 20,
+                          //               decoration: const BoxDecoration(
+                          //                 color: Colors.black,
+                          //                 shape: BoxShape.circle,
+                          //               ),
+                          //               child: const Center(
+                          //                 child: Text(
+                          //                   '12',
+                          //                   style: TextStyle(
+                          //                     color: Colors.white,
+                          //                     fontSize: 10.0,
+                          //                     fontWeight: FontWeight.bold,
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          // const SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Coins',
                                 style: TextStyle(
-                                  color: Colors.white, // Choose the text color
-                                  fontSize: 10.0, // Choose the font size
+                                  color: Colors.white,
+                                  fontSize: 13.0,
+                                  fontWeight: FontWeight.normal,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                              Text(
+                                coins,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
                                   fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.none,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
-                            ),
-                          ),
-                          Positioned(
-                            right:
-                                0, // Set the right property to position the black circle at the end
-                            top: 0,
-                            bottom: 0,
-                            child: Center(
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '12',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Coins',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.normal,
-                            decoration: TextDecoration.none,
+                    const SizedBox(height: 5),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // Naviguer vers la page précédente ici
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const InitScreen(),
+                                ),
+                              );
+                            },
+                            child: Image.asset(
+                              'images/pngs/Presedent.png', // Remplacez par le chemin de votre image
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '9932',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.none,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        // Naviguer vers la page précédente ici
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const InitScreen(),
-                          ),
-                        );
-                      },
-                      child: Image.asset(
-                        'images/pngs/Presedent.png', // Remplacez par le chemin de votre image
-                        fit: BoxFit.cover,
+                          if (hasstep == true)
+                            GestureDetector(
+                              onTap: () {
+                                // Naviguer vers une autre page ici
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        StepOneCoinChallenge(challengeid),
+                                  ),
+                                );
+                              },
+                              child: Image.asset(
+                                'images/pngs/Next.png', // Remplacez par le chemin de votre image
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          else
+                            Container(),
+                        ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        // Naviguer vers une autre page ici
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const StepOneCoinChallenge(),
-                          ),
-                        );
-                      },
-                      child: Image.asset(
-                        'images/pngs/Next.png', // Remplacez par le chemin de votre image
-                        fit: BoxFit.cover,
+                    const SizedBox(height: 5),
+                    const Text(
+                      'Ma position',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 5),
-              const Text(
-                'Ma position',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-              buildColoredCard(
-                  "0xFF000000",
-                  '50',
-                  'images/pngs/profile.jpg',
-                  'Robert FREDDY',
-                  'images/pngs/level.png',
-                  '9932',
-                  '0xFFFCC213',
-                  '#FFFFFF'),
-              const SizedBox(height: 20),
-              const Text(
-                'Classement global',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-              for (var data in cardDataList)
-                Column(
-                  children: [
-                    buildColoredCard(
-                      data['backgroundColor']!,
-                      data['text1']!,
-                      data['image1']!,
-                      data['text2']!,
-                      data['image2']!,
-                      data['text3']!,
-                      data['backgroundColorValue']!,
-                      data['imageColor']!,
+                    if (leaderbord != null)
+                      buildColoredCard(
+                          "0xFF000000",
+                          leaderbord!.userRank.rank,
+                          leaderbord!.userRank.imageUrl ??
+                              'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
+                          "${leaderbord!.userRank.firstName ?? ""} ${leaderbord!.userRank.lastName ?? ""}",
+                          'images/pngs/level.png',
+                          leaderbord!.userRank.score,
+                          '0xFFFCC213',
+                          '#FFFFFF')
+                    else
+                      const SizedBox(
+                        height: 100,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: MyColors.yellow,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Classement global',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
-                    const SizedBox(height: 10),
-                    // Align(
-                    //   alignment: Alignment.bottomCenter,
-                    //   child: MyBottomBar(
-                    //     active: items[currentSelectedIndex],
-                    //     onTap: (item) {
-                    //       updateCurrentIndex(item.index);
-                    //     },
+                    if (leaderbord != null)
+                      for (var data in leaderbord!.ranks)
+                        Column(
+                          children: [
+                            buildColoredCard(
+                              (data.rank == 1)
+                                  ? firstPlaceBackgroundColor
+                                  : otherPlaceBackgroundColor,
+                              data.rank,
+                              data.imageUrl ??
+                                  'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
+                              "${data.firstName ?? ""} ${data.lastName ?? ""}",
+                              "images/pngs/level.png",
+                              data.score,
+                              (data.rank == 1)
+                                  ? firstPlacebackgroundColorValue
+                                  : otherPlacebackgroundColorValue,
+                              (data.rank == 1)
+                                  ? firstPlaceImageColor
+                                  : otherPlaceImageColor,
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        )
+                    // else
+                    //   const CircularProgressIndicator(
+                    //     color: MyColors.yellow,
                     //   ),
-                    // ),
                   ],
                 ),
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
