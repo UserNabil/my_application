@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:my_taraji/core/models/campaign_response.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 import 'package:http/http.dart' as http;
@@ -46,17 +47,17 @@ class CampaignService {
   }
 
   Future<CampaignResponse> submitCampaignAnswers(
-      Map<String, dynamic> answers) async {
+      CampaignResponse answers) async {
     const path = "api/v1/campaigns-answers";
+    debugPrint(jsonEncode(answers.toJson()));
     final url = Uri.parse('$baseUrl/$path');
-
     try {
       final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
-        body: jsonEncode(answers),
+        body: jsonEncode(answers.toJson()),
       );
 
       if (response.statusCode == 200) {
@@ -72,8 +73,7 @@ class CampaignService {
             'Failed to submit campaign answers - ${response.reasonPhrase}');
       }
     } catch (e) {
-      throw Exception(
-          'Failed to connect to the server for submitting campaign answers $e');
+      throw Exception('$e');
     }
   }
 }

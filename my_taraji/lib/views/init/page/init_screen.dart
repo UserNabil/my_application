@@ -32,6 +32,7 @@ class InitScreenState extends State<InitScreen> {
     super.initState();
     liquidController = LiquidController();
     getCurrentLocation();
+    getUserData();
   }
 
   getCurrentLocation() async {

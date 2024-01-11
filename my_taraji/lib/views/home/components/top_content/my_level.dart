@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/theme/my_color.dart';
-import 'my_progress.dart';
+import '../../import.dart';
 
 class MyCardLevel extends StatelessWidget {
   const MyCardLevel({super.key});

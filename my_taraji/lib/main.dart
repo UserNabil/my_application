@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: const Locale('fr', 'FR'),
       title: 'My Taraji',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

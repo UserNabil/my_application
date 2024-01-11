@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
+import '../../import.dart';
 
 class CompaignModal extends StatelessWidget {
   final String compagneName;

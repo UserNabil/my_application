@@ -1,11 +1,8 @@
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:flutter/material.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
-import 'my_navbar.dart';
 import '../../../init/components/my_card.dart';
 import '../../../../core/components/background_top.dart';
 import '../../../init/components/my_profile.dart';
 import '../../../init/components/my_taraji_logo.dart';
+import '../../import.dart';
 
 class TopScreen extends StatefulWidget {
   const TopScreen({super.key});

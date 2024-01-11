@@ -22,7 +22,7 @@ class NextQuestion {
       );
 
   factory NextQuestion.fromJson(Map<String, dynamic> jsonApi) {
-    Map<String, dynamic> json = jsonApi;
+    // Map<String, dynamic> json = jsonApi;
     return NextQuestion(
         // title: json['title'],
         // description: json['description'],

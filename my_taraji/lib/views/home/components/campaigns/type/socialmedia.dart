@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
-// import 'package:share_plus/share_plus.dart';
+import '../../../import.dart';
 
 class SocialMediaInput extends StatelessWidget {
   const SocialMediaInput({super.key});

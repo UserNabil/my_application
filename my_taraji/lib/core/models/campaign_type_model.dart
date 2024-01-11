@@ -112,10 +112,10 @@ class Meta {
 
   factory Meta.fromJson(Map<String, dynamic> json) {
     return Meta(
-      id: json['_id'] ?? '',
-      name: json['name'] ?? '',
-      type: json['type'] ?? '',
-      value: json['value'] ?? '',
+      id: json['Id'] ?? '',
+      name: json['Name'] ?? '',
+      type: json['MetaType'] ?? '',
+      value: json['Value'] ?? '',
     );
   }
 }
@@ -131,19 +131,31 @@ List<Meta> fromJsonListMeta(List<dynamic>? jsonList) {
 class Option {
   String id;
   String name;
+  int points;
   String value;
+  int order;
+  String? imageUri;
+  bool rightAnswer;
 
   Option({
     required this.id,
     required this.name,
+    required this.points,
     required this.value,
+    required this.order,
+    this.imageUri,
+    required this.rightAnswer,
   });
 
   factory Option.fromJson(Map<String, dynamic> json) {
     return Option(
-      id: json['_id'] ?? '',
-      name: json['name'] ?? '',
+      id: json['Id'] ?? '',
+      name: json['Name'] ?? '',
       value: json['value'] ?? '',
+      points: json['Points'] ?? '',
+      order: json['Order'] ?? '',
+      imageUri: json['ImageUri'] ?? '',
+      rightAnswer: json['RightAnswer'] ?? false,
     );
   }
 }
@@ -159,22 +171,22 @@ List<Option> fromJsonListOption(List<dynamic>? jsonList) {
 class Media {
   String id;
   String name;
-  String url;
+  String value;
   String type;
 
   Media({
     required this.id,
     required this.name,
-    required this.url,
+    required this.value,
     required this.type,
   });
 
   factory Media.fromJson(Map<String, dynamic> json) {
     return Media(
-      id: json['_id'] ?? '',
-      name: json['name'] ?? '',
-      url: json['url'] ?? '',
-      type: json['type'] ?? '',
+      id: json['Id'] ?? '',
+      name: json['Name'] ?? '',
+      value: json['Value'] ?? '',
+      type: json['MetaType'] ?? '',
     );
   }
 }

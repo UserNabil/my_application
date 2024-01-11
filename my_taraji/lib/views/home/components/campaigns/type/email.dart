@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import '../../../import.dart';
 
 class EmailInput extends StatelessWidget {
-  const EmailInput({super.key, required this.emailController});
-  final TextEditingController emailController;
+  const EmailInput({super.key, required this.campaign, required this.value});
+  final Campaign campaign;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: emailController,
+      initialValue: value,
       decoration: const InputDecoration(
-        // border: OutlineInputBorder(),
         labelText: 'Email',
         prefixIcon: Icon(TablerIcons.mail),
       ),

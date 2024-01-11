@@ -1,17 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:my_taraji/core/models/challenge_model.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/services/campaign_service.dart';
-import 'package:my_taraji/services/challenge_service.dart';
-import 'package:my_taraji/views/home/components/challenges/challenge_carousel.dart';
-import 'package:my_taraji/views/home/components/all_content_home/list_campagnies_challenge.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../components/top_content/my_top.dart';
-import '../components/campaigns/campaign_carousel.dart';
-import '../components/list_news_screen.dart';
-import '../components/list_partenaire_screen.dart';
+import '../import.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
