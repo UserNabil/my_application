@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 // void main() {
 //   runApp(const MaterialApp(
@@ -59,7 +58,7 @@ class ResponseLastStepChallenge extends StatelessWidget {
   }
 
   Widget buildContent(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    // var width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
         alignment: Alignment.center,

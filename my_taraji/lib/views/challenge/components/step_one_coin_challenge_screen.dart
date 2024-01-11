@@ -7,7 +7,6 @@ import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/pages/leader_bord_screen.dart';
 import 'package:my_taraji/views/challenge/components/question_one_challenge_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 // void main() {
 //   runApp(const MaterialApp(

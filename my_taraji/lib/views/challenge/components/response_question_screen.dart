@@ -40,7 +40,7 @@ class ResponseQuestionChallenge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    // var width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
         alignment: Alignment.center,

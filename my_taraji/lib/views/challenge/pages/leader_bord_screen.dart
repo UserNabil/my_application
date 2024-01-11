@@ -5,7 +5,6 @@ import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 import 'package:my_taraji/core/models/challenge_by_id_model.dart'
     // ignore: library_prefixes
     as ChallengeById;
@@ -85,6 +84,7 @@ class LeaderBordState extends State<LeaderBord> {
           hasstep = false;
         }
       });
+      // ignore: avoid_print
       print("has step $hasstep");
     } catch (e) {
       // ignore: avoid_print
@@ -221,7 +221,7 @@ class LeaderBordState extends State<LeaderBord> {
   }
 
   Widget buildContent(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    //var width = MediaQuery.of(context).size.width;
     // if (leaderbord != null) {
     //   return const SizedBox(
     //     height: 100,
@@ -457,12 +457,12 @@ class LeaderBordState extends State<LeaderBord> {
                               (data.rank == 1)
                                   ? firstPlaceBackgroundColor
                                   : otherPlaceBackgroundColor,
-                              data.rank ?? 0,
+                              data.rank,
                               data.imageUrl ??
                                   'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
                               "${data.firstName ?? ""} ${data.lastName ?? ""}",
                               "images/pngs/level.png",
-                              data.score ?? 0,
+                              data.score,
                               (data.rank == 1)
                                   ? firstPlacebackgroundColorValue
                                   : otherPlacebackgroundColorValue,
