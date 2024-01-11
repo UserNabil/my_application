@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/services/campaign_service.dart';
-import 'pagination_form.dart';
+import '../../import.dart';
 
 class CompaignPage extends StatelessWidget {
   final Campaign campaign;
@@ -47,7 +42,7 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
     super.initState();
   }
 
-  Future<Campaign> display(BuildContext context, Campaign campaign) async {
+  Future<Campaign> display() async {
     campaignFromApi = await campaignService.getCampaignById(widget.campaign.id);
     return campaignFromApi;
   }
@@ -55,7 +50,7 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: display(context, widget.campaign),
+      future: display(),
       builder: (context, AsyncSnapshot<Campaign> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Column(
@@ -110,82 +105,74 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
   }
 
   Widget buildContent(Campaign campaign) {
-    return Stack(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
+          height: 200,
+          width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(campaign.imageUrl),
               alignment: Alignment.topCenter,
               opacity: 1,
+              fit: BoxFit.cover,
             ),
           ),
         ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            campaign.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            campaignFromApi.description,
+            style: const TextStyle(
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
           child: Container(
-            height: 500,
-            padding: const EdgeInsets.all(16.0),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0),
+            decoration: BoxDecoration(
+              color: MyColors.red,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+            child: Text(
+              campaign.tag,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  campaign.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  campaignFromApi.description,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  decoration: BoxDecoration(
-                    color: MyColors.red,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 5, bottom: 5),
-                  child: Text(
-                    campaign.tag,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  'Coins gagnés : ${campaign.rewardCoins}',
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
-                    color: MyColors.yellow,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                PaginationForm(campaign: campaign),
-              ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            'Coins gagnés : ${campaign.rewardCoins}',
+            style: const TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+              color: MyColors.yellow,
             ),
           ),
         ),
+        PaginationForm(campaign: campaign),
       ],
     );
   }

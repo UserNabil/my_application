@@ -1,7 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-
-import 'next_match.dart';
+import '../../import.dart';
 
 class MyMatch extends StatelessWidget {
   const MyMatch({super.key, required this.carouselController});

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '../../../import.dart';
 
 class SmileyInput extends StatelessWidget {
   const SmileyInput({super.key});

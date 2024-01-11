@@ -1,7 +1,10 @@
 enum QuestionType {
   socialMediaAction,
-  numberVerification,
+  phoneVerification,
   emailVerification,
+  number,
+  textarea,
+  datepicker
 }
 
 extension QuestionTypeExtension on QuestionType {
@@ -9,10 +12,16 @@ extension QuestionTypeExtension on QuestionType {
     switch (this) {
       case QuestionType.socialMediaAction:
         return "socialmediaaction";
-      case QuestionType.numberVerification:
+      case QuestionType.phoneVerification:
         return "number-verification";
       case QuestionType.emailVerification:
         return "email-verification";
+      case QuestionType.number:
+        return "number";
+      case QuestionType.textarea:
+        return "textarea";
+      case QuestionType.datepicker:
+        return "datePicker";
     }
   }
 }

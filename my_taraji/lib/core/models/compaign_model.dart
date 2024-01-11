@@ -26,9 +26,15 @@ class Campaign {
   factory Campaign.fromJson(Map<String, dynamic> json) {
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
     Map<String, String> titleToImageNumber = {
-      "Email": "2",
+      "Verification Mail": "2",
       "Téléphone": "3",
-      "Social Media": "4"
+      "Social Media": "4",
+      "Date picker": "5",
+      "Digital Number 4": "6",
+      "Champs de text": "7",
+      "Radio": "8",
+      "Select": "9",
+      "Rating": "10",
     };
 
     String imgNumber = titleToImageNumber[json['Title']] ?? '1';
@@ -36,7 +42,7 @@ class Campaign {
 
     return Campaign(
       id: json['Id'] ?? '',
-      imageUrl: "images/pngs/compaigns$imgNumber.jpg",
+      imageUrl: "images/pngs/campaigns/campaigns$imgNumber.jpg",
       title: json['Title'] ?? '',
       description: desc,
       rewardCoins: json['RewardCoins'] ?? '',

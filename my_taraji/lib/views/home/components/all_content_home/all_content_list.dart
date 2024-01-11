@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:my_taraji/core/models/challenge_model.dart';
-import 'package:my_taraji/views/home/components/campaigns/campaign_card.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
-
-import '../challenges/challenge_card.dart';
+import '../../import.dart';
 
 class AllContentPage extends StatelessWidget {
   const AllContentPage({

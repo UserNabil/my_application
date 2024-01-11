@@ -1,29 +1,30 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
+import '../../../import.dart';
 
 class NumberInput extends StatelessWidget {
   const NumberInput({
     super.key,
     required this.campaign,
+    required this.numberController,
   });
 
   final Campaign campaign;
+  final TextEditingController numberController;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: numberController.text,
       decoration: InputDecoration(
         labelText: campaign.questionCampaign![0].description,
         prefixIcon: const Icon(TablerIcons.numbers),
       ),
       keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
+      validator: (inputValue) {
+        if (inputValue == null || inputValue.isEmpty) {
           return 'Veuillez entrer un nombre';
         }
 
-        if (int.tryParse(value) == null) {
+        if (int.tryParse(inputValue) == null) {
           return 'Veuillez entrer un nombre valide';
         }
 

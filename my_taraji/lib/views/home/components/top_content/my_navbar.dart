@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import '../../../../core/theme/my_color.dart';
+import '../../import.dart';
 
 class MyNavBar extends StatefulWidget {
   final List<NavBarItem> items;

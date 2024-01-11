@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:my_taraji/views/home/components/campaigns/campaign_card.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
+import '../../import.dart';
 
 class AllCompagnesPage extends StatelessWidget {
   final List<Campaign> compagnes;

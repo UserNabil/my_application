@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
+import '../../import.dart';
 
 class TeamCarousel extends StatelessWidget {
   TeamCarousel({super.key, required this.carouselController});
@@ -77,9 +75,9 @@ class Content extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SubTitle(subTitle: subTitle),
-              Title(title: title),
-              SubContent(match: match),
+              NextMatchSubTitle(subTitle: subTitle),
+              NextMatchTitle(title: title),
+              NextMatchSubContent(match: match),
               BuyButton(redirectionPage: redirectionPage)
             ],
           ),
@@ -123,8 +121,8 @@ class BuyButton extends StatelessWidget {
   }
 }
 
-class Title extends StatelessWidget {
-  const Title({super.key, required this.title});
+class NextMatchTitle extends StatelessWidget {
+  const NextMatchTitle({super.key, required this.title});
   final String title;
 
   @override
@@ -140,8 +138,8 @@ class Title extends StatelessWidget {
   }
 }
 
-class SubTitle extends StatelessWidget {
-  const SubTitle({super.key, required this.subTitle});
+class NextMatchSubTitle extends StatelessWidget {
+  const NextMatchSubTitle({super.key, required this.subTitle});
   final String subTitle;
 
   @override
@@ -157,8 +155,8 @@ class SubTitle extends StatelessWidget {
   }
 }
 
-class SubContent extends StatelessWidget {
-  const SubContent({super.key, required this.match});
+class NextMatchSubContent extends StatelessWidget {
+  const NextMatchSubContent({super.key, required this.match});
   final MatchData match;
 
   @override

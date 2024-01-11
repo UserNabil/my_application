@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
-import '../../../../core/theme/my_color.dart';
+import '../../import.dart';
 
 class MyProgressBar extends StatelessWidget {
   final double value;

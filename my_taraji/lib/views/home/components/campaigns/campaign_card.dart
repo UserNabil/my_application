@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'campaign_page.dart';
+import '../../import.dart';
 
 class CompaignCard extends StatefulWidget {
   const CompaignCard({
