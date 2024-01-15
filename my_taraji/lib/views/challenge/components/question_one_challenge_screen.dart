@@ -1,10 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:my_taraji/core/models/challenge_answer_request_model.dart';
+import 'package:my_taraji/core/models/joker_extratime_response.dart';
+import 'package:my_taraji/core/models/joker_fifty_response.dart';
+import 'package:my_taraji/core/models/joker_request.dart';
+import 'package:my_taraji/core/models/joker_spy_response.dart';
 import 'package:my_taraji/core/models/next_question_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
+import 'package:my_taraji/services/joker_service.dart';
 import 'package:my_taraji/views/challenge/components/response_last_step_screen.dart';
 import 'package:my_taraji/views/challenge/components/response_question_screen.dart';
 import 'package:my_taraji/views/challenge/components/response_step_screen.dart';
@@ -51,6 +58,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
       required this.questionnumber,
       required this.challengeid});
   ChallengeQuestionResult? question;
+  List<JokerFiftyResponse>? jokerFifTy;
+  JokerExtraTimeResponse? jokerExtraTime;
+  JokerSpyResponse? jokerSpy;
   String answerResponse = "";
   int selectedChoiceIndex = -1;
   String selectedChoice = "";
@@ -270,6 +280,44 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     }
   }
 
+  Future<void> useJoker(int joker) async {
+    try {
+      print("joker $joker");
+      JokerRequest jokerRequest =
+          JokerRequest(questionId: question!.nextQuestion!.id, stepId: stepid);
+      setState(() {
+        isLoading = true;
+      });
+
+      var jokerService = JokerService();
+      String response = await jokerService.useJoker(jokerRequest, joker);
+      setState(() {
+        String JokerResponse = response;
+        print("joker response $JokerResponse");
+        if (joker == 0) {
+          final dynamic jsonData = json.decode(JokerResponse);
+          jokerFifTy = fromJsonListJokerFiftyResponse(jsonData);
+        } else if (joker == 1) {
+          final Map<String, dynamic> jsonData = json.decode(JokerResponse);
+          jokerExtraTime = JokerExtraTimeResponse.fromJson(jsonData);
+        } else if (joker == 2) {
+          final Map<String, dynamic> jsonData = json.decode(JokerResponse);
+          jokerSpy = JokerSpyResponse.fromJson(jsonData);
+        }
+        print("joker response $jokerFifTy");
+        print("joker response ${jokerExtraTime!.toMap()}");
+        print("joker response ${jokerSpy!.toMap()}");
+        isLoading = false;
+      });
+    } catch (e) {
+      // ignore: avoid_print
+      print('Failed to use joker: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   void cancelTimer() {
     countdownTimer?.cancel();
   }
@@ -407,13 +455,15 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                         ),
                         Positioned(
                           top: 0,
-                          right: (width - 320) / 2,
+                          right: (width - 310) / 2,
                           child: Row(
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  // _showDiamondPopup('50/50',
-                                  //     'Réduit les choix à deux,\naméliorant les chances\ndu participant de choisir\ncorrectement.');
+                                  openMyModal(
+                                      '50/50',
+                                      'Réduit les choix à deux,améliorant les chancesdu participant de choisir correctement.',
+                                      0);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 50),
@@ -433,7 +483,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                               ),
                               const SizedBox(width: 10),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  openMyModal(
+                                      'images/pngs/eye.png',
+                                      'Voir le choix le plus populaire parmis les options proposé.',
+                                      2);
+                                },
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 50),
                                   backgroundColor: MyColors.yellow,
@@ -447,7 +502,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                               ),
                               const SizedBox(width: 10),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  openMyModal(
+                                      'images/pngs/watch.png',
+                                      'Ralentir le temps qui s\'écoule lors de la partie.',
+                                      1);
+                                },
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 50),
                                   backgroundColor: MyColors.yellow,
@@ -562,44 +622,119 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     );
   }
 
-  // void _showDiamondPopup(String title, String contenu) {
-  // YYDialog().build(context)
-  //   ..width = 300
-  //   ..height = 300
-  //   ..widget(DiamondShapeBackground(
-  //     width: 300,
-  //     height: 300,
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Padding(
-  //           padding:
-  //               const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
-  //           child: Text(
-  //             title,
-  //             style: const TextStyle(
-  //               fontSize: 20.0,
-  //               color: Colors.white,
-  //             ),
-  //             textAlign: TextAlign.center,
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: Text(
-  //             contenu,
-  //             style: const TextStyle(
-  //               fontSize: 15.0,
-  //               color: Colors.white,
-  //             ),
-  //             textAlign: TextAlign.center,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   ))
-  //   ..show();
-  // }
+  void openMyModal(String title, String contenu, int joker) {
+    GlobalKey? dialogKey = GlobalKey();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // ignore: deprecated_member_use
+        return WillPopScope(
+          onWillPop: () async {
+            return true;
+          },
+          child: jokerDialog(dialogKey, context, title, contenu, joker),
+        );
+      },
+    );
+  }
+
+  Widget jokerDialog(GlobalKey? dialogKey, BuildContext context, dynamic title,
+      String contenu, int joker) {
+    return AlertDialog(
+      key: dialogKey,
+      actionsAlignment: MainAxisAlignment.center,
+      backgroundColor: MyColors.transparent,
+      content: Stack(
+        children: [
+          SvgPicture.asset(
+            'images/svgs/popup.svg',
+            width: 300,
+            height: 300,
+          ),
+          Positioned(
+            top: 30,
+            left: 90,
+            child: Center(
+              child: _buildTitleWidget(title),
+            ),
+          ),
+          Positioned(
+            top: 90,
+            left: 20,
+            width: 200,
+            child: Text(
+              style: const TextStyle(color: MyColors.white),
+              contenu,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Positioned(
+            width: 80,
+            left: 30,
+            bottom: 0,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                alignment: Alignment.center,
+              ),
+              onPressed: () {
+                useJoker(joker);
+                Navigator.of(context).pop();
+              },
+              child: SvgPicture.asset(
+                'images/svgs/confirm.svg',
+                width: 70,
+                height: 70,
+              ),
+            ),
+          ),
+          Positioned(
+            width: 80,
+            right: 30,
+            bottom: 0,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                alignment: Alignment.center,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: SvgPicture.asset(
+                'images/svgs/return.svg',
+                width: 70,
+                height: 70,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTitleWidget(dynamic title) {
+    if (title is String) {
+      return title.contains('.png') ||
+              title.contains('.jpg') ||
+              title.contains('.jpeg')
+          ? SizedBox(
+              child: Image.asset(
+              title,
+              width: 70,
+              height: 30,
+            ))
+          : Text(
+              title,
+              style: const TextStyle(
+                color: MyColors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            );
+    } else if (title is Widget) {
+      return title;
+    } else {
+      return Container();
+    }
+  }
 
   @override
   void dispose() {

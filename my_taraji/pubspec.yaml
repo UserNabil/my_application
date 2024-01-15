@@ -50,6 +50,7 @@ flutter:
     - images/icons/
     - images/pngs/
     - images/pngs/campaigns/
+    - images/svgs/
 
   fonts:
     - family: Poppins
