@@ -17,8 +17,15 @@ import 'package:my_taraji/views/challenge/components/response_question_screen.da
 import 'package:my_taraji/views/challenge/components/response_step_screen.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
+// void main() {
+//   runApp(const MaterialApp(
+//     home: QuestionOneCoinChallenge(
+//         "659564607428f60708a9be76", "6595376beb16ee594ceb90d8"),
+//   ));
+// }
 // void main() {
 //   runApp(const MaterialApp(
 //     home: QuestionOneCoinChallenge(
@@ -328,6 +335,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     var cardHeight = 200.0;
     double progressBarWidth = max(width - 50, 0.0);
 
+    var cardHeight = 200.0;
+    double progressBarWidth = max(width - 50, 0.0);
+
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -615,6 +625,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                   ],
                 ),
               ),
+            ),
+          ],
             ),
           ],
         ),
