@@ -131,11 +131,15 @@ class ProfileMenuState extends State<ProfileMenu> {
           width: 5,
         ),
         const SizedBox(height: 20),
-        const MyProfile(
-          textPosition: TextPosition.right,
-          nameTextColor: MyColors.black,
-          coinsTextColor: MyColors.grey,
-          photoSize: 60,
+        const Row(
+          children: [
+            MyProfile(
+              textPosition: TextPosition.right,
+              nameTextColor: MyColors.black,
+              coinsTextColor: MyColors.grey,
+              photoSize: 60,
+            ),
+          ],
         ),
         const SizedBox(height: 30),
         ListView.builder(

@@ -43,7 +43,9 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
   }
 
   Future<Campaign> display() async {
-    campaignFromApi = await campaignService.getCampaignById(widget.campaign.id);
+    campaignFromApi = await campaignService
+        .getCampaignById(widget.campaign.id)
+        .then((value) => value.data!);
     return campaignFromApi;
   }
 
