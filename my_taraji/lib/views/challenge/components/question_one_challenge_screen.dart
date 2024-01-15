@@ -335,9 +335,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     var cardHeight = 200.0;
     double progressBarWidth = max(width - 50, 0.0);
 
-    var cardHeight = 200.0;
-    double progressBarWidth = max(width - 50, 0.0);
-
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -625,8 +622,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                   ],
                 ),
               ),
-            ),
-          ],
             ),
           ],
         ),
