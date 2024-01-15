@@ -124,6 +124,7 @@ Future<CampaignResponse> submitForm({
 
 List<Widget> manageInput(Campaign campaign) {
   TextEditingController email = TextEditingController();
+  TextEditingController emailVerified = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController number = TextEditingController();
   TextEditingController textarea = TextEditingController();
@@ -140,25 +141,50 @@ List<Widget> manageInput(Campaign campaign) {
   }
 
   Map<String, Widget> questionTypeWidgets = {
-    "email-verification": EmailInput(campaign: campaign, value: email.text),
+    "email-verification": EmailInput(
+      campaign: campaign,
+      value: email.text,
+    ),
+    "email-verified": NumberInput(
+      campaign: campaign,
+      numberController: emailVerified,
+    ),
     "socialmediaaction": const SocialMediaInput(),
-    "number-verification":
-        PhoneInput(campaign: campaign, phoneController: phone),
-    "number": NumberInput(campaign: campaign, numberController: number),
-    "textarea": TextareaInput(campaign: campaign, textareaController: textarea),
-    "datePicker": DateInput(campaign: campaign, dateController: datepicker),
+    "number-verification": PhoneInput(
+      campaign: campaign,
+      phoneController: phone,
+    ),
+    "number-verified": PhoneInput(
+      campaign: campaign,
+      phoneController: phone,
+    ),
+    "number": NumberInput(
+      campaign: campaign,
+      numberController: number,
+    ),
+    "textarea": TextareaInput(
+      campaign: campaign,
+      textareaController: textarea,
+    ),
+    "datePicker": DateInput(
+      campaign: campaign,
+      dateController: datepicker,
+    ),
     "rating": RateInput(
-        campaign: campaign,
-        rateController: rate,
-        question: questionTypeToOptions['rating']),
+      campaign: campaign,
+      rateController: rate,
+      question: questionTypeToOptions['rating'],
+    ),
     "toggle": RadioInput(
-        campaign: campaign,
-        radioController: radio,
-        question: questionTypeToOptions['toggle']),
+      campaign: campaign,
+      radioController: radio,
+      question: questionTypeToOptions['toggle'],
+    ),
     "select": SelectInput(
-        campaign: campaign,
-        selectController: select,
-        question: questionTypeToOptions['select']),
+      campaign: campaign,
+      selectController: select,
+      question: questionTypeToOptions['select'],
+    ),
   };
 
   if (campaign.questionCampaign != null) {
@@ -167,7 +193,7 @@ List<Widget> manageInput(Campaign campaign) {
       pages.add(page);
     }
   }
-
+  print(pages.length);
   return pages;
 }
 
@@ -176,6 +202,7 @@ void openDialog(BuildContext context, Campaign campaign) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
+      // ignore: deprecated_member_use
       return WillPopScope(
         onWillPop: () async {
           return true;
@@ -211,7 +238,6 @@ Widget campaignDialog(
           backgroundColor: MyColors.yellow,
         ),
         onPressed: () {
-          // Navigator.of(context).popAndPushNamed("/");
           Navigator.of(context).pop();
         },
         child: const Text(

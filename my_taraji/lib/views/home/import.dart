@@ -41,4 +41,5 @@ export 'package:my_taraji/views/home/components/campaigns/type/rating.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/radio.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/select.dart';
 export 'package:my_taraji/core/models/campaign_type_model.dart';
+export 'package:flutter/foundation.dart';
 // export 'package:share_plus/share_plus.dart';

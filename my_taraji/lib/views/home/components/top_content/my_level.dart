@@ -6,7 +6,6 @@ class MyCardLevel extends StatelessWidget {
   Future<Map<String, String>> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String xp = prefs.getString('xp') ?? '0';
-    await Future.delayed(const Duration(seconds: 1));
     return {
       'xp': xp,
     };

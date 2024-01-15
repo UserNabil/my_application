@@ -1,33 +1,44 @@
-import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:my_taraji/core/models/api_response_model.dart';
+import 'dart:convert';
+
 import 'package:my_taraji/core/models/campaign_response.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class CampaignService {
   late String baseUrl = "http://localhost:5074";
   CampaignService();
 
-  Future<List<Campaign>> getAllCampaigns() async {
-    const path = "api/v1/campaigns/targetedAudience?Page=0&Limit=10";
+  Future<APIResponseModel<List<Campaign>>> getAllCampaigns() async {
+    const path = "api/v1/campaigns/targetedAudience";
     final url = Uri.parse('$baseUrl/$path');
-    List<Campaign> campaigns = [];
 
     try {
       var response = await http.get(url);
-      final List<dynamic> jsonData = json.decode(response.body);
-      try {
-        campaigns = fromJsonListCampaign(jsonData);
-        return campaigns;
-      } catch (e) {
-        throw Exception('fromJsonListCampaign error : $e');
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+
+      if (jsonData['IsSuccess'] == true) {
+        if (jsonData['Data'] is List) {
+          try {
+            return APIResponseModel<List<Campaign>>.fromJson(
+              jsonData,
+              (data) => fromJsonListCampaign(data),
+            );
+          } catch (e) {
+            throw Exception('fromJsonListCampaign error : $e');
+          }
+        } else {
+          throw Exception('Unexpected response format: ${response.body}');
+        }
+      } else {
+        throw Exception('API Error: ${jsonData['Data']}');
       }
     } catch (e) {
       throw Exception('getAllCampaigns from Service error : $e');
     }
   }
 
-  Future<Campaign> getCampaignById(String id) async {
+  Future<APIResponseModel<Campaign>> getCampaignById(String id) async {
     const path = "api/v1/campaigns";
     final url = Uri.parse('$baseUrl/$path/$id');
 
@@ -35,8 +46,10 @@ class CampaignService {
       final response = await http.get(url);
       final Map<String, dynamic> jsonData = json.decode(response.body);
       try {
-        Campaign campaign = Campaign.fromJson(jsonData);
-        return campaign;
+        return APIResponseModel<Campaign>.fromJson(
+          jsonData,
+          (data) => Campaign.fromJson(data),
+        );
       } catch (e) {
         throw Exception('fromJsonListCampaign error : $e');
       }
@@ -46,10 +59,9 @@ class CampaignService {
     }
   }
 
-  Future<CampaignResponse> submitCampaignAnswers(
+  Future<APIResponseModel<CampaignResponse>> submitCampaignAnswers(
       CampaignResponse answers) async {
     const path = "api/v1/campaigns-answers";
-    debugPrint(jsonEncode(answers.toJson()));
     final url = Uri.parse('$baseUrl/$path');
     try {
       final response = await http.post(
@@ -63,8 +75,10 @@ class CampaignService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
         try {
-          CampaignResponse campaign = CampaignResponse.fromJson(jsonData);
-          return campaign;
+          return APIResponseModel<CampaignResponse>.fromJson(
+            jsonData,
+            (data) => CampaignResponse.fromJson(data),
+          );
         } catch (e) {
           throw Exception('fromJsonCampaignResponse error : $e');
         }

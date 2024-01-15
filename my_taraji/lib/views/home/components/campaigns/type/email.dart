@@ -5,6 +5,12 @@ class EmailInput extends StatelessWidget {
   final Campaign campaign;
   final String value;
 
+  bool isValidEmailFormat(String email) {
+    String emailRegex = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
+    RegExp regex = RegExp(emailRegex);
+    return regex.hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -17,6 +23,9 @@ class EmailInput extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Veuillez entrer votre email';
+        }
+        if (!isValidEmailFormat(value)) {
+          return 'Veuillez entrer un email valide';
         }
         return null;
       },

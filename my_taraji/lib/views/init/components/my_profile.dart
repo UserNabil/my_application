@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/my_color.dart';
 import 'my_taraji_logo.dart';
@@ -25,40 +26,23 @@ class MyProfile extends StatelessWidget {
     this.coinsTextColor = MyColors.white,
   });
 
-  Future<Map<String, String>> getUserData() async {
+  Future<UserData> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String name = prefs.getString('name') ?? 'Error';
-    final String coins = prefs.getString('coins') ?? 'Error';
-    final String profileImagePath = prefs.getString('profileImagePath') ??
-        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
-
-    return {
-      'name': name,
-      'coins': coins,
-      'profileImagePath': profileImagePath,
-    };
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getUserData(),
-      builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(color: MyColors.yellow);
-        }
-
-        if (snapshot.hasError) {
-          return const Text('Error', style: TextStyle(color: MyColors.red));
-        }
-
-        final userData = snapshot.data!;
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [buildContent(userData)],
-        );
-      },
+    UserData userData = UserData(
+      id: prefs.getString('id')!,
+      pseudo: prefs.getString('name')!,
+      phone: prefs.getString('phone')!,
+      myRewards: MyRewards(coins: int.parse(prefs.getString('coins')!)),
+      myGamification: MyGamification(
+        id: prefs.getString('id')!,
+        expPoints: int.parse(prefs.getString('xp')!),
+        expPointsHistory: [],
+        createdAt: '',
+        updatedAt: '',
+      ),
     );
+
+    return userData;
   }
 
   Widget buildPhoto(String profileImagePath) {
@@ -117,10 +101,11 @@ class MyProfile extends StatelessWidget {
     );
   }
 
-  Widget buildContent(Map<String, String> userData) {
-    final String name = userData['name']!;
-    final String coins = userData['coins']!;
-    final String profileImagePath = userData['profileImagePath']!;
+  Widget buildContent(UserData userData) {
+    final String pseudo = userData.pseudo;
+    final String coins = userData.myRewards.coins.toString();
+    const String profileImagePath =
+        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
 
     switch (textPosition) {
       case TextPosition.left:
@@ -128,7 +113,7 @@ class MyProfile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildInfo(textPosition, name, coins),
+            buildInfo(textPosition, pseudo, coins),
             const SizedBox(width: 15),
             buildPhoto(profileImagePath),
           ],
@@ -140,7 +125,7 @@ class MyProfile extends StatelessWidget {
           children: [
             buildPhoto(profileImagePath),
             const SizedBox(width: 15),
-            buildInfo(textPosition, name, coins),
+            buildInfo(textPosition, pseudo, coins),
           ],
         );
       case TextPosition.top:
@@ -148,7 +133,7 @@ class MyProfile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildInfo(textPosition, name, coins),
+            buildInfo(textPosition, pseudo, coins),
             const SizedBox(height: 15),
             buildPhoto(profileImagePath),
           ],
@@ -161,9 +146,38 @@ class MyProfile extends StatelessWidget {
           children: [
             buildPhoto(profileImagePath),
             const SizedBox(height: 15),
-            buildInfo(textPosition, name, coins),
+            buildInfo(textPosition, pseudo, coins),
           ],
         );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topLeft, // Align content to the left
+      child: FutureBuilder(
+        future: getUserData(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox(
+              height: 100,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: MyColors.yellow,
+                ),
+              ),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return const Text('Error', style: TextStyle(color: MyColors.red));
+          }
+
+          final userData = snapshot.data!;
+          return buildContent(userData);
+        },
+      ),
+    );
   }
 }

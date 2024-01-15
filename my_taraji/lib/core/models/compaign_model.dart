@@ -79,12 +79,18 @@ class Campaign {
   }
 }
 
-List<Campaign> fromJsonListCampaign(List<dynamic>? jsonList) {
-  if (jsonList == null || jsonList.isEmpty) {
-    return [];
-  } else {
-    return jsonList.map((json) => Campaign.fromJson(json)).toList();
+List<Campaign> fromJsonListCampaign(dynamic jsonList) {
+  List<Campaign> campaigns = [];
+
+  if (jsonList != null && jsonList is List) {
+    for (var jsonItem in jsonList) {
+      if (jsonItem != null && jsonItem is Map<String, dynamic>) {
+        campaigns.add(Campaign.fromJson(jsonItem));
+      }
+    }
   }
+
+  return campaigns;
 }
 
 void saveCampaigns(List<Campaign> campaigns) async {

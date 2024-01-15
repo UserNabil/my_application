@@ -1,3 +1,6 @@
+import 'package:my_taraji/core/models/all_content.dart';
+import 'package:my_taraji/services/local_service.dart';
+
 import '../import.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,27 +15,6 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<AllDataContent> _loadCampaigns() async {
-    var challengeService = ChallengeService();
-    var campaignService = CampaignService();
-    List<Campaign> loadedCampaigns = await campaignService.getAllCampaigns();
-    List<Challenge> loadedChallenges =
-        await challengeService.getAllChallenges();
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    for (var campaign in loadedCampaigns) {
-      prefs.setBool(campaign.id, true);
-    }
-    saveCampaigns(loadedCampaigns);
-    saveChallenges(loadedChallenges);
-
-    AllDataContent allContent = AllDataContent(
-      campagnes: loadedCampaigns,
-      challenges: loadedChallenges,
-    );
-    return allContent;
   }
 
   @override
@@ -65,8 +47,9 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget selectContent(BuildContext context) {
+    LocalService localService = LocalService();
     return FutureBuilder(
-      future: _loadCampaigns(),
+      future: localService.loadCampaigns(),
       builder: (context, AsyncSnapshot<AllDataContent> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
@@ -125,10 +108,4 @@ class HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-}
-
-class AllDataContent {
-  final List<Campaign> campagnes;
-  final List<Challenge> challenges;
-  AllDataContent({required this.campagnes, required this.challenges});
 }

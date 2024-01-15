@@ -33,8 +33,6 @@ class PaginationFormState extends State<PaginationForm> {
       pages: pages,
       campaign: widget.campaign,
     );
-
-    debugPrint(response.answers[0].questionAnswers[0].value.toString());
     if (formKey.currentState!.validate()) {
       await campaignService.submitCampaignAnswers(response);
     }
