@@ -17,7 +17,6 @@ import 'package:my_taraji/views/challenge/components/response_question_screen.da
 import 'package:my_taraji/views/challenge/components/response_step_screen.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 // void main() {
@@ -289,6 +288,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
 
   Future<void> useJoker(int joker) async {
     try {
+      // ignore: avoid_print
       print("joker $joker");
       JokerRequest jokerRequest =
           JokerRequest(questionId: question!.nextQuestion!.id, stepId: stepid);
@@ -299,7 +299,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
       var jokerService = JokerService();
       String response = await jokerService.useJoker(jokerRequest, joker);
       setState(() {
+        // ignore: non_constant_identifier_names
         String JokerResponse = response;
+        // ignore: avoid_print
         print("joker response $JokerResponse");
         if (joker == 0) {
           final dynamic jsonData = json.decode(JokerResponse);
@@ -311,8 +313,11 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
           final Map<String, dynamic> jsonData = json.decode(JokerResponse);
           jokerSpy = JokerSpyResponse.fromJson(jsonData);
         }
+        // ignore: avoid_print
         print("joker response $jokerFifTy");
+        // ignore: avoid_print
         print("joker response ${jokerExtraTime!.toMap()}");
+        // ignore: avoid_print
         print("joker response ${jokerSpy!.toMap()}");
         isLoading = false;
       });
