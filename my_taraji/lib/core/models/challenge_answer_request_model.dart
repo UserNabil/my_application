@@ -88,10 +88,10 @@ class GeoLocation {
 
 class Answer {
   String questionId;
-  String? value;
-  int answerTime;
   String questionTypeId;
+  String? value;
   int score;
+  int answerTime;
 
   Answer({
     required this.questionId,

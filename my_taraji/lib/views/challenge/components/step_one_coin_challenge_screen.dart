@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/core/models/challenge_by_id_model.dart'
-    // ignore: library_prefixes
-    as ChallengeById;
+import 'package:my_taraji/core/models/challenge_by_id_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/pages/leader_bord_screen.dart';
@@ -32,8 +30,8 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
   String coins = "";
   bool laststep = false;
   final String challengeid;
-  ChallengeById.ChallengeById? challenge;
-  ChallengeById.Step? currentstep;
+  ChallengeById? challenge;
+  ChallengeStep? currentstep;
   StepOneCoinChallengeState({required this.challengeid});
   @override
   void initState() {
@@ -52,10 +50,13 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
   Future<void> _loadChallenge() async {
     try {
       var challengeService = ChallengeService();
-      ChallengeById.ChallengeById loadedChallenge =
-          await challengeService.getChallengeById(challengeid);
-      List<ChallengeById.Step> unfinishedSteps =
-          loadedChallenge.steps.where((step) => step.status != "done").toList();
+      ChallengeById? loadedChallenge = await challengeService
+          .getChallengeById(challengeid)
+          .then((value) => value.data);
+
+      List<ChallengeStep> unfinishedSteps = loadedChallenge!.steps
+          .where((step) => step.status != "done")
+          .toList();
       if (unfinishedSteps.length == 1) {
         laststep = true;
       }
@@ -82,7 +83,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("loading");
+          // return const Text("loading");
         }
 
         return buildContent(context);
@@ -280,7 +281,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                                   //   const CircularProgressIndicator(),
                                   if (currentstep != null)
                                     Text(
-                                      'Vous pouvez gagner \n jusqu\'à ${currentstep!.stepTotal} Coins',
+                                      'Vous pouvez gagner \n jusqu\'à ${currentstep!.stepTotal} points',
                                       style: const TextStyle(
                                         color: MyColors.red,
                                         fontSize: 14.0,
@@ -400,7 +401,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
             ),
             Positioned(
               bottom: MediaQuery.of(context).size.height *
-                  0.25, // 10% de la hauteur de l'écran depuis le bas
+                  0.27, // 10% de la hauteur de l'écran depuis le bas
               left: 0,
               right: 0,
               child: Center(

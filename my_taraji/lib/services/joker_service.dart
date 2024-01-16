@@ -8,7 +8,7 @@ class JokerService {
   JokerService();
 
   Future<String> useJoker(JokerRequest answer, int joker) async {
-    const path = "use-jokers";
+    const path = "api/v1/challenge-answers/use-jokers";
     final url = Uri.parse('$baseUrl/$path/$joker');
 
     try {

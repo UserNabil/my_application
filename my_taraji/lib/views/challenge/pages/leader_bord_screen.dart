@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/models/leader_bord_result.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:my_taraji/core/models/challenge_by_id_model.dart'
-    // ignore: library_prefixes
-    as ChallengeById;
+import 'package:my_taraji/core/models/challenge_by_id_model.dart';
 // void main() {
 //   runApp(const MaterialApp(
 //     home: LeaderBord(""),
@@ -38,12 +37,15 @@ class LeaderBordState extends State<LeaderBord> {
   String firstPlaceImageColor = "#FCC213";
   String otherPlaceImageColor = "#C1242D";
   bool hasstep = true;
-  ChallengeById.ChallengeById? challenge;
+  ChallengeById? challenge;
   LeaderBordResult? leaderbord;
+  ChallengeService challengeService = ChallengeService();
+  bool isDataLoaded = false;
+
   @override
   void initState() {
     super.initState();
-    _loadLeaderBordInfo();
+    getuserinfo();
     _loadChallenge();
   }
 
@@ -55,17 +57,20 @@ class LeaderBordState extends State<LeaderBord> {
     xp = prefs.getString('xp') ?? '0';
   }
 
-  Future<void> _loadLeaderBordInfo() async {
+  Future<void> loadLeaderBordInfo() async {
     try {
-      var challengeService = ChallengeService();
-      LeaderBordResult? loadedLeaderBord =
-          await challengeService.getLeaderBordInfoByChallengeId(challengeid);
-      setState(() {
-        leaderbord = loadedLeaderBord;
-      });
+      if (!isDataLoaded) {
+        LeaderBordResult? loadedLeaderBord = await challengeService
+            .getLeaderBordInfoByChallengeId(challengeid)
+            .then((value) => value.data);
 
-      // ignore: avoid_print
-      print('leader bord: ${leaderbord!.toMap()}');
+        setState(() {
+          leaderbord = loadedLeaderBord;
+          isDataLoaded = true;
+        });
+        // ignore: avoid_print
+        print('leader bord: ${leaderbord?.toMap()}');
+      }
     } catch (e) {
       // ignore: avoid_print
       print('Failed to load leader bord data: $e');
@@ -75,15 +80,19 @@ class LeaderBordState extends State<LeaderBord> {
   Future<void> _loadChallenge() async {
     try {
       var challengeService = ChallengeService();
-      ChallengeById.ChallengeById loadedChallenge =
-          await challengeService.getChallengeById(challengeid);
-      List<ChallengeById.Step> unfinishedSteps =
-          loadedChallenge.steps.where((step) => step.status != "done").toList();
-      setState(() {
-        if (unfinishedSteps.isEmpty) {
-          hasstep = false;
-        }
-      });
+      ChallengeById? loadedChallenge = await challengeService
+          .getChallengeById(challengeid)
+          .then((value) => value.data);
+      if (loadedChallenge != null) {
+        List<ChallengeStep> unfinishedSteps = loadedChallenge.steps
+            .where((step) => step.status != "done")
+            .toList();
+        setState(() {
+          if (unfinishedSteps.isEmpty) {
+            hasstep = false;
+          }
+        });
+      }
       // ignore: avoid_print
       print("has step $hasstep");
     } catch (e) {
@@ -205,17 +214,51 @@ class LeaderBordState extends State<LeaderBord> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getuserinfo(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Container();
-        }
-
+      future: loadLeaderBordInfo(),
+      builder: (context, AsyncSnapshot<void> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("loading");
+          return const SizedBox(
+            height: 100,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: MyColors.yellow,
+              ),
+            ),
+          );
+        }
+        if (snapshot.hasError) {
+          return SizedBox(
+            height: 100,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyColors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      TablerIcons.refresh,
+                      color: MyColors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
 
+        // if (snapshot.connectionState == ConnectionState.done) {
         return buildContent(context);
+        // }
+
+        // return Container();
       },
     );
   }
@@ -419,26 +462,16 @@ class LeaderBordState extends State<LeaderBord> {
                         decoration: TextDecoration.none,
                       ),
                     ),
-                    if (leaderbord != null)
-                      buildColoredCard(
-                          "0xFF000000",
-                          leaderbord!.userRank.rank,
-                          leaderbord!.userRank.imageUrl ??
-                              'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
-                          "${leaderbord!.userRank.firstName ?? ""} ${leaderbord!.userRank.lastName ?? ""}",
-                          'images/pngs/level.png',
-                          leaderbord!.userRank.score,
-                          '0xFFFCC213',
-                          '#FFFFFF')
-                    else
-                      const SizedBox(
-                        height: 100,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: MyColors.yellow,
-                          ),
-                        ),
-                      ),
+                    buildColoredCard(
+                        "0xFF000000",
+                        leaderbord!.userRank.rank,
+                        leaderbord!.userRank.imageUrl ??
+                            'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
+                        "${leaderbord!.userRank.firstName ?? ""} ${leaderbord!.userRank.lastName ?? ""}",
+                        'images/pngs/level.png',
+                        leaderbord!.userRank.score,
+                        '0xFFFCC213',
+                        '#FFFFFF'),
                     const SizedBox(height: 20),
                     const Text(
                       'Classement global',

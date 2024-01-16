@@ -9,7 +9,7 @@ class ChallengeById {
   int? checkPointsProgress;
   int termsAccepted;
   ChallengeType challengeType;
-  List<Step> steps;
+  List<ChallengeStep> steps;
   String title;
   String description;
   String imageUrl;
@@ -53,7 +53,8 @@ class ChallengeById {
       checkPointsProgress: json['checkPointsProgress'],
       termsAccepted: json['termsAccepted'],
       challengeType: ChallengeType.fromMap(json['challengeType']),
-      steps: List<Step>.from(json['steps']?.map((x) => Step.fromMap(x)) ?? []),
+      steps: List<ChallengeStep>.from(
+          json['steps']?.map((x) => ChallengeStep.fromMap(x)) ?? []),
       title: json['title'],
       description: json['description'],
       imageUrl: json['imageUrl'],
@@ -79,7 +80,8 @@ class ChallengeById {
       checkPointsProgress: map['checkPointsProgress'],
       termsAccepted: map['termsAccepted'],
       challengeType: ChallengeType.fromMap(map['challengeType']),
-      steps: List<Step>.from(map['steps']?.map((x) => Step.fromMap(x)) ?? []),
+      steps: List<ChallengeStep>.from(
+          map['steps']?.map((x) => ChallengeStep.fromMap(x)) ?? []),
       title: map['title'],
       description: map['description'],
       imageUrl: map['imageUrl'],
@@ -167,7 +169,7 @@ class Joker {
   }
 }
 
-class Step {
+class ChallengeStep {
   String id;
   String title;
   String description;
@@ -176,7 +178,7 @@ class Step {
   int stepTotal;
   int answersNumber;
 
-  Step(
+  ChallengeStep(
       {required this.id,
       required this.title,
       required this.description,
@@ -185,8 +187,8 @@ class Step {
       required this.stepTotal,
       required this.answersNumber});
 
-  factory Step.fromMap(Map<String, dynamic> map) {
-    return Step(
+  factory ChallengeStep.fromMap(Map<String, dynamic> map) {
+    return ChallengeStep(
         id: map['_id'],
         title: map['title'],
         description: map['description'],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/views/challenge/components/stars_result.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,7 +50,7 @@ class ResponseLastStepChallenge extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("loading");
+          //return const Text("loading");
         }
 
         return buildContent(context);
@@ -213,14 +214,18 @@ class ResponseLastStepChallenge extends StatelessWidget {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 50),
+                            const SizedBox(height: 40),
                             // Deuxième ligne : image
                             Container(
                               margin:
                                   const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Image.asset(
-                                image,
-                              ),
+                              height: 100.0,
+                              width: 200.0,
+
+                              child: const StarsResult(),
+                              // child: Image.asset(
+                              //   image,
+                              // ),
                             ),
                             // Container(
                             //   margin:

@@ -20,3 +20,11 @@ class JokerSpyResponse {
     return {'choiceId': choiceId, 'value': value, 'percentage': percentage};
   }
 }
+
+List<JokerSpyResponse> fromJsonListJokerSpyResponse(List<dynamic>? jsonList) {
+  if (jsonList == null) {
+    return [];
+  }
+
+  return jsonList.map((json) => JokerSpyResponse.fromJson(json)).toList();
+}

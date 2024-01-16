@@ -53,8 +53,9 @@ class LocalService {
     List<Campaign> loadedCampaigns = await campaignService
         .getAllCampaigns()
         .then((value) => value.data ?? []);
-    List<Challenge> loadedChallenges =
-        await challengeService.getAllChallenges();
+    List<Challenge> loadedChallenges = await challengeService
+        .getAllChallenges()
+        .then((value) => value.data ?? []);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     for (var campaign in loadedCampaigns) {
