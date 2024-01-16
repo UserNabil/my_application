@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/views/challenge/components/stars_result.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,7 +51,7 @@ class ResponseStepChallenge extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("loading");
+          // return const Text("loading");
         }
 
         return buildContent(context);
@@ -214,20 +215,21 @@ class ResponseStepChallenge extends StatelessWidget {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 50),
+                            const SizedBox(height: 40),
                             // Deuxième ligne : image
                             Container(
                               margin:
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               height: 100.0,
-                              width: 150.0,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: image,
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
+                              width: 200.0,
+                              // decoration: BoxDecoration(
+                              //   image: DecorationImage(
+                              //     image: image,
+                              //     fit: BoxFit.cover,
+                              //   ),
+                              //   borderRadius: BorderRadius.circular(8.0),
+                              // ),
+                              child: const StarsResult(),
                             ),
                             const SizedBox(height: 30),
                             // Troisième ligne : description

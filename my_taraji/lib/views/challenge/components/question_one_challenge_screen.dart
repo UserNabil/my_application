@@ -1,10 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:my_taraji/core/models/api_response_model.dart';
 import 'package:my_taraji/core/models/challenge_answer_request_model.dart';
+import 'package:my_taraji/core/models/challenge_answer_response_model.dart';
+import 'package:my_taraji/core/models/joker_extratime_response.dart';
+import 'package:my_taraji/core/models/joker_fifty_response.dart';
+import 'package:my_taraji/core/models/joker_request.dart';
+import 'package:my_taraji/core/models/joker_spy_response.dart';
 import 'package:my_taraji/core/models/next_question_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
+import 'package:my_taraji/services/joker_service.dart';
 import 'package:my_taraji/views/challenge/components/response_last_step_screen.dart';
 import 'package:my_taraji/views/challenge/components/response_question_screen.dart';
 import 'package:my_taraji/views/challenge/components/response_step_screen.dart';
@@ -12,6 +23,12 @@ import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_scr
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
+// void main() {
+//   runApp(const MaterialApp(
+//     home: QuestionOneCoinChallenge(
+//         "659564607428f60708a9be76", "6595376beb16ee594ceb90d8"),
+//   ));
+// }
 // void main() {
 //   runApp(const MaterialApp(
 //     home: QuestionOneCoinChallenge(
@@ -42,6 +59,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   final String stepid;
   final int questionnumber;
   final String challengeid;
+  bool isJokerFiftyButtonDisabled = false;
+  bool isJokerSpyButtonDisabled = false;
   bool isLoading = false;
   bool isApiCalled = false;
   int numquestion = 0;
@@ -51,13 +70,19 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
       required this.questionnumber,
       required this.challengeid});
   ChallengeQuestionResult? question;
-  String answerResponse = "";
+  List<JokerFiftyResponse>? jokerFifTy;
+  JokerExtraTimeResponse? jokerExtraTime;
+  List<JokerSpyResponse>? jokerSpy;
+  ChallengeAnswerResponse? answerResponse;
   int selectedChoiceIndex = -1;
   String selectedChoice = "";
   double ratio = 0.0;
   Color progressBarColor = MyColors.blue;
   Timer? countdownTimer;
   late DateTime startdate;
+  List<bool> isChoiceDisabled = [];
+  List<JokerSpyResponse>? maxPercentageList;
+  bool isSelected = false;
   @override
   void initState() {
     super.initState();
@@ -93,7 +118,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                 GeoLocation(longitude: longitude, latitude: latitude);
             Answer answer = Answer(
                 questionId: question!.nextQuestion!.id,
-                value: "*",
+                value: "",
                 answerTime: question!.nextQuestion!.counterTime,
                 questionTypeId: "",
                 score: 0);
@@ -112,30 +137,58 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
             // print('Answer: ${answer.toMap()}');
             // print('ChallengeAnswerRequest: ${answerRequest.toMap()}');
             var challengeService = ChallengeService();
-            String response = await challengeService.submitChallengeAnswers(
-                answerRequest, stepid);
-
+            ChallengeAnswerResponse? response = await challengeService
+                .submitChallengeAnswers(answerRequest, stepid)
+                .then((value) => value.data);
+            ChallengeQuestionResult? loadedQuestion = await challengeService
+                .getNextQuestionByStepId(stepid)
+                .then((value) => value.data);
             setState(() {
               answerResponse = response;
-              if (answerResponse.isNotEmpty) isLoading = false;
-              // print('answer response data: $answerResponse');
-              // if (answerResponse == "0") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ResponseQuestionChallenge(
-                    laststep: laststep,
-                    stepid: stepid,
-                    questionnumber: questionnumber,
-                    challengeid: challengeid,
-                    textQuestion: question!.nextQuestion!.title,
-                    message: "Dommage",
-                    image: const AssetImage('images/pngs/dommage.png'),
-                    description: "vous avez perdu\nTemps terminé",
+              if (answerResponse != null) isLoading = false;
+
+              if (laststep == false && loadedQuestion!.nextQuestion == null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResponseStepChallenge(
+                      challengeid: challengeid,
+                      message: "Bravo",
+                      image: const AssetImage('images/pngs/Star.png'),
+                      description: "Vous avez gagné ${response!.score} points",
+                    ),
                   ),
-                ),
-              );
-              // }
+                );
+              } else if (laststep == true &&
+                  loadedQuestion!.nextQuestion == null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResponseLastStepChallenge(
+                      message: "Bravo",
+                      image: 'images/pngs/Star.png',
+                      description:
+                          "Vous avez gagné ${response!.score} points \nChallenge terminé",
+                    ),
+                  ),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResponseQuestionChallenge(
+                      laststep: laststep,
+                      stepid: stepid,
+                      questionnumber: questionnumber,
+                      challengeid: challengeid,
+                      textQuestion: question!.nextQuestion!.title,
+                      message: "Dommage",
+                      image: const AssetImage('images/pngs/dommage.png'),
+                      description: "vous avez perdu\nTemps terminé",
+                    ),
+                  ),
+                );
+              }
             });
             cancelTimer();
           } catch (e) {
@@ -150,48 +203,58 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   Future<void> _loadQuestion() async {
     try {
       var challengeService = ChallengeService();
-      ChallengeQuestionResult? loadedQuestion =
-          await challengeService.getNextQuestionByStepId(stepid);
+      ChallengeQuestionResult? loadedQuestion = await challengeService
+          .getNextQuestionByStepId(stepid)
+          .then((value) => value.data);
+      // if (loadedQuestion == null) {
+      //   // Log or print an error message indicating null data
+      //   print('API returned null data for challenge question');
+      //   return;
+      // } else {
       setState(() {
         question = loadedQuestion;
       });
-      if (question!.nextQuestion == null) {
-        if (laststep == true) {
-          // ignore: use_build_context_synchronously
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResponseLastStepChallenge(
-                message: "Bravo",
-                image: 'images/pngs/Star.png',
-                description: "Vous avez gagné \nChallenge terminé",
-              ),
-            ),
-          );
-        } else {
-          // ignore: use_build_context_synchronously
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResponseStepChallenge(
-                challengeid: challengeid,
-                message: "Bravo",
-                image: const AssetImage('images/pngs/Star.png'),
-                description: "Vous avez gagné 80 Coins",
-              ),
-            ),
-          );
-        }
-      } else {
-        // numquestion++;
-        // print("questionnumber : $questionnumber");
-        // print("numquestion : $numquestion");
+      // }
+      // if (question != null && question!.nextQuestion == null) {
+      //   if (laststep == true) {
+      //     // ignore: use_build_context_synchronously
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => ResponseLastStepChallenge(
+      //           message: "Bravo",
+      //           image: 'images/pngs/Star.png',
+      //           description: "Vous avez gagné \nChallenge terminé",
+      //         ),
+      //       ),
+      //     );
+      //   } else {
+      //     // ignore: use_build_context_synchronously
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => ResponseStepChallenge(
+      //           challengeid: challengeid,
+      //           message: "Bravo",
+      //           image: const AssetImage('images/pngs/Star.png'),
+      //           description: "Vous avez gagné 80 Coins",
+      //         ),
+      //       ),
+      //     );
+      //   }
+      // } else {
+      // numquestion++;
+      // print("questionnumber : $questionnumber");
+      // print("numquestion : $numquestion");
+      if (loadedQuestion != null) {
         double remainingTime =
             loadedQuestion.nextQuestion!.counterTime.toDouble();
 
         startTimer(remainingTime);
         startdate = DateTime.now();
       }
+
+      // }
     } catch (e) {
       // ignore: avoid_print
       print('Failed to load next question data: $e');
@@ -203,44 +266,97 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
       setState(() {
         isLoading = true;
       });
+
       DateTime currentDate = DateTime.now();
       Duration difference = currentDate.difference(startdate);
       int differenceInSeconds = difference.inSeconds;
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       double latitude = prefs.getDouble('latitude')!;
       double longitude = prefs.getDouble('longitude')!;
       GeoLocation userGeolocation =
           GeoLocation(longitude: longitude, latitude: latitude);
-      Answer answer = Answer(
-          questionId: question!.nextQuestion!.id,
-          value: selectedChoice,
-          answerTime: differenceInSeconds,
-          questionTypeId: "",
-          score: 0);
-      List<Answer> answers = [answer];
-      ChallengeAnswerRequest answerRequest = ChallengeAnswerRequest(
-          userId: "",
-          answerStatus: "",
-          score: 0,
-          extraTimeUsed: 0,
-          spyUsed: 0,
-          fiftyUsed: 0,
-          deviceConfiguration: "",
-          geoLocation: userGeolocation,
-          answers: answers);
-      // print('GeoLocation: ${userGeolocation.toMap()}');
-      // print('Answer: ${answer.toMap()}');
-      // print('ChallengeAnswerRequest: ${answerRequest.toMap()}');
-      var challengeService = ChallengeService();
-      String response =
-          await challengeService.submitChallengeAnswers(answerRequest, stepid);
-      setState(() {
-        answerResponse = response;
-        isLoading = false;
-        // print('answer response data: $answerResponse');
-        // if (answerResponse == "0") {
 
-        // if (numquestion < questionnumber) {
+      Answer answer = Answer(
+        questionId: question!.nextQuestion!.id,
+        value: selectedChoice,
+        answerTime: differenceInSeconds,
+        questionTypeId: "",
+        score: 0,
+      );
+
+      List<Answer> answers = [answer];
+
+      ChallengeAnswerRequest answerRequest = ChallengeAnswerRequest(
+        userId: "",
+        answerStatus: "",
+        score: 0,
+        extraTimeUsed: 0,
+        spyUsed: 0,
+        fiftyUsed: 0,
+        deviceConfiguration: "",
+        geoLocation: userGeolocation,
+        answers: answers,
+      );
+
+      var challengeService = ChallengeService();
+      ChallengeAnswerResponse? response = await challengeService
+          .submitChallengeAnswers(answerRequest, stepid)
+          .then((value) => value.data);
+
+      // Move the asynchronous part outside setState
+      await _handleResponse(response);
+
+      // Update state with synchronous code
+      setState(() {
+        isLoading = false;
+        isApiCalled = true;
+      });
+    } catch (e) {
+      print('Failed to submit answer response data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _handleResponse(ChallengeAnswerResponse? response) async {
+    try {
+      // Handle your asynchronous code here
+      print('answer response data: ${response!.toMap()}');
+
+      var challengeService = ChallengeService();
+      ChallengeQuestionResult? loadedQuestion = await challengeService
+          .getNextQuestionByStepId(stepid)
+          .then((value) => value.data);
+      Answer currentquestionresponse = response.answers
+          .where((answer) => answer.questionId == question!.nextQuestion!.id)
+          .first;
+      if (laststep == false && loadedQuestion!.nextQuestion == null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResponseStepChallenge(
+              challengeid: challengeid,
+              message: "Bravo",
+              image: const AssetImage('images/pngs/Star.png'),
+              description: "Vous avez gagné ${response.score} points",
+            ),
+          ),
+        );
+      } else if (laststep == true && loadedQuestion!.nextQuestion == null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResponseLastStepChallenge(
+              message: "Bravo",
+              image: 'images/pngs/Star.png',
+              description:
+                  "Vous avez gagné ${response.score} points \nChallenge terminé",
+            ),
+          ),
+        );
+      } else if (currentquestionresponse.score != 0) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -256,14 +372,140 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
             ),
           ),
         );
-        // }
+      } else if (currentquestionresponse.score == 0) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResponseQuestionChallenge(
+              laststep: laststep,
+              stepid: stepid,
+              questionnumber: questionnumber,
+              challengeid: challengeid,
+              textQuestion: question!.nextQuestion!.title,
+              message: "Dommage",
+              image: const AssetImage('images/pngs/dommage.png'),
+              description: "vous avez perdu",
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Failed to handle response: $e');
+    }
+  }
 
-        isApiCalled = true;
-        // }
+  Future<void> useJoker(int joker) async {
+    try {
+      // ignore: avoid_print
+      print("joker $joker");
+      JokerRequest jokerRequest =
+          JokerRequest(questionId: question!.nextQuestion!.id, stepId: stepid);
+      setState(() {
+        isLoading = true;
+      });
+      var jokerService = JokerService();
+      String response = await jokerService.useJoker(jokerRequest, joker);
+      setState(() {
+        // ignore: non_constant_identifier_names
+        String JokerResponse = response;
+
+        if (joker == 0) {
+          final dynamic jsonData = json.decode(JokerResponse);
+          APIResponseModel<List<JokerFiftyResponse>> resultApi =
+              APIResponseModel<List<JokerFiftyResponse>>.fromJson(
+                  jsonData, (data) => fromJsonListJokerFiftyResponse(data));
+          if (resultApi.isSuccess == true) {
+            jokerFifTy = resultApi.data;
+            if (question != null && question!.nextQuestion != null) {
+              List<ChallengeQuestionChoiceItem> choices =
+                  question!.nextQuestion!.choices;
+
+              isChoiceDisabled = List.generate(
+                choices.length,
+                (index) =>
+                    jokerFifTy != null &&
+                    jokerFifTy!.any((joker) => joker.id == choices[index].id),
+              );
+              print("isChoiceDisabled $isChoiceDisabled");
+            }
+          } else {
+            isJokerFiftyButtonDisabled = true;
+            showSnackBar(
+                'Vous avez utilisé tous les jokers Fifty', MyColors.red);
+          }
+        } else if (joker == 1) {
+          final Map<String, dynamic> jsonData = json.decode(JokerResponse);
+          APIResponseModel<JokerExtraTimeResponse> resultApi =
+              APIResponseModel<JokerExtraTimeResponse>.fromJson(
+                  jsonData, (data) => JokerExtraTimeResponse.fromJson(data));
+          if (resultApi.isSuccess == true) {
+            jokerExtraTime = resultApi.data;
+          } else {
+            showSnackBar(
+                'Vous avez utilisé tous les jokers ExtraTime', MyColors.red);
+          }
+        } else if (joker == 2) {
+          final Map<String, dynamic> jsonData = json.decode(JokerResponse);
+          APIResponseModel<List<JokerSpyResponse>> resultApi =
+              APIResponseModel<List<JokerSpyResponse>>.fromJson(
+                  jsonData, (data) => fromJsonListJokerSpyResponse(data));
+          if (resultApi.isSuccess == true) {
+            jokerSpy = resultApi.data;
+            int? maxPercentage = jokerSpy?.fold<int?>(
+              null,
+              (int? max, element) => max == null || element.percentage > max
+                  ? element.percentage
+                  : max,
+            );
+            if (maxPercentage != null) {
+              maxPercentageList = jokerSpy!
+                  .where((element) => element.percentage == maxPercentage)
+                  .toList();
+              for (var i in maxPercentageList!) {
+                print(
+                    "Liste d'éléments avec le pourcentage maximum : ${i.toMap()}");
+              }
+              if (maxPercentage == 0) {
+                maxPercentageList = [];
+                // Affichez votre popup avec le message approprié
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: MyColors.yellow,
+                      title: const Text(
+                        "Désolé",
+                        style: TextStyle(color: MyColors.red),
+                      ),
+                      content: const Text(
+                          style: TextStyle(color: MyColors.white),
+                          "Vous êtes le premier joueur, vous ne pouvez pas utiliser le joker."),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            "OK",
+                            style: TextStyle(color: MyColors.red),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            }
+          } else {
+            isJokerSpyButtonDisabled = true;
+            showSnackBar('Vous avez utilisé tous les jokers Spy', MyColors.red);
+          }
+        }
+        isLoading = false;
       });
     } catch (e) {
       // ignore: avoid_print
-      print('Failed to submit answer response data: $e');
+      print('Failed to use joker: $e');
       setState(() {
         isLoading = false;
       });
@@ -407,14 +649,18 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                         ),
                         Positioned(
                           top: 0,
-                          right: (width - 320) / 2,
+                          right: (width - 310) / 2,
                           child: Row(
                             children: [
                               ElevatedButton(
-                                onPressed: () {
-                                  // _showDiamondPopup('50/50',
-                                  //     'Réduit les choix à deux,\naméliorant les chances\ndu participant de choisir\ncorrectement.');
-                                },
+                                onPressed: isJokerFiftyButtonDisabled
+                                    ? null
+                                    : () {
+                                        openMyModal(
+                                            '50/50',
+                                            'Réduit les choix à deux,améliorant les chancesdu participant de choisir correctement.',
+                                            0);
+                                      },
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 50),
                                   backgroundColor: MyColors.yellow,
@@ -433,7 +679,14 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                               ),
                               const SizedBox(width: 10),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: isJokerSpyButtonDisabled
+                                    ? null
+                                    : () {
+                                        openMyModal(
+                                            'images/pngs/eye.png',
+                                            'Voir le choix le plus populaire parmis les options proposé.',
+                                            2);
+                                      },
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 50),
                                   backgroundColor: MyColors.yellow,
@@ -447,7 +700,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                               ),
                               const SizedBox(width: 10),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  openMyModal(
+                                      'images/pngs/watch.png',
+                                      'Ralentir le temps qui s\'écoule lors de la partie.',
+                                      1);
+                                },
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 50),
                                   backgroundColor: MyColors.yellow,
@@ -467,34 +725,47 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                     const SizedBox(height: 30),
                     if (question != null && question!.nextQuestion != null)
                       Column(
-                        children: question!.nextQuestion!.choices.map((choice) {
+                        children: question!.nextQuestion!.choices
+                            .asMap()
+                            .entries
+                            .map((entry) {
+                          int index = entry.key;
+                          ChallengeQuestionChoiceItem choice = entry.value;
+                          bool isDisabled = isChoiceDisabled.isNotEmpty &&
+                              !isChoiceDisabled[index];
+                          if (maxPercentageList != null) {
+                            isSelected = maxPercentageList!.any(
+                                (element) => element.choiceId == choice.id);
+                          }
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  selectedChoiceIndex = question!
-                                      .nextQuestion!.choices
-                                      .indexOf(choice);
-                                });
-                                selectedChoice =
-                                    choice.value; // Update the global variable
+                                if (!isDisabled) {
+                                  setState(() {
+                                    selectedChoiceIndex = index;
+                                  });
+                                  selectedChoice = choice.value;
+                                }
                               },
                               child: SizedBox(
                                 width: width - 50,
                                 child: Card(
-                                  color: selectedChoiceIndex ==
-                                          question!.nextQuestion!.choices
-                                              .indexOf(choice)
-                                      ? MyColors.yellow.withOpacity(
-                                          0.7) // Couleur avec opacité réduite
-                                      : Colors
-                                          .transparent, // Transparent si non sélectionné
+                                  color: isDisabled
+                                      ? Colors.grey.withOpacity(0.7)
+                                      : selectedChoiceIndex ==
+                                              question!.nextQuestion!.choices
+                                                  .indexOf(choice)
+                                          ? MyColors.yellow.withOpacity(0.7)
+                                          : Colors.transparent,
                                   elevation: 4.0,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
-                                    side: const BorderSide(
-                                      color: Colors.white,
+                                    side: BorderSide(
+                                      color: isSelected
+                                          ? MyColors.yellow
+                                          : Colors
+                                              .white, // Change the border color here
                                       width: 2.0,
                                     ),
                                   ),
@@ -502,10 +773,12 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                                     padding: const EdgeInsets.all(16.0),
                                     child: Text(
                                       choice.value,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                        color: isDisabled
+                                            ? Colors.grey
+                                            : Colors.white,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -562,48 +835,140 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     );
   }
 
-  // void _showDiamondPopup(String title, String contenu) {
-  // YYDialog().build(context)
-  //   ..width = 300
-  //   ..height = 300
-  //   ..widget(DiamondShapeBackground(
-  //     width: 300,
-  //     height: 300,
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Padding(
-  //           padding:
-  //               const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
-  //           child: Text(
-  //             title,
-  //             style: const TextStyle(
-  //               fontSize: 20.0,
-  //               color: Colors.white,
-  //             ),
-  //             textAlign: TextAlign.center,
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: Text(
-  //             contenu,
-  //             style: const TextStyle(
-  //               fontSize: 15.0,
-  //               color: Colors.white,
-  //             ),
-  //             textAlign: TextAlign.center,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   ))
-  //   ..show();
-  // }
+  void openMyModal(String title, String contenu, int joker) {
+    GlobalKey? dialogKey = GlobalKey();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // ignore: deprecated_member_use
+        return WillPopScope(
+          onWillPop: () async {
+            return true;
+          },
+          child: jokerDialog(dialogKey, context, title, contenu, joker),
+        );
+      },
+    );
+  }
+
+  Widget jokerDialog(GlobalKey? dialogKey, BuildContext context, dynamic title,
+      String contenu, int joker) {
+    return AlertDialog(
+      key: dialogKey,
+      actionsAlignment: MainAxisAlignment.center,
+      backgroundColor: MyColors.transparent,
+      content: Stack(
+        children: [
+          SvgPicture.asset(
+            'images/svgs/popup.svg',
+            width: 300,
+            height: 300,
+          ),
+          Positioned(
+            top: 50,
+            left: 80,
+            child: _buildTitleWidget(title),
+          ),
+          Positioned(
+            top: 90,
+            left: 20,
+            width: 200,
+            child: Text(
+              style: const TextStyle(color: MyColors.white),
+              contenu,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Positioned(
+            width: 80,
+            left: 30,
+            bottom: 0,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                alignment: Alignment.center,
+              ),
+              onPressed: () {
+                useJoker(joker);
+                // disableUnselectedChoices();
+                Navigator.of(context).pop();
+              },
+              child: SvgPicture.asset(
+                'images/svgs/confirm.svg',
+                width: 70,
+                height: 70,
+              ),
+            ),
+          ),
+          Positioned(
+            width: 80,
+            right: 30,
+            bottom: 0,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                alignment: Alignment.center,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: SvgPicture.asset(
+                'images/svgs/return.svg',
+                width: 70,
+                height: 70,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTitleWidget(dynamic title) {
+    if (title is String) {
+      return title.contains('.png') ||
+              title.contains('.jpg') ||
+              title.contains('.jpeg')
+          ? SizedBox(
+              child: Image.asset(
+              title,
+              width: 60,
+              height: 30,
+            ))
+          : Text(
+              title,
+              style: const TextStyle(
+                color: MyColors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            );
+    } else if (title is Widget) {
+      return title;
+    } else {
+      return Container();
+    }
+  }
 
   @override
   void dispose() {
     cancelTimer();
     super.dispose();
+  }
+
+  void showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          backgroundColor: MyColors.white,
+          textColor: MyColors.black,
+          label: 'Fermer',
+          onPressed: () {},
+        ),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(20),
+      ),
+    );
   }
 }
