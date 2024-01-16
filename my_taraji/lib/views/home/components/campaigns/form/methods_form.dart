@@ -1,3 +1,5 @@
+import 'package:my_taraji/views/home/components/campaigns/type/smiley.dart';
+
 import '../../../import.dart';
 
 Answer createAnswer(String questionId, String questionTypeId, String value) {
@@ -54,17 +56,39 @@ Future<CampaignResponse> submitForm({
                                         campaign.questionCampaign![index]
                                             .questionType,
                                         element.selectController.text)
-                                    : element is RadioInput
+                                    : element is FormWithImage
                                         ? createAnswer(
                                             campaign
                                                 .questionCampaign![index].id,
                                             campaign.questionCampaign![index]
                                                 .questionType,
-                                            element.radioController.text)
-                                        : Answer(
-                                            questionId: "",
-                                            questionTypeId: "",
-                                            questionAnswers: []);
+                                            element
+                                                .formWithImageController.text)
+                                        : element is RadioInput
+                                            ? createAnswer(
+                                                campaign
+                                                    .questionCampaign![index]
+                                                    .id,
+                                                campaign
+                                                    .questionCampaign![index]
+                                                    .questionType,
+                                                element.radioController.text)
+                                            : element is FormulaInput
+                                                ? createAnswer(
+                                                    campaign
+                                                        .questionCampaign![
+                                                            index]
+                                                        .id,
+                                                    campaign
+                                                        .questionCampaign![
+                                                            index]
+                                                        .questionType,
+                                                    element
+                                                        .formulaController.text)
+                                                : Answer(
+                                                    questionId: "",
+                                                    questionTypeId: "",
+                                                    questionAnswers: []);
   }).toList();
 
   GeoLocation geoLocation = GeoLocation(
@@ -115,7 +139,7 @@ Future<CampaignResponse> submitForm({
     deviceConfiguration: deviceConfiguration,
     geoLocation: geoLocation,
     score: campaign.rewardCoins,
-    rewards: Reward(coins: campaign.rewardCoins, maxRep: 1, givenRep: 0),
+    // rewards: Reward(coins: campaign.rewardCoins, maxRep: 1, givenRep: 0),
     answers: answers,
   );
 
@@ -132,6 +156,10 @@ List<Widget> manageInput(Campaign campaign) {
   TextEditingController radio = TextEditingController();
   TextEditingController rate = TextEditingController();
   TextEditingController select = TextEditingController();
+  TextEditingController formWithImage = TextEditingController();
+  TextEditingController calculated = TextEditingController();
+  TextEditingController smiley = TextEditingController();
+
   List<Widget> pages = [];
   Map<String, QuestionCampaign> questionTypeToOptions = {};
   if (campaign.questionCampaign != null) {
@@ -185,6 +213,21 @@ List<Widget> manageInput(Campaign campaign) {
       selectController: select,
       question: questionTypeToOptions['select'],
     ),
+    "lead-generation": FormWithImage(
+      campaign: campaign,
+      formWithImageController: formWithImage,
+      question: questionTypeToOptions['lead-generation'],
+    ),
+    "calculated": FormulaInput(
+      campaign: campaign,
+      formulaController: calculated,
+      question: questionTypeToOptions['calculated'],
+    ),
+    "smiley": SmileyInput(
+      campaign: campaign,
+      smileyController: smiley,
+      question: questionTypeToOptions['smiley'],
+    ),
   };
 
   if (campaign.questionCampaign != null) {
@@ -193,7 +236,7 @@ List<Widget> manageInput(Campaign campaign) {
       pages.add(page);
     }
   }
-  print(pages.length);
+
   return pages;
 }
 
@@ -215,6 +258,7 @@ void openDialog(BuildContext context, Campaign campaign) {
 
 Widget campaignDialog(
     Campaign campaign, GlobalKey? dialogKey, BuildContext context) {
+  LocalService localService = LocalService();
   return AlertDialog(
     key: dialogKey,
     actionsAlignment: MainAxisAlignment.center,
@@ -238,6 +282,7 @@ Widget campaignDialog(
           backgroundColor: MyColors.yellow,
         ),
         onPressed: () {
+          localService.getUserData();
           Navigator.of(context).pop();
         },
         child: const Text(
@@ -246,5 +291,23 @@ Widget campaignDialog(
         ),
       ),
     ],
+  );
+}
+
+showMySnackBar(String message, Color color, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+      duration: const Duration(seconds: 5),
+      action: SnackBarAction(
+        backgroundColor: MyColors.white,
+        textColor: MyColors.black,
+        label: 'x',
+        onPressed: () {},
+      ),
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.all(20),
+    ),
   );
 }

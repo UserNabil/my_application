@@ -40,6 +40,12 @@ export 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart
 export 'package:my_taraji/views/home/components/campaigns/type/rating.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/radio.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/select.dart';
+export 'package:my_taraji/views/home/components/campaigns/type/lead_generation.dart';
+export 'package:my_taraji/views/home/components/campaigns/type/formula.dart';
 export 'package:my_taraji/core/models/campaign_type_model.dart';
 export 'package:flutter/foundation.dart';
+export 'package:my_taraji/core/models/api_response_model.dart';
+export 'package:my_taraji/services/local_service.dart';
+export 'package:my_taraji/views/home/components/campaigns/campaign.dart';
+export 'package:url_launcher/url_launcher.dart';
 // export 'package:share_plus/share_plus.dart';

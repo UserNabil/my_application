@@ -1,17 +1,19 @@
 class APIResponseModel<T> {
-  T? data;
   bool isSuccess;
+  T? data;
 
   APIResponseModel({
-    this.data,
     this.isSuccess = false,
+    this.data,
   });
 
   factory APIResponseModel.fromJson(
       Map<String, dynamic> json, Function fromJsonT) {
     return APIResponseModel(
-      data: json['Data'] != null ? fromJsonT(json['Data']) : null,
       isSuccess: json['IsSuccess'] ?? false,
+      data: json['Data'] != null && json['IsSuccess']
+          ? fromJsonT(json['Data'])
+          : null,
     );
   }
 }

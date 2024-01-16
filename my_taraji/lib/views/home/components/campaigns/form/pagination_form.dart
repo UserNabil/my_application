@@ -14,7 +14,7 @@ class PaginationFormState extends State<PaginationForm> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int currentPage = 0;
   bool isLoading = false;
-
+  bool isSuccess = false;
   @override
   initState() {
     super.initState();
@@ -27,14 +27,18 @@ class PaginationFormState extends State<PaginationForm> {
     });
   }
 
-  _submitForm() async {
+  Future<bool> _submitForm() async {
     CampaignService campaignService = CampaignService();
     CampaignResponse response = await submitForm(
       pages: pages,
       campaign: widget.campaign,
     );
     if (formKey.currentState!.validate()) {
-      await campaignService.submitCampaignAnswers(response);
+      APIResponseModel<CampaignResponse> finalResponse =
+          await campaignService.submitCampaignAnswers(response);
+      return finalResponse.isSuccess;
+    } else {
+      return false;
     }
   }
 
@@ -105,7 +109,8 @@ class PaginationFormState extends State<PaginationForm> {
               style: TextStyle(color: MyColors.white),
             ),
           ),
-        if (currentPage == pages.length - 1)
+        if (currentPage == pages.length - 1 &&
+            pages[currentPage] is! FormWithImage)
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: MyColors.yellow,
@@ -117,17 +122,25 @@ class PaginationFormState extends State<PaginationForm> {
                       setState(() {
                         isLoading = true;
                       });
-
                       try {
-                        _submitForm();
+                        isSuccess = await _submitForm();
                       } finally {
-                        setState(
-                          () {
-                            isLoading = false;
-                            Navigator.of(context).popAndPushNamed("/");
-                            openDialog(context, widget.campaign);
-                          },
-                        );
+                        isLoading = false;
+                        if (isSuccess) {
+                          setState(
+                            () {
+                              Navigator.of(context).popAndPushNamed("/");
+                              openDialog(context, widget.campaign);
+                            },
+                          );
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          showMySnackBar(
+                            'Envoi de votre demande échoué',
+                            MyColors.red,
+                            context,
+                          );
+                        }
                       }
                     }
                   },

@@ -4,7 +4,13 @@ enum QuestionType {
   emailVerification,
   number,
   textarea,
-  datepicker
+  datepicker,
+  leadGeneration,
+  select,
+  rating,
+  toggle,
+  calculated,
+  smiley
 }
 
 extension QuestionTypeExtension on QuestionType {
@@ -22,6 +28,18 @@ extension QuestionTypeExtension on QuestionType {
         return "textarea";
       case QuestionType.datepicker:
         return "datePicker";
+      case QuestionType.leadGeneration:
+        return "lead-generation";
+      case QuestionType.select:
+        return "select";
+      case QuestionType.rating:
+        return "rating";
+      case QuestionType.toggle:
+        return "toggle";
+      case QuestionType.calculated:
+        return "calculated";
+      case QuestionType.smiley:
+        return "smiley";
     }
   }
 }

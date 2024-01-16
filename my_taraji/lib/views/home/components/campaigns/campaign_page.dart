@@ -11,9 +11,18 @@ class CompaignPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        actionsIconTheme: const IconThemeData(color: MyColors.yellow),
-        title: const Text('Détails de la campagne'),
+        backgroundColor: Colors.black.withOpacity(0.3),
+        iconTheme: const IconThemeData(color: MyColors.white),
+        title: const Text(
+          'Détails de la campagne',
+          style: TextStyle(
+            color: MyColors.white,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       body: CompaignPageDetails(campaign: campaign),
       backgroundColor: MyColors.white,
@@ -51,59 +60,59 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: display(),
-      builder: (context, AsyncSnapshot<Campaign> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 100,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: MyColors.yellow,
-                  ),
-                ),
-              )
-            ],
-          );
-        }
+    // return CampaignPaginationForm(campaign: campaignFromApi);
 
-        if (snapshot.hasError) {
-          return SizedBox(
-            height: 100,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: MyColors.transparent,
-                      backgroundColor: MyColors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    child: const Icon(
-                      TablerIcons.refresh,
-                      color: MyColors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
+    return buildContent(campaignFromApi);
+    // return FutureBuilder(
+    //   future: display(),
+    //   builder: (context, AsyncSnapshot<Campaign> snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return const Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: [
+    //           SizedBox(
+    //             height: 100,
+    //             child: Center(
+    //               child: CircularProgressIndicator(
+    //                 color: MyColors.yellow,
+    //               ),
+    //             ),
+    //           )
+    //         ],
+    //       );
+    //     }
 
-        Campaign campaign = snapshot.data!;
-        return buildContent(campaign);
-      },
-    );
+    //     if (snapshot.hasError) {
+    //       return Center(
+    //         child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           children: [
+    //             ElevatedButton(
+    //               style: ElevatedButton.styleFrom(
+    //                 foregroundColor: MyColors.transparent,
+    //                 backgroundColor: MyColors.transparent,
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(50),
+    //                 ),
+    //               ),
+    //               onPressed: () {
+    //                 setState(() {});
+    //               },
+    //               child: const Icon(
+    //                 TablerIcons.refresh,
+    //                 color: MyColors.red,
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       );
+    //     }
+
+    //     Campaign campaign = snapshot.data!;
+    //     return buildContent(campaign);
+    //   },
+    // );
   }
 
   Widget buildContent(Campaign campaign) {
@@ -112,7 +121,7 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: 200,
+          height: 300,
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(

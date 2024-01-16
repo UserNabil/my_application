@@ -10,7 +10,7 @@ class CampaignResponse {
   DeviceConfiguration deviceConfiguration;
   GeoLocation geoLocation;
   int? score;
-  Reward rewards;
+  // Reward rewards;
   List<Answer> answers;
 
   CampaignResponse({
@@ -23,7 +23,7 @@ class CampaignResponse {
     required this.deviceConfiguration,
     required this.geoLocation,
     this.score,
-    required this.rewards,
+    // required this.rewards,
     required this.answers,
   });
 
@@ -39,10 +39,39 @@ class CampaignResponse {
         deviceConfiguration: DeviceConfiguration.fromJson({}),
         geoLocation: GeoLocation.fromJson({}),
         score: 0,
-        rewards: Reward(coins: 0, maxRep: 0, givenRep: 0),
+        // rewards: Reward(coins: 0, maxRep: 0, givenRep: 0),
         answers: [],
       );
     }
+
+//     {
+//   "campaignId": "string",
+//   "userId": "string",
+//   "answerId": "string",
+//   "status": "string",
+//   "progress": "string",
+//   "addressIp": "string",
+//   "deviceConfiguration": "string",
+//   "geoLocation": {
+//     "longitude": 0,
+//     "latitude": 0
+//   },
+//   "score": 0,
+//   "answers": [
+//     {
+//       "questionId": "string",
+//       "questionTypeId": "string",
+//       "questionAnswers": [
+//         {
+//           "value": "string",
+//           "status": "string",
+//           "interactions": "string",
+//           "comments": "string"
+//         }
+//       ]
+//     }
+//   ]
+// }
 
     return CampaignResponse(
       campaignId: json['campaignId'] ?? '',
@@ -56,11 +85,11 @@ class CampaignResponse {
       ),
       geoLocation: GeoLocation.fromJson(json['geoLocation'] ?? {}),
       score: json['score'] ?? 0,
-      rewards: Reward(
-        coins: json['rewards']['coins'] ?? 0,
-        maxRep: json['rewards']['maxRep'] ?? 0,
-        givenRep: json['rewards']['givenRep'] ?? 0,
-      ),
+      // rewards: Reward(
+      //   coins: json['rewards']['coins'] ?? 0,
+      //   maxRep: json['rewards']['maxRep'] ?? 0,
+      //   givenRep: json['rewards']['givenRep'] ?? 0,
+      // ),
       answers: fromJsonListAnswers(json['answers'] ?? []),
     );
   }
@@ -76,7 +105,7 @@ class CampaignResponse {
       'deviceConfiguration': deviceConfiguration.toJson(),
       'geoLocation': geoLocation.toJson(),
       'score': score ?? 0,
-      'rewards': rewards.toJson(),
+      // 'rewards': rewards.toJson(),
       'answers': answers.map((answer) => answer.toJson()).toList(),
     };
   }

@@ -17,21 +17,13 @@ class CampaignService {
       var response = await http.get(url);
       final Map<String, dynamic> jsonData = json.decode(response.body);
 
-      if (jsonData['IsSuccess'] == true) {
-        if (jsonData['Data'] is List) {
-          try {
-            return APIResponseModel<List<Campaign>>.fromJson(
-              jsonData,
-              (data) => fromJsonListCampaign(data),
-            );
-          } catch (e) {
-            throw Exception('fromJsonListCampaign error : $e');
-          }
-        } else {
-          throw Exception('Unexpected response format: ${response.body}');
-        }
-      } else {
-        throw Exception('API Error: ${jsonData['Data']}');
+      try {
+        return APIResponseModel<List<Campaign>>.fromJson(
+          jsonData,
+          (data) => fromJsonListCampaign(data),
+        );
+      } catch (e) {
+        throw Exception('fromJsonListCampaign error : $e');
       }
     } catch (e) {
       throw Exception('getAllCampaigns from Service error : $e');

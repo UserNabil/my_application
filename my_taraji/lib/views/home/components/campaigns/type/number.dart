@@ -13,7 +13,7 @@ class NumberInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: numberController.text,
+      controller: numberController,
       decoration: InputDecoration(
         labelText: campaign.questionCampaign![0].description,
         prefixIcon: const Icon(TablerIcons.numbers),

@@ -160,6 +160,7 @@ class CompaignCardState extends State<CompaignCard> {
     Navigator.push(
       context,
       MaterialPageRoute(
+        barrierDismissible: true,
         builder: (context) => CompaignPage(campaign: campaign),
       ),
     );
