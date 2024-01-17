@@ -51,6 +51,7 @@ flutter:
     - images/icons/
     - images/pngs/
     - images/pngs/campaigns/
+    - images/pngs/news/
     - images/svgs/
 
   fonts:

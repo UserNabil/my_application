@@ -1,6 +1,3 @@
-import 'package:my_taraji/core/models/all_content.dart';
-import 'package:my_taraji/services/local_service.dart';
-
 import '../import.dart';
 
 class HomeScreen extends StatefulWidget {
