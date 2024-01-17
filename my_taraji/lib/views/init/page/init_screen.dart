@@ -26,31 +26,44 @@ class Initiate extends StatefulWidget {
 }
 
 class InitiateState extends State<Initiate> {
-  int currentSelectedIndex = 0;
+  int currentIndex = 0;
+  String currentContent = '';
   LocalService localService = LocalService();
+
+  List<Widget> pages = [];
 
   @override
   void initState() {
     super.initState();
     localService.getCurrentLocation();
     localService.getUserData();
+    pages = [
+      const HomeScreen(),
+      const MySelfCare(),
+      MyFanPay(
+        function: (index) => updateCurrentIndex(index),
+      ),
+      const MyFanZone(),
+      const MyShop(),
+    ];
   }
 
-  void updateCurrentIndex(int index) {
-    if (index != currentSelectedIndex) {
-      setState(() {
-        currentSelectedIndex = index;
-      });
-    }
+  onPressed(String content) {
+    print(content);
+    setState(() {
+      if (content == 'return') {
+        currentContent = 'return';
+      } else {
+        currentContent = content;
+      }
+    });
   }
 
-  final pages = const [
-    HomeScreen(),
-    MySelfCare(),
-    MyFanPay(),
-    MyFanZone(),
-    MyShop(),
-  ];
+  updateCurrentIndex(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +76,11 @@ class InitiateState extends State<Initiate> {
         children: [
           AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              child: pages[currentSelectedIndex]),
+              child: pages[currentIndex]),
           Align(
             alignment: Alignment.bottomCenter,
             child: MyBottomBar(
-              active: items[currentSelectedIndex],
+              active: items[currentIndex],
               onTap: (item) {
                 updateCurrentIndex(item.index);
               },

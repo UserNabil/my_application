@@ -9,7 +9,7 @@ import 'package:my_taraji/core/models/leader_bord_result.dart';
 import 'package:my_taraji/core/models/next_question_model.dart';
 
 class ChallengeService {
-  late String baseUrl = "http://localhost:5074";
+  late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
   ChallengeService();
 
   Future<APIResponseModel<List<Challenge>>> getAllChallenges() async {

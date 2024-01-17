@@ -53,6 +53,7 @@ flutter:
     - images/pngs/campaigns/
     - images/pngs/news/
     - images/svgs/
+    - images/svgs/fanpay/
 
   fonts:
     - family: Poppins

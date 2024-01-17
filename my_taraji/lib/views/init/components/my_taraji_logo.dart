@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/my_color.dart';
 
-enum TextPosition {
+enum TextPositionLogo {
   bottom,
   left,
   right,
@@ -14,7 +14,7 @@ class MyTarajiLogo extends StatelessWidget {
   final String secondText;
   final double logoSize;
   final double textSize;
-  final TextPosition textPosition;
+  final TextPositionLogo textPosition;
 
   const MyTarajiLogo({
     super.key,
@@ -23,7 +23,7 @@ class MyTarajiLogo extends StatelessWidget {
     required this.secondText,
     required this.logoSize,
     required this.textSize,
-    this.textPosition = TextPosition.bottom,
+    this.textPosition = TextPositionLogo.bottom,
   });
 
   @override
@@ -74,7 +74,7 @@ class MyTarajiLogo extends StatelessWidget {
 
   Widget buildContent() {
     switch (textPosition) {
-      case TextPosition.left:
+      case TextPositionLogo.left:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +83,7 @@ class MyTarajiLogo extends StatelessWidget {
             buildImage(),
           ],
         );
-      case TextPosition.right:
+      case TextPositionLogo.right:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +92,7 @@ class MyTarajiLogo extends StatelessWidget {
             buildTextWidget(),
           ],
         );
-      case TextPosition.top:
+      case TextPositionLogo.top:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +101,7 @@ class MyTarajiLogo extends StatelessWidget {
             buildImage(),
           ],
         );
-      case TextPosition.bottom:
+      case TextPositionLogo.bottom:
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,

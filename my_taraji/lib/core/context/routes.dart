@@ -26,28 +26,28 @@ final Map<String, WidgetBuilder> routes = {
   // MyProfile.routeName: (context) => const MyProfile(),
 };
 
-class CustomPageRoute extends PageRouteBuilder {
-  final String routeName;
+// class CustomPageRoute extends PageRouteBuilder {
+//   final String routeName;
 
-  CustomPageRoute({required this.routeName})
-      : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            final WidgetBuilder? builder = routes[routeName];
-            return builder != null ? builder(context) : const SizedBox.shrink();
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) =>
-              FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
-}
+//   CustomPageRoute({required this.routeName})
+//       : super(
+//           pageBuilder: (
+//             BuildContext context,
+//             Animation<double> animation,
+//             Animation<double> secondaryAnimation,
+//           ) {
+//             final WidgetBuilder? builder = routes[routeName];
+//             return builder != null ? builder(context) : const SizedBox.shrink();
+//           },
+//           transitionsBuilder: (
+//             BuildContext context,
+//             Animation<double> animation,
+//             Animation<double> secondaryAnimation,
+//             Widget child,
+//           ) =>
+//               FadeTransition(
+//             opacity: animation,
+//             child: child,
+//           ),
+//         );
+// }

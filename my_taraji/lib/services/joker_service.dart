@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:my_taraji/core/models/joker_request.dart';
 
 class JokerService {
-  late String baseUrl = "http://localhost:5074";
+  late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
   JokerService();
 
   Future<String> useJoker(JokerRequest answer, int joker) async {

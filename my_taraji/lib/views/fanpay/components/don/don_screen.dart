@@ -1,15 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:my_taraji/views/fanpay/components/don/my_don_screen.dart';
-import '../../../core/components/background_top.dart';
-import '../../../core/components/custom_card.dart';
-import '../../../core/components/top_navigation.dart';
-import '../../../core/theme/my_color.dart';
-
-void main() {
-  runApp(const MaterialApp(
-    home: DonScreen(),
-  ));
-}
+import '../../imports.dart';
 
 class DonScreen extends StatelessWidget {
   const DonScreen({super.key});

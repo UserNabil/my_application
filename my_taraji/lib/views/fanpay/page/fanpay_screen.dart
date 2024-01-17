@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../components/fanpay/fanpay_top.dart';
+import '../imports.dart';
 
 class MyFanPay extends StatelessWidget {
-  const MyFanPay({super.key});
+  const MyFanPay({super.key, this.function});
   static const routeName = '/fanpay';
+  final Function(int)? function;
 
   Future<Map<String, String>> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -36,6 +35,7 @@ class MyFanPay extends StatelessWidget {
   Widget buildPage(Map<String, String> userData) {
     List<Widget> widgetsToDisplay = [
       TopFanPay(userData: userData),
+      FanPayBottomContent(function: (event) => function!(event)),
     ];
 
     return Scaffold(

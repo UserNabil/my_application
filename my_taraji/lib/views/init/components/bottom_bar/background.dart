@@ -12,7 +12,7 @@ class BackgroundBar extends StatelessWidget {
       height: 70,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: currentIndex == 2 ? MyColors.blueDark : MyColors.redDarker,
+        color: currentIndex == 2 ? MyColors.blue1 : MyColors.redDarker,
         borderRadius: const BorderRadius.all(Radius.circular(50)),
       ),
     );

@@ -134,7 +134,7 @@ class ProfileMenuState extends State<ProfileMenu> {
         const Row(
           children: [
             MyProfile(
-              textPosition: TextPosition.right,
+              textPosition: TextPositionLogo.right,
               nameTextColor: MyColors.black,
               coinsTextColor: MyColors.grey,
               photoSize: 60,

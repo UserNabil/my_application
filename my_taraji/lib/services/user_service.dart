@@ -4,7 +4,7 @@ import 'package:my_taraji/core/models/api_response_model.dart';
 import 'package:my_taraji/core/models/user_model.dart';
 
 class UserService {
-  late String baseUrl = "http://localhost:5074";
+  late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
 
   UserService();
 

@@ -1,13 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:my_taraji/core/components/custom_card.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/views/init/components/my_profile.dart';
-import 'package:my_taraji/views/init/components/my_taraji_logo.dart';
-
-import '../../../../core/components/background_top.dart';
+import '../../imports.dart';
 
 class TopFanPay extends StatefulWidget {
   const TopFanPay({super.key, required this.userData});
@@ -22,12 +15,12 @@ class TopFanPayState extends State<TopFanPay> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 450,
+      height: 505,
       child: Stack(
         children: [
           const CustomContainer(
-            colorTo: MyColors.blue,
-            colorFrom: MyColors.blueDark,
+            colorTo: MyColors.blueLinear1,
+            colorFrom: MyColors.blueLinear2,
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -42,16 +35,17 @@ class TopFanPayState extends State<TopFanPay> {
                       secondText: 'Taraji',
                       logoSize: 40,
                       textSize: 17,
-                      textPosition: TextPosition.right,
+                      textPosition: TextPositionLogo.right,
                     ),
                     MyProfile(
                       greetingText: 'Bonjour',
-                      textPosition: TextPosition.left,
+                      textPosition: TextPositionLogo.left,
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
                 AllCards(userData: widget.userData),
+                const FanPayMiddleContent(),
               ],
             ),
           ),

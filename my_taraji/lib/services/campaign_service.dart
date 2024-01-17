@@ -6,7 +6,7 @@ import 'package:my_taraji/core/models/campaign_response.dart';
 import 'package:my_taraji/core/models/compaign_model.dart';
 
 class CampaignService {
-  late String baseUrl = "http://localhost:5074";
+  late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
   CampaignService();
 
   Future<APIResponseModel<List<Campaign>>> getAllCampaigns() async {

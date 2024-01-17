@@ -1,7 +1,9 @@
 import '../../../../import.dart';
 
 class NewsTopContent extends StatelessWidget {
-  const NewsTopContent({super.key});
+  const NewsTopContent({super.key, required this.news});
+
+  final List<News> news;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,14 @@ class NewsTopContent extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              // setState(() {});
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AllContentNews(
+                    news: news,
+                  ),
+                ),
+              );
             },
             child: const Text(
               'VOIR TOUS',

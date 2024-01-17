@@ -90,10 +90,7 @@ class HomeScreenState extends State<HomeScreen> {
         AllDataContent allDataContent = snapshot.data!;
         if (allDataContent.campagnes.isNotEmpty &&
             allDataContent.challenges.isNotEmpty) {
-          return AllContent(
-            campagnes: allDataContent.campagnes,
-            challenges: allDataContent.challenges,
-          );
+          return AllContent(allContent: allDataContent);
         } else {
           return Column(
             children: [
@@ -106,4 +103,3 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-  

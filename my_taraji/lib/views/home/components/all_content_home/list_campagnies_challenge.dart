@@ -1,16 +1,27 @@
 import '../../import.dart';
 
 class AllContent extends StatefulWidget {
-  const AllContent(
-      {super.key, required this.campagnes, required this.challenges});
-  final List<Campaign> campagnes;
-  final List<Challenge> challenges;
+  const AllContent({super.key, required this.allContent});
+  final AllDataContent allContent;
 
   @override
   AllContentState createState() => AllContentState();
 }
 
 class AllContentState extends State<AllContent> {
+  int _currentPage = 0;
+  CarouselController carouselController = CarouselController();
+  List _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      ...widget.allContent.campagnes,
+      ...widget.allContent.challenges,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildContainer(context);
@@ -40,8 +51,8 @@ class AllContentState extends State<AllContent> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => AllContentPage(
-                        compagnes: widget.campagnes,
-                        challenges: widget.challenges,
+                        compagnes: widget.allContent.campagnes,
+                        challenges: widget.allContent.challenges,
                       ),
                     ),
                   );
@@ -62,15 +73,22 @@ class AllContentState extends State<AllContent> {
         Container(
           margin: EdgeInsets.zero,
           child: CarouselSlider(
+            carouselController: carouselController,
             options: CarouselOptions(
+              initialPage: _currentPage,
               height: 195,
               enlargeCenterPage: true,
               autoPlay: true,
               autoPlayInterval: const Duration(milliseconds: 5000),
               enlargeFactor: 0.2,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
             ),
             items: [
-              ...widget.campagnes.map(
+              ...widget.allContent.campagnes.map(
                 (campaign) => CompaignCard(
                   context: context,
                   campaign: campaign,
@@ -79,7 +97,7 @@ class AllContentState extends State<AllContent> {
                   isLister: false,
                 ),
               ),
-              ...widget.challenges.map(
+              ...widget.allContent.challenges.map(
                 (challenge) => ChallengeCard(
                     context: context,
                     challengeName: challenge.title,
@@ -94,6 +112,21 @@ class AllContentState extends State<AllContent> {
               ),
             ],
           ),
+        ),
+        const SizedBox(height: 15),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: _pages
+              .map((item) => AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    width: _currentPage == _pages.indexOf(item) ? 35 : 5,
+                    height: 5,
+                    margin: const EdgeInsets.all(3.0),
+                    decoration: BoxDecoration(
+                        color: MyColors.redLight,
+                        borderRadius: BorderRadius.circular(10.0)),
+                  ))
+              .toList(),
         ),
       ],
     );

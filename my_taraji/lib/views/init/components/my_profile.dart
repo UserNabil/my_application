@@ -5,7 +5,7 @@ import '../../../core/theme/my_color.dart';
 import 'my_taraji_logo.dart';
 
 class MyProfile extends StatelessWidget {
-  final TextPosition textPosition;
+  final TextPositionLogo textPosition;
   final String greetingText;
   final double photoSize;
   final EdgeInsets photoPadding;
@@ -16,7 +16,7 @@ class MyProfile extends StatelessWidget {
 
   const MyProfile({
     super.key,
-    this.textPosition = TextPosition.left,
+    this.textPosition = TextPositionLogo.left,
     this.greetingText = '',
     this.photoSize = 50.0,
     this.photoPadding = const EdgeInsets.all(5.0),
@@ -67,9 +67,9 @@ class MyProfile extends StatelessWidget {
     );
   }
 
-  Widget buildInfo(TextPosition textPosition, String name, String coins) {
+  Widget buildInfo(TextPositionLogo textPosition, String name, String coins) {
     return Column(
-      crossAxisAlignment: textPosition == TextPosition.left
+      crossAxisAlignment: textPosition == TextPositionLogo.left
           ? CrossAxisAlignment.end
           : CrossAxisAlignment.start,
       children: [
@@ -108,7 +108,7 @@ class MyProfile extends StatelessWidget {
         'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
 
     switch (textPosition) {
-      case TextPosition.left:
+      case TextPositionLogo.left:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +118,7 @@ class MyProfile extends StatelessWidget {
             buildPhoto(profileImagePath),
           ],
         );
-      case TextPosition.right:
+      case TextPositionLogo.right:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +128,7 @@ class MyProfile extends StatelessWidget {
             buildInfo(textPosition, pseudo, coins),
           ],
         );
-      case TextPosition.top:
+      case TextPositionLogo.top:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -138,7 +138,7 @@ class MyProfile extends StatelessWidget {
             buildPhoto(profileImagePath),
           ],
         );
-      case TextPosition.bottom:
+      case TextPositionLogo.bottom:
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -63,7 +63,7 @@ class FormWithImageState extends State<FormWithImage> {
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
-          height: 100,
+          height: 90,
           child: InkWell(
             onTap: isLoading
                 ? () {

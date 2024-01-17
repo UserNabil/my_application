@@ -3,12 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: MyDon(),
-  ));
-}
-
 class MyDon extends StatefulWidget {
   const MyDon({super.key});
 

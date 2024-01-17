@@ -37,11 +37,11 @@ class TopScreenState extends State<TopScreen> {
                         secondText: 'Taraji',
                         logoSize: 40,
                         textSize: 17,
-                        textPosition: TextPosition.right,
+                        textPosition: TextPositionLogo.right,
                       ),
                       MyProfile(
                         greetingText: 'Bonjour',
-                        textPosition: TextPosition.left,
+                        textPosition: TextPositionLogo.left,
                       ),
                     ],
                   ),
