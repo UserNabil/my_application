@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
+import 'package:provider/provider.dart';
 import 'core/context/routes.dart';
 import 'core/pages/loading_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => SelfCareProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
