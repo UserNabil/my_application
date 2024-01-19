@@ -2,20 +2,21 @@
 
 import '../../imports.dart';
 
-class TopFanPay extends StatefulWidget {
-  const TopFanPay({super.key, required this.userData});
+class FanPayTop extends StatelessWidget {
+  const FanPayTop({
+    super.key,
+    required this.userData,
+    required this.isOpen,
+    required this.setModalStat,
+  });
   final Map<String, String> userData;
+  final bool isOpen;
+  final Function setModalStat;
 
-  @override
-  TopFanPayState createState() => TopFanPayState();
-}
-
-class TopFanPayState extends State<TopFanPay> {
-  int myIndex = 1;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 505,
+      height: 525,
       child: Stack(
         children: [
           const CustomContainer(
@@ -23,29 +24,32 @@ class TopFanPayState extends State<TopFanPay> {
             colorFrom: MyColors.blueLinear2,
           ),
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
             child: Column(
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyTarajiLogo(
-                      logoImagePath: 'images/pngs/taraji.png',
-                      firstText: 'My',
-                      secondText: 'Taraji',
-                      logoSize: 40,
-                      textSize: 17,
-                      textPosition: TextPositionLogo.right,
-                    ),
-                    MyProfile(
-                      greetingText: 'Bonjour',
-                      textPosition: TextPositionLogo.left,
-                    ),
-                  ],
+                  children: isOpen
+                      ? const [SizedBox(height: 50)]
+                      : const [
+                          MyTarajiLogo(
+                            logoImagePath: 'images/pngs/taraji.png',
+                            firstText: 'My',
+                            secondText: 'Taraji',
+                            logoSize: 40,
+                            textSize: 17,
+                            textPosition: TextPositionLogo.right,
+                          ),
+                          MyProfile(
+                            greetingText: 'Bonjour',
+                            textPosition: TextPositionLogo.left,
+                          ),
+                        ],
                 ),
                 const SizedBox(height: 20),
-                AllCards(userData: widget.userData),
-                const FanPayMiddleContent(),
+                AllCards(userData: userData),
+                FanPayMiddleContent(setModalStat: setModalStat),
               ],
             ),
           ),

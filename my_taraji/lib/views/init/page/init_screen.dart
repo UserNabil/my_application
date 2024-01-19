@@ -40,16 +40,13 @@ class InitiateState extends State<Initiate> {
     pages = [
       const HomeScreen(),
       const MySelfCare(),
-      MyFanPay(
-        function: (index) => updateCurrentIndex(index),
-      ),
+      const MyFanPay(),
       const MyFanZone(),
       const MyShop(),
     ];
   }
 
   onPressed(String content) {
-    print(content);
     setState(() {
       if (content == 'return') {
         currentContent = 'return';

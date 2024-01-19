@@ -1,24 +1,29 @@
-enum FanPayIcon { don, transfer, payment, plus, recharge, retrait }
+// import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:my_taraji/views/fanpay/imports.dart';
 
-extension FanPayIconExtension on FanPayIcon {
+enum FanPayMenuItem { don, transfer, payment, plus, recharge, retrait }
+
+extension FanPayIconExtension on FanPayMenuItem {
   FanPayIconRedirection get value {
     switch (this) {
-      case FanPayIcon.don:
-        return FanPayIconRedirection('images/svgs/fanpay/wallet.svg', 'Don');
-      case FanPayIcon.transfer:
+      case FanPayMenuItem.don:
         return FanPayIconRedirection(
-            'images/svgs/fanpay/transfer.svg', 'Transfert');
-      case FanPayIcon.payment:
+            'images/svgs/fanpay/wallet.svg', 'Don', const MyDon(), null);
+      case FanPayMenuItem.transfer:
         return FanPayIconRedirection(
-            'images/svgs/fanpay/payment.svg', 'Paiement');
-      case FanPayIcon.plus:
-        return FanPayIconRedirection('images/svgs/fanpay/more.svg', 'Plus');
-      case FanPayIcon.recharge:
+            'images/svgs/fanpay/transfer.svg', 'Transfert', Container(), null);
+      case FanPayMenuItem.payment:
         return FanPayIconRedirection(
-            'images/svgs/fanpay/recharge.svg', 'Recharge');
-      case FanPayIcon.retrait:
+            'images/svgs/fanpay/payment.svg', 'Paiement', Container(), null);
+      case FanPayMenuItem.plus:
         return FanPayIconRedirection(
-            'images/svgs/fanpay/retrait.svg', 'Retrait');
+            'images/svgs/fanpay/more.svg', 'Plus', null, null);
+      case FanPayMenuItem.recharge:
+        return FanPayIconRedirection(
+            'images/svgs/fanpay/recharge.svg', 'Recharge', Container(), null);
+      case FanPayMenuItem.retrait:
+        return FanPayIconRedirection(
+            'images/svgs/fanpay/retrait.svg', 'Retrait', Container(), null);
     }
   }
 }
@@ -26,6 +31,8 @@ extension FanPayIconExtension on FanPayIcon {
 class FanPayIconRedirection {
   String svgPath;
   String title;
+  Widget? widget;
+  FanPayAction? action;
 
-  FanPayIconRedirection(this.svgPath, this.title);
+  FanPayIconRedirection(this.svgPath, this.title, this.widget, this.action);
 }

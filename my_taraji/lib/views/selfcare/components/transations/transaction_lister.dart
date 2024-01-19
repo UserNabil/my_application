@@ -6,7 +6,7 @@ class TransactionLister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FakeData fakeData = FakeData();
+    SelfcareFakeData fakeData = SelfcareFakeData();
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
