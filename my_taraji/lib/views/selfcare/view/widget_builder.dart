@@ -4,6 +4,7 @@ import 'package:my_taraji/views/selfcare/components/selfcare/animation_selfcare.
 import 'package:my_taraji/views/selfcare/models/pages_enum.dart';
 import 'package:my_taraji/views/selfcare/view/page_views/profile_page_view.dart';
 import 'package:my_taraji/views/selfcare/view/page_views/self_care_page_view.dart';
+import 'package:my_taraji/views/selfcare/view/page_views/transactions_page_view.dart';
 
 Widget selfCareBody(PageViewEnum pageName) {
   switch (pageName) {
@@ -20,10 +21,7 @@ Widget selfCareBody(PageViewEnum pageName) {
     case PageViewEnum.myTransactions:
       return const AnimationSelfCareMenu(
         animationDirection: 1,
-        child: SizedBox(
-          height: 300,
-          child: Center(child: Text('myTransactions2')),
-        ),
+        child: TransactionsPageView(),
       );
     case PageViewEnum.myStatus:
       return const AnimationSelfCareMenu(
