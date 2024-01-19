@@ -462,16 +462,17 @@ class LeaderBordState extends State<LeaderBord> {
                         decoration: TextDecoration.none,
                       ),
                     ),
-                    buildColoredCard(
-                        "0xFF000000",
-                        leaderbord!.userRank.rank,
-                        leaderbord!.userRank.imageUrl ??
-                            'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
-                        "${leaderbord!.userRank.firstName ?? ""} ${leaderbord!.userRank.lastName ?? ""}",
-                        'images/pngs/level.png',
-                        leaderbord!.userRank.score,
-                        '0xFFFCC213',
-                        '#FFFFFF'),
+                    if (leaderbord != null && leaderbord!.userRank != null)
+                      buildColoredCard(
+                          "0xFF000000",
+                          leaderbord!.userRank!.rank,
+                          leaderbord!.userRank!.imageUrl ??
+                              'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
+                          "${leaderbord!.userRank!.firstName ?? ""} ${leaderbord!.userRank!.lastName ?? ""}",
+                          'images/pngs/level.png',
+                          leaderbord!.userRank!.score,
+                          '0xFFFCC213',
+                          '#FFFFFF'),
                     const SizedBox(height: 20),
                     const Text(
                       'Classement global',
@@ -482,8 +483,8 @@ class LeaderBordState extends State<LeaderBord> {
                         decoration: TextDecoration.none,
                       ),
                     ),
-                    if (leaderbord != null)
-                      for (var data in leaderbord!.ranks)
+                    if (leaderbord != null && leaderbord!.ranks != null)
+                      for (var data in leaderbord!.ranks!)
                         Column(
                           children: [
                             buildColoredCard(

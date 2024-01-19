@@ -1,7 +1,7 @@
 class LeaderBordResult {
-  List<Rank> ranks;
-  Rank userRank;
-  Meta meta;
+  List<Rank>? ranks;
+  Rank? userRank;
+  Meta? meta;
   LeaderBordResult(
       {required this.ranks, required this.userRank, required this.meta});
 
@@ -23,9 +23,9 @@ class LeaderBordResult {
 
   Map<String, dynamic> toMap() {
     return {
-      'ranks': List<dynamic>.from(ranks.map((x) => x.toMap())),
-      'userRank': userRank.toMap(),
-      'meta': meta.toMap()
+      'ranks': List<dynamic>.from(ranks?.map((x) => x.toMap()) ?? []),
+      'userRank': userRank?.toMap(),
+      'meta': meta?.toMap()
     };
   }
 }
