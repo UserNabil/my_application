@@ -1,17 +1,8 @@
-// ignore_for_file: deprecated_member_use
-
 import '../../imports.dart';
 
 class FanPayTop extends StatelessWidget {
-  const FanPayTop({
-    super.key,
-    required this.userData,
-    required this.isOpen,
-    required this.setModalStat,
-  });
+  const FanPayTop({super.key, required this.userData});
   final Map<String, String> userData;
-  final bool isOpen;
-  final Function setModalStat;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +21,7 @@ class FanPayTop extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: isOpen
+                  children: context.watch<FanPayProvider>().isOpen
                       ? const [SizedBox(height: 50)]
                       : const [
                           MyTarajiLogo(
@@ -49,7 +40,7 @@ class FanPayTop extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 AllCards(userData: userData),
-                FanPayMiddleContent(setModalStat: setModalStat),
+                const FanPayMiddleContent(),
               ],
             ),
           ),

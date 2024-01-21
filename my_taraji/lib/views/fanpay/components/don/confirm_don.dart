@@ -1,29 +1,11 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
 
-// ignore: must_be_immutable
-class ConfirmDon extends StatefulWidget {
-  ConfirmDon({
-    super.key,
-    required this.amountController,
-    required this.step,
-    required this.cashType,
-    required this.setStep,
-    required this.setTypeCash,
-  });
-  final TextEditingController amountController;
-  late String step;
-  late bool cashType;
-  late Function(String) setStep;
-  late Function(bool) setTypeCash;
+class ConfirmDon extends StatelessWidget {
+  const ConfirmDon({super.key});
 
-  @override
-  ConfirmDonState createState() => ConfirmDonState();
-}
-
-class ConfirmDonState extends State<ConfirmDon> {
-  DonUI donUI = DonUI();
   @override
   Widget build(BuildContext context) {
+    DonUI donUI = DonUI();
     Widget confirmDon() {
       return Column(
         children: [
@@ -34,7 +16,7 @@ class ConfirmDonState extends State<ConfirmDon> {
           ),
           donUI.divider(20.0),
           Text(
-            "${widget.amountController.text} DT",
+            "${context.watch<DonProvider>().amountController.text} DT",
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 32.0,
@@ -54,9 +36,9 @@ class ConfirmDonState extends State<ConfirmDon> {
                 trackOutlineWidth: MaterialStateProperty.all(0),
                 trackOutlineColor:
                     MaterialStateProperty.all(Colors.transparent),
-                value: widget.cashType,
+                value: context.watch<DonProvider>().isTypeCash,
                 onChanged: (value) {
-                  widget.setTypeCash(value);
+                  context.read<DonProvider>().setTypeCash(value);
                 },
               ),
               donUI.textType2("Coins"),
@@ -67,7 +49,8 @@ class ConfirmDonState extends State<ConfirmDon> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               donUI.textType1("Nombre des coins", false),
-              donUI.textType2("${widget.amountController.text} Coins"),
+              donUI.textType2(
+                  "${context.watch<DonProvider>().amountController.text} Coins"),
             ],
           ),
           donUI.divider(40.0),
@@ -93,7 +76,7 @@ class ConfirmDonState extends State<ConfirmDon> {
               backgroundColor: MyColors.orange,
             ),
             onPressed: () {
-              widget.setStep("finishDon");
+              context.read<DonProvider>().setStep("finishDon");
             },
             child: const Text(
               "Confirmer",

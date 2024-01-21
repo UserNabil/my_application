@@ -2,26 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:my_taraji/core/models/user_model.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
-class MyDon extends StatefulWidget {
+class MyDon extends StatelessWidget {
   const MyDon({super.key});
-
-  @override
-  MyDonState createState() => MyDonState();
-}
-
-class MyDonState extends State<MyDon> {
-  DonUI donUI = DonUI();
-  List<String> amounts = ["1.000", "5.000", "10.000", "15.000", "25.000"];
-  TextEditingController amountController = TextEditingController();
-  String step = "don";
-  bool isSwitched = true;
-  String? userName = "";
-
-  @override
-  void initState() {
-    super.initState();
-    amountController.text = amounts[0];
-  }
 
   Future<UserData> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -42,22 +24,123 @@ class MyDonState extends State<MyDon> {
     return userData;
   }
 
-  setStep(String newStep) {
-    setState(() {
-      step = newStep;
-    });
+  manageStep(userData, BuildContext globalContext) {
+    switch (globalContext.watch<DonProvider>().step) {
+      case "don":
+        // return Container(child: Text("Test"));
+        return don(userData, globalContext);
+      case "confirmDon":
+        return const ConfirmDon();
+      case "finishDon":
+        return const FinishDon();
+    }
   }
 
-  setAmount(String newAmount) {
-    setState(() {
-      amountController.text = newAmount;
-    });
+  buildTop(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.15,
+      width: MediaQuery.of(context).size.width,
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+                context.read<FanPayProvider>().openModal();
+              },
+              child: const Icon(
+                size: 25,
+                TablerIcons.arrow_left,
+                color: MyColors.white,
+              ),
+            ),
+            Text(
+              context.watch<DonProvider>().title,
+              style: const TextStyle(
+                color: MyColors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: context.watch<DonProvider>().step != "finishDon"
+                  ? const SizedBox(height: 22, width: 22)
+                  : const Icon(
+                      size: 20,
+                      TablerIcons.printer,
+                      color: MyColors.white,
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  setCashType(bool newSwitch) {
-    setState(() {
-      isSwitched = newSwitch;
-    });
+  buildMiddle(BuildContext context, UserData userData) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.85,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(32),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              context.watch<DonProvider>().step != "finishDon"
+                  ? SvgPicture.asset(
+                      'images/icons/drag.svg',
+                      height: 5,
+                      width: 5,
+                    )
+                  : Container(),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.80,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Column(children: [
+                      context.watch<DonProvider>().step != "finishDon"
+                          ? Container()
+                          : const SizedBox(height: 50),
+                      manageStep(userData, context),
+                    ]),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildBody(BuildContext context, UserData userData) {
+    return Column(
+      children: [
+        buildTop(context),
+        buildMiddle(context, userData),
+      ],
+    );
   }
 
   @override
@@ -81,35 +164,28 @@ class MyDonState extends State<MyDon> {
         }
 
         final userData = snapshot.data!;
-        return Padding(
-          padding: const EdgeInsets.all(30),
-          child: manageStep(userData),
-        );
+        return context.watch<DonProvider>().step != "finishDon"
+            ? buildBody(context, userData)
+            : Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  buildBody(context, userData),
+                  Positioned(
+                    top: 30,
+                    child: SvgPicture.asset(
+                      "images/svgs/fanpay/finish_don.svg",
+                      height: 160,
+                      width: 160,
+                    ),
+                  )
+                ],
+              );
       },
     );
   }
 
-  manageStep(userData) {
-    switch (step) {
-      case "don":
-        return don(userData);
-      case "confirmDon":
-        return ConfirmDon(
-          amountController: amountController,
-          step: step,
-          cashType: isSwitched,
-          setStep: setStep,
-          setTypeCash: setCashType,
-        );
-      case "finishDon":
-        return FinishDon(
-          amountController: amountController,
-          step: step,
-        );
-    }
-  }
-
-  Widget don(userData) {
+  Widget don(userData, BuildContext context) {
+    DonUI donUI = DonUI();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -156,8 +232,8 @@ class MyDonState extends State<MyDon> {
             SizedBox(
               width: 150,
               child: TextField(
-                readOnly: isSwitched,
-                controller: amountController,
+                readOnly: context.watch<DonProvider>().isTypeCash,
+                controller: context.watch<DonProvider>().amountController,
                 cursorColor: MyColors.blue,
                 style: const TextStyle(
                   fontSize: 40.0,
@@ -191,10 +267,10 @@ class MyDonState extends State<MyDon> {
           child: Wrap(
             spacing: 20.0,
             runSpacing: 20.0,
-            children: amounts.map((amount) {
+            children: context.watch<DonProvider>().amounts.map((amount) {
               return ElevatedButton(
                 onPressed: () {
-                  setAmount(amount);
+                  context.read<DonProvider>().setAmount(amount);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
@@ -271,7 +347,7 @@ class MyDonState extends State<MyDon> {
             await Future.delayed(
               const Duration(seconds: 1),
               () {
-                setStep("confirmDon");
+                context.read<DonProvider>().setStep("confirmDon");
               },
             );
           },

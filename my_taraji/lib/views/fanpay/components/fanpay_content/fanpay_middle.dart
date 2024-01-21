@@ -1,16 +1,16 @@
 import '../../imports.dart';
 
 class FanPayMiddleContent extends StatelessWidget {
-  const FanPayMiddleContent({super.key, required this.setModalStat});
-  final Function setModalStat;
-
+  const FanPayMiddleContent({super.key});
   @override
   Widget build(BuildContext context) {
+    DonUI donUI = DonUI();
     FanPayModal modal = FanPayModal(
       title: '',
       content: Container(),
     );
-    setIconWithTitle(FanPayMenuItem type, BuildContext context, Widget? child,
+
+    setIconWithTitle(FanPayMenuItem type, BuildContext context,
         {Function? onTap}) {
       return GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -20,9 +20,10 @@ class FanPayMiddleContent extends StatelessWidget {
           } else {
             modal = FanPayModal(
               title: type.value.title,
-              content: child!,
+              content: type.value.widget!,
             );
-            modal.show(context, setModalStat, type.value.action);
+            modal.show(context, type.value.action);
+            context.read<FanPayProvider>().openModal();
           }
         },
         child: Column(
@@ -36,7 +37,7 @@ class FanPayMiddleContent extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(18),
-                child: setIconFromSvg(type),
+                child: donUI.setIconFromSvg(type),
               ),
             ),
             const SizedBox(height: 5),
@@ -96,8 +97,7 @@ class FanPayMiddleContent extends StatelessWidget {
                             .where((element) => element.index != 3))
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: setIconWithTitle(
-                                icon, context, icon.value.widget),
+                            child: setIconWithTitle(icon, context),
                           ),
                       ],
                     ),
@@ -116,48 +116,23 @@ class FanPayMiddleContent extends StatelessWidget {
         setIconWithTitle(
           FanPayMenuItem.don,
           context,
-          const MyDon(),
         ),
-        setIconWithTitle(FanPayMenuItem.transfer, context,
-            FanPayMenuItem.transfer.value.widget),
-        setIconWithTitle(FanPayMenuItem.payment, context,
-            FanPayMenuItem.payment.value.widget),
+        setIconWithTitle(
+          FanPayMenuItem.transfer,
+          context,
+        ),
+        setIconWithTitle(
+          FanPayMenuItem.payment,
+          context,
+        ),
         setIconWithTitle(
           FanPayMenuItem.plus,
           context,
-          FanPayMenuItem.plus.value.widget,
           onTap: () {
             showBottomModal(context);
           },
         ),
       ],
-    );
-  }
-
-  setIcon(FanPayMenuItem type) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {},
-      child: Container(
-        decoration: const BoxDecoration(
-          color: MyColors.blueLighter,
-          borderRadius: BorderRadius.all(
-            Radius.circular(50),
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(0),
-          child: setIconFromSvg(type),
-        ),
-      ),
-    );
-  }
-
-  setIconFromSvg(FanPayMenuItem type) {
-    return SvgPicture.asset(
-      FanPayMenuItem.values[type.index].value.svgPath,
-      height: 30,
-      width: 30,
     );
   }
 }

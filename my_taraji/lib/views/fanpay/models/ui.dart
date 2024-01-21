@@ -58,4 +58,31 @@ class DonUI {
       },
     );
   }
+
+  setIcon(FanPayMenuItem type) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {},
+      child: Container(
+        decoration: const BoxDecoration(
+          color: MyColors.blueLighter,
+          borderRadius: BorderRadius.all(
+            Radius.circular(50),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: setIconFromSvg(type),
+        ),
+      ),
+    );
+  }
+
+  setIconFromSvg(FanPayMenuItem type) {
+    return SvgPicture.asset(
+      FanPayMenuItem.values[type.index].value.svgPath,
+      height: 30,
+      width: 30,
+    );
+  }
 }

@@ -1,9 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 import 'core/context/routes.dart';
 import 'core/pages/loading_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => FanPayProvider()),
+      ChangeNotifierProvider(create: (_) => DonProvider()),
+      ChangeNotifierProvider(create: (_) => HistoriqueProvider()),
+      ChangeNotifierProvider(create: (_) => InitProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

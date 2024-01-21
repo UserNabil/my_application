@@ -1,10 +1,8 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 
-// ignore: must_be_immutable
 class FinishDon extends StatefulWidget {
-  FinishDon({super.key, required this.amountController, required this.step});
-  final TextEditingController amountController;
-  late String step;
+  const FinishDon({super.key});
 
   @override
   FinishDonState createState() => FinishDonState();
@@ -92,7 +90,7 @@ class FinishDonState extends State<FinishDon> {
               const SizedBox(height: 20),
               donUI.textType1("Total don", false),
               Text(
-                "${widget.amountController.text} DT",
+                "${context.watch<DonProvider>().amountController.text} DT",
                 style: const TextStyle(
                   color: MyColors.blue,
                   fontWeight: FontWeight.w600,
@@ -109,6 +107,9 @@ class FinishDonState extends State<FinishDon> {
             backgroundColor: MyColors.orange,
           ),
           onPressed: () {
+            context.read<DonProvider>().initAllData();
+            context.read<FanPayProvider>().openModal();
+            context.read<InitProvider>().initCurrentIndex();
             Navigator.popAndPushNamed(context, "/");
           },
           child: const Text(
