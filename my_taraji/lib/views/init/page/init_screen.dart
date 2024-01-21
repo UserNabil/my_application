@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_taraji/services/local_service.dart';
 import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
 import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
+import 'package:my_taraji/views/selfcare/view/self_care_page.dart';
 import '../../fanzone/page/fanzone_screen.dart';
 import '../../home/page/home_screen.dart';
 import '../../shop/page/shop_screen.dart';
@@ -44,7 +45,8 @@ class InitiateState extends State<Initiate> {
         function: (index) => updateCurrentIndex(index),
       ),
       const MyFanZone(),
-      const MyShop(),
+      const SelfCarePage(),
+      //const MyShop(),
     ];
   }
 
