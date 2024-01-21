@@ -64,7 +64,6 @@ class ChallengeService {
       );
       if (response.statusCode == 200) {
         try {
-          print('response.body ${response.body}');
           final Map<String, dynamic> jsonData = json.decode(response.body);
           APIResponseModel<ChallengeAnswerResponse> responseanswer =
               APIResponseModel<ChallengeAnswerResponse>.fromJson(
@@ -90,7 +89,6 @@ class ChallengeService {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print("challenge id response ${response.body}");
         final Map<String, dynamic> jsonData = json.decode(response.body);
 
         APIResponseModel<ChallengeById> challenge =
@@ -113,7 +111,6 @@ class ChallengeService {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print("leaderbord api ${response.body}");
         final Map<String, dynamic> jsonData = json.decode(response.body);
 
         APIResponseModel<LeaderBordResult> leaderbord =

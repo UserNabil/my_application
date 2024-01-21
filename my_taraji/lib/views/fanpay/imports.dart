@@ -11,7 +11,6 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'components/fanpay_content/fanpay_top.dart';
 export 'package:my_taraji/views/fanpay/components/fanpay_content/fanpay_bottom.dart';
 export 'package:my_taraji/views/fanpay/components/fanpay_content/fanpay_middle.dart';
-export 'package:my_taraji/views/selfcare/components/transations/transaction_lister.dart';
 export 'package:my_taraji/views/fanpay/models/fanpay_menu.dart';
 export 'package:my_taraji/views/fanpay/components/transactions/transaction_models.dart';
 export 'package:my_taraji/views/fanpay/components/transactions/transaction_lister.dart';

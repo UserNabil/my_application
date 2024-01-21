@@ -1,108 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:my_taraji/core/assets/images_svg.dart';
 
 import '../../../core/theme/my_color.dart';
 
-class ListCommande extends StatefulWidget {
+class ListCommande extends StatelessWidget {
   const ListCommande({super.key});
 
-  @override
-  ListCommandeState createState() => ListCommandeState();
-}
-
-class ListCommandeState extends State<ListCommande> {
-  List<Map<String, String>> cardData = [
-    {
-      'imageName': 'commandeicon',
-      'title': '120,07 DT',
-      'description': 'TOTAL : 4 ARTICLES',
-      'numCommande': 'N°10309876532568',
-      'date': 'Nov 22,2023',
-      'etat': 'Expédiée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '202,43 DT',
-      'description': 'TOTAL : 2 ARTICLES',
-      'numCommande': 'N°10309876532563',
-      'date': 'Sep 11,2023',
-      'etat': 'Livrée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '114,90 DT',
-      'description': 'TOTAL : 2 ARTICLES',
-      'numCommande': 'N°10309876532565',
-      'date': 'Aout 02,2023',
-      'etat': 'Annulée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '136,07 DT',
-      'description': 'TOTAL : 3 ARTICLES',
-      'numCommande': 'N°10309876532564',
-      'date': 'Juil 22,2023',
-      'etat': 'Livrée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '200,65 DT',
-      'description': 'TOTAL : 4 ARTICLES',
-      'numCommande': 'N°10309876532565',
-      'date': 'Juin 12,2023',
-      'etat': 'Livrée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '50,00 DT',
-      'description': 'TOTAL : 2 ARTICLES',
-      'numCommande': 'N°10309876532562',
-      'date': 'Juin 12,2023',
-      'etat': 'Annulée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '136,07 DT',
-      'description': 'TOTAL : 3 ARTICLES',
-      'numCommande': 'N°10309876532564',
-      'date': 'Juil 22,2023',
-      'etat': 'Livrée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '200,65 DT',
-      'description': 'TOTAL : 4 ARTICLES',
-      'numCommande': 'N°10309876532567',
-      'date': 'Juin 12,2023',
-      'etat': 'Livrée'
-    },
-    {
-      'imageName': 'commandeicon',
-      'title': '50,00 DT',
-      'description': 'TOTAL : 2 ARTICLES',
-      'numCommande': 'N°10309876532563',
-      'date': 'Juin 12,2023',
-      'etat': 'Annulée'
-    }
-    // Add more data as needed
-  ];
-
-  @override
-  Widget build(BuildContext context) {
+  buildContent(BuildContext context) {
+    List<Map<String, String>> cardData = [
+      {
+        'imageName': 'commandeicon',
+        'title': '120,07 DT',
+        'description': 'TOTAL : 4 ARTICLES',
+        'numCommande': 'N°10309876532568',
+        'date': 'Nov 22,2023',
+        'etat': 'Expédiée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '202,43 DT',
+        'description': 'TOTAL : 2 ARTICLES',
+        'numCommande': 'N°10309876532563',
+        'date': 'Sep 11,2023',
+        'etat': 'Livrée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '114,90 DT',
+        'description': 'TOTAL : 2 ARTICLES',
+        'numCommande': 'N°10309876532565',
+        'date': 'Aout 02,2023',
+        'etat': 'Annulée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '136,07 DT',
+        'description': 'TOTAL : 3 ARTICLES',
+        'numCommande': 'N°10309876532564',
+        'date': 'Juil 22,2023',
+        'etat': 'Livrée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '200,65 DT',
+        'description': 'TOTAL : 4 ARTICLES',
+        'numCommande': 'N°10309876532565',
+        'date': 'Juin 12,2023',
+        'etat': 'Livrée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '50,00 DT',
+        'description': 'TOTAL : 2 ARTICLES',
+        'numCommande': 'N°10309876532562',
+        'date': 'Juin 12,2023',
+        'etat': 'Annulée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '136,07 DT',
+        'description': 'TOTAL : 3 ARTICLES',
+        'numCommande': 'N°10309876532564',
+        'date': 'Juil 22,2023',
+        'etat': 'Livrée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '200,65 DT',
+        'description': 'TOTAL : 4 ARTICLES',
+        'numCommande': 'N°10309876532567',
+        'date': 'Juin 12,2023',
+        'etat': 'Livrée'
+      },
+      {
+        'imageName': 'commandeicon',
+        'title': '50,00 DT',
+        'description': 'TOTAL : 2 ARTICLES',
+        'numCommande': 'N°10309876532563',
+        'date': 'Juin 12,2023',
+        'etat': 'Annulée'
+      }
+    ];
+    var screenSize = MediaQuery.of(context).size;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
         SvgPicture.asset(
-          'images/icons/drag.svg',
+          dividerGreySVG,
           height: 5,
           width: 5,
         ),
         const SizedBox(height: 20),
-        const Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.only(left: 15.0),
+            child: Text(
               'Mes Commandes',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -110,27 +104,38 @@ class ListCommandeState extends State<ListCommande> {
                 color: MyColors.black,
               ),
             ),
-          ],
+          ),
         ),
         const SizedBox(height: 20),
-        ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: cardData.length,
-          padding: const EdgeInsets.all(8.0),
-          itemBuilder: (context, index) {
-            return buildCard(
-              cardData[index]['imageName']!,
-              cardData[index]['title']!,
-              cardData[index]['description']!,
-              cardData[index]['numCommande']!,
-              cardData[index]['date']!,
-              cardData[index]['etat']!,
-            );
-          },
+        SizedBox(
+          height: screenSize.height - 400,
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: cardData.length,
+              padding: const EdgeInsets.all(30.0),
+              itemBuilder: (context, index) {
+                return buildCard(
+                  cardData[index]['imageName']!,
+                  cardData[index]['title']!,
+                  cardData[index]['description']!,
+                  cardData[index]['numCommande']!,
+                  cardData[index]['date']!,
+                  cardData[index]['etat']!,
+                );
+              },
+            ),
+          ),
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return buildContent(context);
   }
 
   Widget buildCard(String imageName, String title, String description,
@@ -191,12 +196,13 @@ class ListCommandeState extends State<ListCommande> {
                   children: [
                     const SizedBox(width: 18.0),
                     Text(
-                        style: const TextStyle(
-                          fontSize: 13.0,
-                          color: Colors.red,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        etat),
+                      style: const TextStyle(
+                        fontSize: 13.0,
+                        color: Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      etat,
+                    ),
                   ],
                 ),
               ],

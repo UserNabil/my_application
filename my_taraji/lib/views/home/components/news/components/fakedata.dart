@@ -25,7 +25,7 @@ class FakeData {
   );
 
   Future<List<News>> newNews() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     return [
       News(
         id: '1',

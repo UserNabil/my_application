@@ -1,4 +1,6 @@
 import 'package:flutter/Material.dart';
+import 'package:my_taraji/views/selfcare/components/list_commande.dart';
+import 'package:my_taraji/views/selfcare/components/mon_status.dart';
 import 'package:my_taraji/views/selfcare/components/selfcare/animation_selfcare.dart';
 
 import 'package:my_taraji/views/selfcare/models/pages_enum.dart';
@@ -28,7 +30,7 @@ Widget selfCareBody(PageViewEnum pageName) {
         animationDirection: 1,
         child: SizedBox(
           height: 300,
-          child: Center(child: Text('myStatus')),
+          child: MonStatus(),
         ),
       );
     case PageViewEnum.notifications:
@@ -52,7 +54,7 @@ Widget selfCareBody(PageViewEnum pageName) {
         animationDirection: 1,
         child: SizedBox(
           height: 300,
-          child: Center(child: Text('myOrders')),
+          child: ListCommande(),
         ),
       );
   }

@@ -192,12 +192,14 @@ class PaymentCard extends StatelessWidget {
                     SvgPicture.asset(
                       'images/icons/pay_card.svg',
                       width: 175,
+                      // ignore: deprecated_member_use
                       color: MyColors.orangeLight,
                     ),
                     Padding(
                         padding: const EdgeInsets.only(right: 20),
                         child: SvgPicture.asset(
                           'images/icons/mastercard.svg',
+                          // ignore: deprecated_member_use
                           color: MyColors.white,
                         ))
                   ],

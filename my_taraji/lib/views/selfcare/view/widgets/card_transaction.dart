@@ -1,13 +1,13 @@
 import 'package:flutter/Material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 
-class CardTransation extends StatelessWidget {
+class CardTransaction extends StatelessWidget {
   final String imageName;
   final String title;
   final String description;
   final String xpText;
   final String coin;
-  const CardTransation({
+  const CardTransaction({
     super.key,
     required this.imageName,
     required this.title,

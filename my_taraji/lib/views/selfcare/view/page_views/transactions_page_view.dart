@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_taraji/core/assets/images_svg.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/views/selfcare/components/transations/fakedata.dart';
+import 'package:my_taraji/views/selfcare/models/fakedata.dart';
 import 'package:my_taraji/views/selfcare/view/widgets/card_transaction.dart';
-import 'package:my_taraji/views/selfcare/view/widgets/user_info_widget.dart';
 
 class TransactionsPageView extends StatelessWidget {
-  const TransactionsPageView({
-    super.key,
-  });
+  const TransactionsPageView({super.key});
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    FakeData fakeData = FakeData();
+    SelfcareFakeData fakeData = SelfcareFakeData();
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -50,7 +47,7 @@ class TransactionsPageView extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: fakeData.cardData.length,
                 itemBuilder: (context, index) {
-                  return CardTransation(
+                  return CardTransaction(
                     imageName: fakeData.cardData[index]['imageName']!,
                     title: fakeData.cardData[index]['title']!,
                     description: fakeData.cardData[index]['description']!,
@@ -64,6 +61,5 @@ class TransactionsPageView extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

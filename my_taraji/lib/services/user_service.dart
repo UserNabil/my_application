@@ -22,7 +22,6 @@ class UserService {
           (data) => UserData.fromJson(data),
         );
       } else {
-        print('HTTP Error: ${response.statusCode} - ${response.reasonPhrase}');
         throw Exception('Failed API call: ${response.reasonPhrase}');
       }
     } catch (e) {
