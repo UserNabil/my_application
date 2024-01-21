@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/views/selfcare/components/list_commande.dart';
+import 'package:my_taraji/views/selfcare/helpers/data.dart';
 import '../../../../core/models/row_item.dart';
 import '../../../../core/theme/my_color.dart';
 import '../../../init/components/my_profile.dart';
@@ -105,9 +106,10 @@ class SelfCareMenuState extends State<SelfCareMenu> {
             animationDirection: -1, child: selfContainer());
       case 'profile':
         return AnimationSelfCareMenu(
-            animationDirection: 1,
-            child: ProfileMenu(
-                onPressed: onProfilePressed, profileContent: profileContent));
+          animationDirection: 1,
+          child: ProfileMenu(
+              onPressed: onProfilePressed, profileContent: profileContent),
+        );
       case 'payments':
         return const AnimationSelfCareMenu(
             animationDirection: 1, child: ListTransaction());
@@ -146,13 +148,13 @@ class SelfCareMenuState extends State<SelfCareMenu> {
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: rows.length,
+          itemCount: rowsSelfCare.length,
           itemBuilder: (context, index) {
             return rowItemWidget(
               context: context,
-              title: rows[index].title,
-              location: rows[index].location,
-              icon: rows[index].icon,
+              title: rowsSelfCare[index].title,
+              location: rowsSelfCare[index].location,
+              icon: rowsSelfCare[index].icon,
             );
           },
         ),
@@ -176,36 +178,3 @@ class SelfCareMenuState extends State<SelfCareMenu> {
     );
   }
 }
-
-final List<RowItem> rows = [
-  RowItem(
-    title: 'Mon profil',
-    location: 'profile',
-    icon: TablerIcons.user_circle,
-  ),
-  RowItem(
-    title: 'Mes transactions',
-    location: 'payments',
-    icon: TablerIcons.credit_card,
-  ),
-  RowItem(
-    title: 'Mon status',
-    location: 'statut',
-    icon: TablerIcons.military_award,
-  ),
-  RowItem(
-    title: 'Notifications',
-    location: 'alerts',
-    icon: TablerIcons.bell,
-  ),
-  RowItem(
-    title: 'Parraiange',
-    location: 'sponsorship',
-    icon: TablerIcons.discount_check,
-  ),
-  RowItem(
-    title: 'Mes commandes',
-    location: 'orders',
-    icon: TablerIcons.box_seam,
-  ),
-];

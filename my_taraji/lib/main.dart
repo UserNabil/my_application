@@ -1,11 +1,13 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
+import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
 import 'core/context/routes.dart';
 import 'core/pages/loading_page.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (_) => SelfCareProvider()),
       ChangeNotifierProvider(create: (_) => FanPayProvider()),
       ChangeNotifierProvider(create: (_) => DonProvider()),
       ChangeNotifierProvider(create: (_) => HistoriqueProvider()),
