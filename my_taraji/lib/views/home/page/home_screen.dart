@@ -27,41 +27,85 @@ class HomeScreenState extends State<HomeScreen> {
     ];
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const MyTarajiLogo(
-          logoImagePath: 'images/pngs/taraji.png',
-          firstText: 'My',
-          secondText: 'Taraji',
-          logoSize: 40,
-          textSize: 17,
-          textPosition: TextPositionLogo.right,
-        ),
-        backgroundColor: MyColors.transparent,
-        actions: const [
-          MyProfile(
-            greetingText: 'Bonjour',
-            textPosition: TextPositionLogo.left,
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TopScreen(),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: widgetsToDisplay.length,
-                  itemBuilder: (context, index) {
-                    return widgetsToDisplay[index];
-                  },
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   leadingWidth: 180,
+      //   leading: const MyTarajiLogo(
+      //     logoImagePath: 'images/pngs/taraji.png',
+      //     firstText: 'My',
+      //     secondText: 'Taraji',
+      //     logoSize: 40,
+      //     textSize: 17,
+      //     textPosition: TextPositionLogo.right,
+      //   ),
+      //   backgroundColor: MyColors.transparent,
+      //   actions: const [
+      //     Padding(
+      //       padding: EdgeInsets.only(right: 22.0),
+      //       child: MyProfile(
+      //         greetingText: 'Bonjour',
+      //         textPosition: TextPositionLogo.left,
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          const SliverAppBar(
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: 405.0,
+            leadingWidth: 180,
+            leading: MyTarajiLogo(
+              logoImagePath: 'images/pngs/taraji.png',
+              firstText: 'My',
+              secondText: 'Taraji',
+              logoSize: 40,
+              textSize: 17,
+              textPosition: TextPositionLogo.right,
+            ),
+            backgroundColor: MyColors.red,
+            flexibleSpace: FlexibleSpaceBar(
+              background: TopScreen(),
+            ),
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(right: 22.0),
+                child: MyProfile(
+                  greetingText: 'Bonjour',
+                  textPosition: TextPositionLogo.left,
                 ),
               ),
             ],
           ),
+          // const SliverToBoxAdapter(
+          //   child: TopScreen(),
+          // ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return widgetsToDisplay[index];
+              },
+              childCount: widgetsToDisplay.length,
+            ),
+          ),
         ],
       ),
+      // Column(
+      //   crossAxisAlignment: CrossAxisAlignment.stretch,
+      //   children: [
+      //     const TopScreen(),
+      //     Expanded(
+      //       child: ListView.builder(
+      //         itemCount: widgetsToDisplay.length,
+      //         itemBuilder: (context, index) {
+      //           return widgetsToDisplay[index];
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 
