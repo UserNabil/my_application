@@ -33,9 +33,12 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
   ChallengeById? challenge;
   ChallengeStep? currentstep;
   StepOneCoinChallengeState({required this.challengeid});
+
+  bool isDataLoaded = false;
   @override
   void initState() {
     super.initState();
+    getuserinfo();
     _loadChallenge();
   }
 
@@ -45,6 +48,9 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
         'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
     coins = prefs.getString('coins')!;
     xp = prefs.getString('xp')!;
+    setState(() {
+      isDataLoaded = true;
+    });
   }
 
   Future<void> _loadChallenge() async {
@@ -75,20 +81,23 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getuserinfo(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Container();
-        }
+    return isDataLoaded
+        ? buildContent(context)
+        : const Center(child: CircularProgressIndicator());
+    //  FutureBuilder(
+    //   future: getuserinfo(),
+    //   builder: (context, snapshot) {
+    //     if (snapshot.hasError) {
+    //       return Container();
+    //     }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // return const Text("loading");
-        }
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       // return const Text("loading");
+    //     }
 
-        return buildContent(context);
-      },
-    );
+    //     return buildContent(context);
+    //   },
+    // );
   }
 
   Widget buildContent(BuildContext context) {
