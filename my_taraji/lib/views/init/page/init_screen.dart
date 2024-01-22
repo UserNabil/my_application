@@ -5,7 +5,6 @@ import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
 import 'package:my_taraji/views/selfcare/view/self_care_page.dart';
 import '../../fanzone/page/fanzone_screen.dart';
 import '../../home/page/home_screen.dart';
-import '../../shop/page/shop_screen.dart';
 import '../../selfcare/page/selfcare_screen.dart';
 
 class InitScreen extends StatelessWidget {
@@ -51,6 +50,7 @@ class InitiateState extends State<Initiate> {
   }
 
   onPressed(String content) {
+    // ignore: avoid_print
     print(content);
     setState(() {
       if (content == 'return') {

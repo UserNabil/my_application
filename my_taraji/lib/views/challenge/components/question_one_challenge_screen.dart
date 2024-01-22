@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print, duplicate_ignore
 
 import 'dart:async';
 import 'dart:convert';
@@ -83,11 +83,21 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
   List<bool> isChoiceDisabled = [];
   List<JokerSpyResponse>? maxPercentageList;
   bool isSelected = false;
+  bool isQuestionDataLoaded = false;
   @override
   void initState() {
     super.initState();
     _loadQuestion();
   }
+
+  // Future<bool> initBuilder() async {
+  //   bool questionresult = await _loadQuestion();
+  //   if (questionresult) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   Future<void> startTimer(double counterTime) async {
     const oneSecond = Duration(seconds: 1);
@@ -112,8 +122,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
           isApiCalled = true;
           try {
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            double latitude = prefs.getDouble('latitude')!;
-            double longitude = prefs.getDouble('longitude')!;
+            double latitude = prefs.getDouble('latitude') ?? 0;
+            double longitude = prefs.getDouble('longitude') ?? 0;
             GeoLocation userGeolocation =
                 GeoLocation(longitude: longitude, latitude: latitude);
             Answer answer = Answer(
@@ -191,8 +201,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
               }
             });
             cancelTimer();
+            // ignore: duplicate_ignore
           } catch (e) {
-            // ignore: avoid_print
             print('Failed to submit answer response data: $e');
           }
         }
@@ -200,64 +210,33 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     );
   }
 
-  Future<void> _loadQuestion() async {
+  Future<bool> _loadQuestion() async {
     try {
-      var challengeService = ChallengeService();
-      ChallengeQuestionResult? loadedQuestion = await challengeService
-          .getNextQuestionByStepId(stepid)
-          .then((value) => value.data);
-      // if (loadedQuestion == null) {
-      //   // Log or print an error message indicating null data
-      //   print('API returned null data for challenge question');
-      //   return;
-      // } else {
-      setState(() {
-        question = loadedQuestion;
-      });
-      // }
-      // if (question != null && question!.nextQuestion == null) {
-      //   if (laststep == true) {
-      //     // ignore: use_build_context_synchronously
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => ResponseLastStepChallenge(
-      //           message: "Bravo",
-      //           image: 'images/pngs/Star.png',
-      //           description: "Vous avez gagné \nChallenge terminé",
-      //         ),
-      //       ),
-      //     );
-      //   } else {
-      //     // ignore: use_build_context_synchronously
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => ResponseStepChallenge(
-      //           challengeid: challengeid,
-      //           message: "Bravo",
-      //           image: const AssetImage('images/pngs/Star.png'),
-      //           description: "Vous avez gagné 80 Coins",
-      //         ),
-      //       ),
-      //     );
-      //   }
-      // } else {
-      // numquestion++;
-      // print("questionnumber : $questionnumber");
-      // print("numquestion : $numquestion");
-      if (loadedQuestion != null) {
-        double remainingTime =
-            loadedQuestion.nextQuestion!.counterTime.toDouble();
+      if (!isQuestionDataLoaded) {
+        var challengeService = ChallengeService();
+        ChallengeQuestionResult? loadedQuestion = await challengeService
+            .getNextQuestionByStepId(stepid)
+            .then((value) => value.data);
 
-        startTimer(remainingTime);
-        startdate = DateTime.now();
+        if (loadedQuestion != null) {
+          double remainingTime =
+              loadedQuestion.nextQuestion!.counterTime.toDouble();
+
+          startTimer(remainingTime);
+          startdate = DateTime.now();
+
+          setState(() {
+            question = loadedQuestion;
+            isQuestionDataLoaded = true;
+          });
+        }
       }
-
+      return isQuestionDataLoaded;
       // }
     } catch (e) {
       // ignore: avoid_print
       print('Failed to load next question data: $e');
+      return false;
     }
   }
 
@@ -272,8 +251,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
       int differenceInSeconds = difference.inSeconds;
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      double latitude = prefs.getDouble('latitude')!;
-      double longitude = prefs.getDouble('longitude')!;
+      double latitude = prefs.getDouble('latitude') ?? 0;
+      double longitude = prefs.getDouble('longitude') ?? 0;
       GeoLocation userGeolocation =
           GeoLocation(longitude: longitude, latitude: latitude);
 
@@ -518,6 +497,15 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    return isQuestionDataLoaded
+        ? buildContent(context)
+        : const Center(
+            child: CircularProgressIndicator(
+            color: MyColors.yellow,
+          ));
+  }
+
+  Widget buildContent(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var cardHeight = 200.0;
     double progressBarWidth = max(width - 50, 0.0);
@@ -788,9 +776,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                             ),
                           );
                         }).toList(),
-                      )
-                    else
-                      const CircularProgressIndicator(),
+                      ),
+                    // else
+                    //   const CircularProgressIndicator(),
                     const SizedBox(height: 30),
                     ElevatedButton(
                         onPressed: isLoading
@@ -865,8 +853,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
             height: 300,
           ),
           Positioned(
+            width: 110,
             top: 50,
-            left: 80,
+            left: 150 / 2,
             child: _buildTitleWidget(title),
           ),
           Positioned(
@@ -933,12 +922,14 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
               width: 60,
               height: 30,
             ))
-          : Text(
-              title,
-              style: const TextStyle(
-                color: MyColors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+          : Center(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: MyColors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             );
     } else if (title is Widget) {

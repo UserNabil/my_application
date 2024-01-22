@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/views/selfcare/components/list_commande.dart';
 import 'package:my_taraji/views/selfcare/helpers/data.dart';
-import '../../../../core/models/row_item.dart';
 import '../../../../core/theme/my_color.dart';
 import '../../../init/components/my_profile.dart';
 import '../../../init/components/my_taraji_logo.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/models/challenge_by_id_model.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
@@ -32,72 +33,146 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
   final String challengeid;
   ChallengeById? challenge;
   ChallengeStep? currentstep;
+  bool isUserInfoDataLoaded = false;
+  bool isChallengeDataLoaded = false;
   StepOneCoinChallengeState({required this.challengeid});
 
   bool isDataLoaded = false;
   @override
   void initState() {
     super.initState();
-    getuserinfo();
-    _loadChallenge();
   }
 
-  Future<void> getuserinfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    profileImagePath = prefs.getString('profileImagePath') ??
-        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
-    coins = prefs.getString('coins')!;
-    xp = prefs.getString('xp')!;
-    setState(() {
-      isDataLoaded = true;
-    });
+  Future<bool> initBuilder() async {
+    bool userresult = await getuserinfo();
+    bool challengeresult = await _loadChallenge();
+    if (userresult && challengeresult) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  Future<void> _loadChallenge() async {
-    try {
-      var challengeService = ChallengeService();
-      ChallengeById? loadedChallenge = await challengeService
-          .getChallengeById(challengeid)
-          .then((value) => value.data);
-
-      List<ChallengeStep> unfinishedSteps = loadedChallenge!.steps
-          .where((step) => step.status != "done")
-          .toList();
-      if (unfinishedSteps.length == 1) {
-        laststep = true;
-      }
-      if (unfinishedSteps.isNotEmpty) {
-        currentstep = unfinishedSteps.first;
-      }
-
+  Future<bool> getuserinfo() async {
+    if (!isUserInfoDataLoaded) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      profileImagePath = prefs.getString('profileImagePath') ??
+          'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
+      coins = prefs.getString('coins') ?? '0';
+      xp = prefs.getString('xp') ?? '0';
       setState(() {
-        challenge = loadedChallenge;
+        isUserInfoDataLoaded = true;
       });
+    }
+    return isUserInfoDataLoaded;
+  }
+
+  Future<bool> _loadChallenge() async {
+    try {
+      if (!isChallengeDataLoaded) {
+        var challengeService = ChallengeService();
+        ChallengeById? loadedChallenge = await challengeService
+            .getChallengeById(challengeid)
+            .then((value) => value.data);
+        if (loadedChallenge != null) {
+          List<ChallengeStep> unfinishedSteps = loadedChallenge.steps
+              .where((step) => step.status != "done")
+              .toList();
+          if (unfinishedSteps.length == 1) {
+            laststep = true;
+          }
+          if (unfinishedSteps.isNotEmpty) {
+            currentstep = unfinishedSteps.first;
+          }
+
+          setState(() {
+            challenge = loadedChallenge;
+            isChallengeDataLoaded = true;
+          });
+        }
+      }
+      return isChallengeDataLoaded;
     } catch (e) {
       // ignore: avoid_print
       print('Failed to load challenge data by id: $e');
+      return false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return isDataLoaded
-        ? buildContent(context)
-        : const Center(child: CircularProgressIndicator());
-    //  FutureBuilder(
-    //   future: getuserinfo(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.hasError) {
-    //       return Container();
-    //     }
-
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       // return const Text("loading");
-    //     }
-
-    //     return buildContent(context);
-    //   },
-    // );
+    return FutureBuilder(
+      future: initBuilder(),
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox(
+            height: 100,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: MyColors.yellow,
+              ),
+            ),
+          );
+        }
+        if (snapshot.hasError) {
+          return SizedBox(
+            height: 100,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyColors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      TablerIcons.refresh,
+                      color: MyColors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        bool res = snapshot.data!;
+        if (!res) {
+          return SizedBox(
+            height: 100,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyColors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      TablerIcons.refresh,
+                      color: MyColors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return buildContent(context);
+        }
+      },
+    );
   }
 
   Widget buildContent(BuildContext context) {
@@ -362,7 +437,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
               backgroundColor: MyColors.yellow,
               content: SizedBox(
                 width: 150,
-                height: 310,
+                height: 305,
                 child: Padding(
                   padding: const EdgeInsets.only(
                     top: 30,
@@ -411,7 +486,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
             ),
             Positioned(
               bottom: MediaQuery.of(context).size.height *
-                  0.26, // 10% de la hauteur de l'écran depuis le bas
+                  0.22, // 10% de la hauteur de l'écran depuis le bas
               left: 0,
               right: 0,
               child: Center(

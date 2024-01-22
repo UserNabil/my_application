@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_taraji/core/models/api_response_model.dart';
@@ -64,7 +66,6 @@ class ChallengeService {
       );
       if (response.statusCode == 200) {
         try {
-          print('response.body ${response.body}');
           final Map<String, dynamic> jsonData = json.decode(response.body);
           APIResponseModel<ChallengeAnswerResponse> responseanswer =
               APIResponseModel<ChallengeAnswerResponse>.fromJson(
@@ -90,7 +91,6 @@ class ChallengeService {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print("challenge id response ${response.body}");
         final Map<String, dynamic> jsonData = json.decode(response.body);
 
         APIResponseModel<ChallengeById> challenge =

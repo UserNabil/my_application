@@ -40,26 +40,46 @@ class LeaderBordState extends State<LeaderBord> {
   ChallengeById? challenge;
   LeaderBordResult? leaderbord;
   ChallengeService challengeService = ChallengeService();
-  bool isDataLoaded = false;
+  bool isLeaderBordDataLoaded = false;
+  bool isUserInfoDataLoaded = false;
+  bool isChallengeDataLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    getuserinfo();
-    _loadChallenge();
+    // getuserinfo();
+    // _loadChallenge();
+    // loadLeaderBordInfo();
   }
 
-  Future<void> getuserinfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    profileImagePath = prefs.getString('profileImagePath') ??
-        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
-    coins = prefs.getString('coins') ?? '0';
-    xp = prefs.getString('xp') ?? '0';
+  Future<bool> initBuilder() async {
+    bool userresult = await getuserinfo();
+    bool challengeresult = await _loadChallenge();
+    bool leaderresult = await loadLeaderBordInfo();
+    if (userresult && challengeresult && leaderresult) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  Future<LeaderBordResult?> loadLeaderBordInfo() async {
+  Future<bool> getuserinfo() async {
+    if (!isUserInfoDataLoaded) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      profileImagePath = prefs.getString('profileImagePath') ??
+          'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
+      coins = prefs.getString('coins') ?? '0';
+      xp = prefs.getString('xp') ?? '0';
+      setState(() {
+        isUserInfoDataLoaded = true;
+      });
+    }
+    return isUserInfoDataLoaded;
+  }
+
+  Future<bool> loadLeaderBordInfo() async {
     try {
-      if (!isDataLoaded) {
+      if (!isLeaderBordDataLoaded) {
         LeaderBordResult? loadedLeaderBord = await challengeService
             .getLeaderBordInfoByChallengeId(challengeid)
             .then((value) => value.data);
@@ -67,45 +87,47 @@ class LeaderBordState extends State<LeaderBord> {
         setState(() {
           leaderbord = loadedLeaderBord;
           if (leaderbord != null) {
-            isDataLoaded = true;
+            isLeaderBordDataLoaded = true;
           }
         });
         // ignore: avoid_print
         print('leader bord: ${leaderbord?.toMap()}');
-        return leaderbord;
-      } else {
-        return leaderbord;
       }
+      return isLeaderBordDataLoaded;
     } catch (e) {
       // ignore: avoid_print
       print('Failed to load leader bord data: $e');
-      return null;
+      return false;
     }
   }
 
-  Future<void> _loadChallenge() async {
+  Future<bool> _loadChallenge() async {
     try {
-      var challengeService = ChallengeService();
-      ChallengeById? loadedChallenge = await challengeService
-          .getChallengeById(challengeid)
-          .then((value) => value.data);
-      if (loadedChallenge != null) {
-        List<ChallengeStep> unfinishedSteps = loadedChallenge.steps
-            .where((step) => step.status != "done")
-            .toList();
-        setState(() {
-          if (unfinishedSteps.isEmpty) {
-            hasstep = false;
-          }
-        });
-      } else {
-        hasstep = false;
+      if (!isChallengeDataLoaded) {
+        var challengeService = ChallengeService();
+        ChallengeById? loadedChallenge = await challengeService
+            .getChallengeById(challengeid)
+            .then((value) => value.data);
+        if (loadedChallenge != null) {
+          List<ChallengeStep> unfinishedSteps = loadedChallenge.steps
+              .where((step) => step.status != "done")
+              .toList();
+          setState(() {
+            if (unfinishedSteps.isEmpty) {
+              hasstep = false;
+            }
+
+            isChallengeDataLoaded = true;
+          });
+        }
+        // ignore: avoid_print
+        print("has step $hasstep");
       }
-      // ignore: avoid_print
-      print("has step $hasstep");
+      return isChallengeDataLoaded;
     } catch (e) {
       // ignore: avoid_print
       print('Failed to load challenge data by id: $e');
+      return false;
     }
   }
 
@@ -221,10 +243,9 @@ class LeaderBordState extends State<LeaderBord> {
 
   @override
   Widget build(BuildContext context) {
-    LeaderBordResult? leaderbord;
     return FutureBuilder(
-      future: loadLeaderBordInfo(),
-      builder: (context, AsyncSnapshot<LeaderBordResult?> snapshot) {
+      future: initBuilder(),
+      builder: (context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
             height: 100,
@@ -244,7 +265,7 @@ class LeaderBordState extends State<LeaderBord> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: MyColors.transparent,
+                      backgroundColor: MyColors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -262,10 +283,8 @@ class LeaderBordState extends State<LeaderBord> {
             ),
           );
         }
-
-        leaderbord = snapshot.data;
-        print("lederbors snapshot $leaderbord");
-        if (leaderbord == null) {
+        bool res = snapshot.data!;
+        if (!res) {
           return SizedBox(
             height: 100,
             child: Center(
@@ -274,20 +293,13 @@ class LeaderBordState extends State<LeaderBord> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: MyColors.transparent,
+                      backgroundColor: MyColors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    onPressed: () async {
-                      // Perform asynchronous operation
-                      LeaderBordResult? newLeaderbord =
-                          await loadLeaderBordInfo();
-
-                      // Update the state inside a call to setState
-                      setState(() {
-                        leaderbord = newLeaderbord;
-                      });
+                    onPressed: () {
+                      setState(() {});
                     },
                     child: const Icon(
                       TablerIcons.refresh,
@@ -306,17 +318,6 @@ class LeaderBordState extends State<LeaderBord> {
   }
 
   Widget buildContent(BuildContext context) {
-    //var width = MediaQuery.of(context).size.width;
-    // if (leaderbord != null) {
-    //   return const SizedBox(
-    //     height: 100,
-    //     child: Center(
-    //       child: CircularProgressIndicator(
-    //         color: MyColors.yellow,
-    //       ),
-    //     ),
-    //   );
-    // }
     return Scaffold(
       body: Container(
         alignment: Alignment.center,

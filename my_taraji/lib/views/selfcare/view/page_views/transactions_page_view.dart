@@ -4,7 +4,6 @@ import 'package:my_taraji/core/assets/images_svg.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/views/selfcare/components/transations/fakedata.dart';
 import 'package:my_taraji/views/selfcare/view/widgets/card_transaction.dart';
-import 'package:my_taraji/views/selfcare/view/widgets/user_info_widget.dart';
 
 class TransactionsPageView extends StatelessWidget {
   const TransactionsPageView({
@@ -64,6 +63,5 @@ class TransactionsPageView extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }
