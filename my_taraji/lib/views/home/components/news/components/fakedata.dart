@@ -17,7 +17,6 @@ class FakeData {
   ];
 
   Social social = Social(
-    id: '1',
     like: '143,000',
     comment: '14,000',
     views: '2,150,000',
@@ -35,7 +34,6 @@ class FakeData {
         admin: 'Brian Imanuel',
         texts: texts,
         social: Social(
-          id: '1',
           like: '6,234',
           comment: '1,234',
           views: '1,234,000',
@@ -50,7 +48,6 @@ class FakeData {
         admin: 'Rosa Melano',
         texts: texts2,
         social: Social(
-          id: '2',
           like: '143,000',
           comment: '14,000',
           views: '2,150,000',
@@ -65,7 +62,6 @@ class FakeData {
         admin: 'Joshua Christian',
         texts: texts,
         social: Social(
-          id: '3',
           like: '2,500',
           comment: '1,423',
           views: '10,000',

@@ -48,7 +48,6 @@ export 'package:my_taraji/core/models/api_response_model.dart';
 export 'package:my_taraji/services/local_service.dart';
 export 'package:my_taraji/views/home/components/campaigns/campaign.dart';
 export 'package:url_launcher/url_launcher.dart';
-export 'package:my_taraji/core/models/news_models.dart';
 export 'package:my_taraji/views/home/components/news/components/carousel/carousel_item.dart';
 export 'package:my_taraji/views/home/components/news/components/carousel/carousel_builder.dart';
 export 'package:my_taraji/views/home/components/news/components/content/top_content.dart';
@@ -58,4 +57,4 @@ export 'package:my_taraji/views/home/components/news/components/content/news_con
 export 'package:my_taraji/views/home/components/news/components/content/social_section.dart';
 export 'package:my_taraji/views/home/components/news/components/content/text_content.dart';
 export 'package:my_taraji/views/home/components/news/components/see_all.dart';
-// export 'package:share_plus/share_plus.dart';
+export 'package:my_taraji/views/home/components/news/models/news_models.dart';

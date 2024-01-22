@@ -1,4 +1,3 @@
-import 'package:my_taraji/views/init/components/my_card.dart';
 import 'package:my_taraji/views/init/components/my_profile.dart';
 import '../../init/components/my_taraji_logo.dart';
 import '../import.dart';
@@ -19,46 +18,53 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int myIndex = 1;
     List<Widget> widgetsToDisplay = [
       selectContent(context),
       const ListNews(),
       const ListPartenaire(),
     ];
     return Scaffold(
+      backgroundColor: MyColors.transparent,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const MyTarajiLogo(
-          logoImagePath: 'images/pngs/taraji.png',
-          firstText: 'My',
-          secondText: 'Taraji',
-          logoSize: 40,
-          textSize: 17,
-          textPosition: TextPositionLogo.right,
+        leadingWidth: 180.0,
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: MyTarajiLogo(
+            logoImagePath: 'images/pngs/taraji.png',
+            firstText: 'My',
+            secondText: 'Taraji',
+            logoSize: 40,
+            textSize: 17,
+            textPosition: TextPositionLogo.right,
+          ),
         ),
         backgroundColor: MyColors.transparent,
+        surfaceTintColor: MyColors.transparent,
         actions: const [
-          MyProfile(
-            greetingText: 'Bonjour',
-            textPosition: TextPositionLogo.left,
-          ),
+          Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: MyProfile(greetingText: "Bonjour")),
         ],
       ),
       body: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TopScreen(),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: widgetsToDisplay.length,
-                  itemBuilder: (context, index) {
-                    return widgetsToDisplay[index];
-                  },
+          Container(
+            color: Colors.transparent,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const TopScreen(),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widgetsToDisplay.length,
+                    itemBuilder: (context, index) {
+                      return widgetsToDisplay[index];
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

@@ -53,7 +53,7 @@ class NewsPageDetailsState extends State<NewsPageDetails> {
                     width: double.infinity,
                     height: 350.0,
                     child: Image.asset(
-                      widget.news.imagePath,
+                      widget.news.imagePath ?? '',
                       fit: BoxFit.cover,
                     ),
                   ),

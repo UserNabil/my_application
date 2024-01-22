@@ -1,3 +1,5 @@
+import 'package:my_taraji/views/home/components/news/service/news_service.dart';
+
 import '../../../import.dart';
 import '../components/fakedata.dart';
 
@@ -10,6 +12,7 @@ class ListNews extends StatefulWidget {
 
 class ListNewsState extends State<ListNews> {
   FakeData fakeData = FakeData();
+  NewsService newsService = NewsService();
   List<News> newsDataList = [];
 
   @override
@@ -17,8 +20,8 @@ class ListNewsState extends State<ListNews> {
     super.initState();
   }
 
-  Future<List<News>> getNews() async {
-    return await fakeData.newNews();
+  Future<APIResponseModel<List<News>>> getNews() async {
+    return await newsService.getAllNews();
   }
 
   @override
@@ -26,20 +29,18 @@ class ListNewsState extends State<ListNews> {
     var width = MediaQuery.of(context).size.width;
     return FutureBuilder(
       future: getNews(),
-      builder: (context, AsyncSnapshot<List<News>> snapshot) {
+      builder: (context, AsyncSnapshot<APIResponseModel<List<News>>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // return const SizedBox(
-          //   height: 100,
-          //   child: Center(
-          //     child: CircularProgressIndicator(
-          //       color: MyColors.yellow,
-          //     ),
-          //   ),
-          // );
-          return Container();
+          return Container(); // or a loading indicator
         }
 
-        newsDataList = snapshot.data!;
+        if (snapshot.hasError || snapshot.data == null) {
+          return Container(
+              // Handle error case, display an error message or retry button
+              );
+        }
+
+        newsDataList = snapshot.data!.data!;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

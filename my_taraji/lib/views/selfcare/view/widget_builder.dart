@@ -28,10 +28,7 @@ Widget selfCareBody(PageViewEnum pageName) {
     case PageViewEnum.myStatus:
       return const AnimationSelfCareMenu(
         animationDirection: 1,
-        child: SizedBox(
-          height: 300,
-          child: MonStatus(),
-        ),
+        child: MonStatus(),
       );
     case PageViewEnum.notifications:
       return const AnimationSelfCareMenu(

@@ -12,7 +12,7 @@ class MyCardLevel extends StatelessWidget {
   }
 
   double calculateXp(int xp, int total) {
-    return (xp / total) * 100;
+    return (xp / total * 100).roundToDouble();
   }
 
   @override
@@ -56,11 +56,14 @@ class MyCardLevel extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Programme de fidélité",
-                    style: TextStyle(
-                        fontSize: 17,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w600))
+                Text(
+                  "Programme de fidélité",
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: MyColors.black,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             )
           ],

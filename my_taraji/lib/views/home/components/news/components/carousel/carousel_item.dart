@@ -22,7 +22,7 @@ class NewsCarouselItem extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
-              image: AssetImage(news.imagePath),
+              image: AssetImage(news.imagePath ?? ''),
               fit: BoxFit.cover,
             ),
           ),

@@ -42,8 +42,7 @@ dependencies:
   flutter_native_splash: ^2.3.9
 
 flutter_native_splash:
-  background_image: images/svgs/bg.svg
-  image: images/pngs/taraji.png
+  background_image: images/pngs/bg_red_linear.png
 
 dev_dependencies:
   flutter_test:
