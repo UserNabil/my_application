@@ -257,8 +257,8 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                           width: 250,
                         ),
                         SizedBox(
-                          width: width -
-                              50, // Ajustez la largeur selon vos besoins
+                          width: width - 50,
+                          height: 234, // Ajustez la largeur selon vos besoins
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
@@ -299,8 +299,8 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                           ),
                         ),
                         Positioned(
-                          bottom: 60,
-                          right: (width - 210) / 2,
+                          bottom: 58,
+                          right: (width - 200) / 2,
                           width: 150,
                           child: ElevatedButton(
                             onPressed: () {
@@ -353,6 +353,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
               backgroundColor: MyColors.yellow,
               content: SizedBox(
                 width: 150,
+                height: 310,
                 child: Padding(
                   padding: const EdgeInsets.only(
                     top: 30,
@@ -401,7 +402,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
             ),
             Positioned(
               bottom: MediaQuery.of(context).size.height *
-                  0.27, // 10% de la hauteur de l'écran depuis le bas
+                  0.26, // 10% de la hauteur de l'écran depuis le bas
               left: 0,
               right: 0,
               child: Center(

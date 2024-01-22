@@ -57,7 +57,7 @@ class LeaderBordState extends State<LeaderBord> {
     xp = prefs.getString('xp') ?? '0';
   }
 
-  Future<void> loadLeaderBordInfo() async {
+  Future<LeaderBordResult?> loadLeaderBordInfo() async {
     try {
       if (!isDataLoaded) {
         LeaderBordResult? loadedLeaderBord = await challengeService
@@ -66,14 +66,20 @@ class LeaderBordState extends State<LeaderBord> {
 
         setState(() {
           leaderbord = loadedLeaderBord;
-          isDataLoaded = true;
+          if (leaderbord != null) {
+            isDataLoaded = true;
+          }
         });
         // ignore: avoid_print
         print('leader bord: ${leaderbord?.toMap()}');
+        return leaderbord;
+      } else {
+        return leaderbord;
       }
     } catch (e) {
       // ignore: avoid_print
       print('Failed to load leader bord data: $e');
+      return null;
     }
   }
 
@@ -92,6 +98,8 @@ class LeaderBordState extends State<LeaderBord> {
             hasstep = false;
           }
         });
+      } else {
+        hasstep = false;
       }
       // ignore: avoid_print
       print("has step $hasstep");
@@ -213,9 +221,10 @@ class LeaderBordState extends State<LeaderBord> {
 
   @override
   Widget build(BuildContext context) {
+    LeaderBordResult? leaderbord;
     return FutureBuilder(
       future: loadLeaderBordInfo(),
-      builder: (context, AsyncSnapshot<void> snapshot) {
+      builder: (context, AsyncSnapshot<LeaderBordResult?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
             height: 100,
@@ -254,11 +263,44 @@ class LeaderBordState extends State<LeaderBord> {
           );
         }
 
-        // if (snapshot.connectionState == ConnectionState.done) {
-        return buildContent(context);
-        // }
+        leaderbord = snapshot.data;
+        print("lederbors snapshot $leaderbord");
+        if (leaderbord == null) {
+          return SizedBox(
+            height: 100,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyColors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () async {
+                      // Perform asynchronous operation
+                      LeaderBordResult? newLeaderbord =
+                          await loadLeaderBordInfo();
 
-        // return Container();
+                      // Update the state inside a call to setState
+                      setState(() {
+                        leaderbord = newLeaderbord;
+                      });
+                    },
+                    child: const Icon(
+                      TablerIcons.refresh,
+                      color: MyColors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return buildContent(context);
+        }
       },
     );
   }
