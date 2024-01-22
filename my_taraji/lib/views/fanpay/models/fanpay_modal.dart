@@ -1,4 +1,6 @@
+import 'package:my_taraji/views/fanpay/providers/fanpay_provider.dart';
 import 'package:my_taraji/views/home/import.dart';
+import 'package:provider/provider.dart';
 
 class FanPayAction {
   Icon icon;
@@ -24,7 +26,14 @@ class FanPayModal {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
-        return content;
+        // ignore: deprecated_member_use
+        return WillPopScope(
+          onWillPop: () async {
+            context.read<FanPayProvider>().openModal();
+            return true;
+          },
+          child: content,
+        );
       },
     );
   }

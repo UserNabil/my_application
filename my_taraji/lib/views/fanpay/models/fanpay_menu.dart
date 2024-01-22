@@ -9,20 +9,20 @@ extension FanPayIconExtension on FanPayMenuItem {
         return FanPayIconRedirection(
             'images/svgs/fanpay/wallet.svg', 'Don', const MyDon(), null);
       case FanPayMenuItem.transfer:
-        return FanPayIconRedirection(
-            'images/svgs/fanpay/transfer.svg', 'Transfert', Container(), null);
+        return FanPayIconRedirection('images/svgs/fanpay/transfer.svg',
+            'Transfert', Scaffold(appBar: AppBar()), null);
       case FanPayMenuItem.payment:
-        return FanPayIconRedirection(
-            'images/svgs/fanpay/payment.svg', 'Paiement', Container(), null);
+        return FanPayIconRedirection('images/svgs/fanpay/payment.svg',
+            'Paiement', Scaffold(appBar: AppBar()), null);
       case FanPayMenuItem.plus:
         return FanPayIconRedirection(
             'images/svgs/fanpay/more.svg', 'Plus', null, null);
       case FanPayMenuItem.recharge:
-        return FanPayIconRedirection(
-            'images/svgs/fanpay/recharge.svg', 'Recharge', Container(), null);
+        return FanPayIconRedirection('images/svgs/fanpay/recharge.svg',
+            'Recharge', Scaffold(appBar: AppBar()), null);
       case FanPayMenuItem.retrait:
-        return FanPayIconRedirection(
-            'images/svgs/fanpay/retrait.svg', 'Retrait', Container(), null);
+        return FanPayIconRedirection('images/svgs/fanpay/retrait.svg',
+            'Retrait', Scaffold(appBar: AppBar()), null);
     }
   }
 }

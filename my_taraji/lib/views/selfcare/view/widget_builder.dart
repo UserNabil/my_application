@@ -52,10 +52,7 @@ Widget selfCareBody(PageViewEnum pageName) {
     case PageViewEnum.myOrders:
       return const AnimationSelfCareMenu(
         animationDirection: 1,
-        child: SizedBox(
-          height: 300,
-          child: ListCommande(),
-        ),
+        child: ListCommande(),
       );
   }
 }

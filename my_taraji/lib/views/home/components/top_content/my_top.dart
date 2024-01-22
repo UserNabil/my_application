@@ -12,10 +12,26 @@ class TopScreen extends StatefulWidget {
 }
 
 class TopScreenState extends State<TopScreen> {
-  int myIndex = 1;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    int myIndex = 1;
+    return Container(
+      color: Colors.transparent,
+      foregroundDecoration: const BoxDecoration(
+        color: Colors.transparent,
+      ),
+      decoration: const BoxDecoration(
+        backgroundBlendMode: BlendMode.multiply,
+        gradient: LinearGradient(
+          colors: [
+            MyColors.white,
+            MyColors.white,
+            MyColors.transparent,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
       height: 450,
       child: Stack(
         children: [
@@ -27,26 +43,7 @@ class TopScreenState extends State<TopScreen> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                const Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      MyTarajiLogo(
-                        logoImagePath: 'images/pngs/taraji.png',
-                        firstText: 'My',
-                        secondText: 'Taraji',
-                        logoSize: 40,
-                        textSize: 17,
-                        textPosition: TextPositionLogo.right,
-                      ),
-                      MyProfile(
-                        greetingText: 'Bonjour',
-                        textPosition: TextPositionLogo.left,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 80),
                 MyNavBar(
                   items: [
                     NavBarItem(
@@ -60,7 +57,7 @@ class TopScreenState extends State<TopScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-                Cards(index: myIndex)
+                Cards(index: myIndex),
               ],
             ),
           ),
