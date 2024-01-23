@@ -26,7 +26,7 @@ class NewsSocialSection extends StatelessWidget {
             color: MyColors.white,
             borderRadius: BorderRadius.circular(50.0),
             image: DecorationImage(
-              image: NetworkImage(news.social!.imgAuthor),
+              image: NetworkImage(news.social?.imgAuthor ?? ''),
               fit: BoxFit.cover,
             ),
           ),
@@ -66,7 +66,7 @@ class NewsSocialSection extends StatelessWidget {
               size: 18,
               color: MyColors.white,
             ),
-            news.social!.like),
+            news.social?.like ?? ''),
         const SizedBox(width: 10.0),
         socialItem(
             const Icon(
@@ -74,7 +74,7 @@ class NewsSocialSection extends StatelessWidget {
               size: 18,
               color: MyColors.white,
             ),
-            news.social!.comment),
+            news.social?.comment ?? ''),
       ],
     );
   }

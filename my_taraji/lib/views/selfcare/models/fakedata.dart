@@ -1,4 +1,4 @@
-class FakeData {
+class SelfcareFakeData {
   List<Map<String, String>> cardData = [
     {
       'imageName': 'Recharge',

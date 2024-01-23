@@ -1,9 +1,7 @@
 import '../../../../import.dart';
 
 class NewsContent extends StatelessWidget {
-  const NewsContent({super.key, required this.isExpanded, required this.news});
-
-  final bool isExpanded;
+  const NewsContent({super.key, required this.news});
   final News news;
 
   @override
@@ -11,19 +9,24 @@ class NewsContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            "LIVE Transfer Talk: Ronaldo pushing for Man City move",
-            style: TextStyle(
+          Text(
+            news.title,
+            style: const TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
               color: MyColors.white,
             ),
           ),
           const SizedBox(height: 10.0),
-          NewsSocialSection(news: news),
+          Text(
+            news.date,
+            style: const TextStyle(fontSize: 12.0, color: MyColors.grey),
+          ),
+          // NewsSocialSection(news: news),
           const SizedBox(height: 10.0),
-          NewsTextContent(isExpanded: isExpanded, news: news),
+          NewsTextContent(news: news),
         ],
       ),
     );

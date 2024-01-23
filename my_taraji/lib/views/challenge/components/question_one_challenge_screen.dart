@@ -292,7 +292,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         isApiCalled = true;
       });
     } catch (e) {
-      print('Failed to submit answer response data: $e');
       setState(() {
         isLoading = false;
       });
@@ -301,14 +300,11 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
 
   Future<void> _handleResponse(ChallengeAnswerResponse? response) async {
     try {
-      // Handle your asynchronous code here
-      print('answer response data: ${response!.toMap()}');
-
       var challengeService = ChallengeService();
       ChallengeQuestionResult? loadedQuestion = await challengeService
           .getNextQuestionByStepId(stepid)
           .then((value) => value.data);
-      Answer currentquestionresponse = response.answers
+      Answer currentquestionresponse = response!.answers
           .where((answer) => answer.questionId == question!.nextQuestion!.id)
           .first;
       if (laststep == false && loadedQuestion!.nextQuestion == null) {
@@ -369,7 +365,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         );
       }
     } catch (e) {
-      print('Failed to handle response: $e');
+      throw ('Failed to handle response: $e');
     }
   }
 
@@ -405,7 +401,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                     jokerFifTy != null &&
                     jokerFifTy!.any((joker) => joker.id == choices[index].id),
               );
-              print("isChoiceDisabled $isChoiceDisabled");
             }
           } else {
             isJokerFiftyButtonDisabled = true;
@@ -440,10 +435,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
               maxPercentageList = jokerSpy!
                   .where((element) => element.percentage == maxPercentage)
                   .toList();
-              for (var i in maxPercentageList!) {
-                print(
-                    "Liste d'éléments avec le pourcentage maximum : ${i.toMap()}");
-              }
               if (maxPercentage == 0) {
                 maxPercentageList = [];
                 // Affichez votre popup avec le message approprié

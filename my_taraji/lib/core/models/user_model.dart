@@ -5,6 +5,7 @@ class UserData {
   final String pseudo;
   final String phone;
   // final String currentToken;
+  // final Level level;
   // final bool onBoardingDone;
   // final String birthday;
   // final String loggedIn;
@@ -37,6 +38,7 @@ class UserData {
     required this.pseudo,
     required this.phone,
     // required this.currentToken,
+    // required this.level,
     // required this.onBoardingDone,
     // required this.birthday,
     // required this.loggedIn,
@@ -66,10 +68,12 @@ class UserData {
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
       id: json['user']['_id'],
+      // currentToken: json['user']['currentToken'],
       myRewards: MyRewards.fromJson(json['user']['myRewards']),
       myGamification: MyGamification.fromJson(json['user']['myGamification']),
       pseudo: json['user']['pseudo'],
       phone: json['user']['phone'],
+      // level: Level.fromJson(json['user']['level']),
       // currentToken: json['user']['currentToken'],
       // onBoardingDone: json['user']['onBoardingDone'],
       // birthday: json['user']['birthday'],
@@ -271,3 +275,78 @@ class Address {
     );
   }
 }
+
+// class Level {
+//   final CurrentLevel currentLevel;
+//   final NextLevel nextLevel;
+//   final int currentPercentage;
+//   final int missingPercentage;
+
+//   Level({
+//     required this.currentLevel,
+//     required this.nextLevel,
+//     required this.currentPercentage,
+//     required this.missingPercentage,
+//   });
+
+//   factory Level.fromJson(Map<String, dynamic> json) {
+//     return Level(
+//       currentLevel: CurrentLevel.fromJson(json['currentLevel']),
+//       nextLevel: NextLevel.fromJson(json['nextLevel']),
+//       currentPercentage: json['currentPercentage'],
+//       missingPercentage: json['missingPercentage'],
+//     );
+//   }
+// }
+
+// class CurrentLevel {
+//   final String id;
+//   final String nameEN;
+//   final String nameFR;
+//   final int pointsMax;
+//   final String imageUrl;
+
+//   CurrentLevel({
+//     required this.id,
+//     required this.nameEN,
+//     required this.nameFR,
+//     required this.pointsMax,
+//     required this.imageUrl,
+//   });
+
+//   factory CurrentLevel.fromJson(Map<String, dynamic> json) {
+//     return CurrentLevel(
+//       id: json['_id'],
+//       nameEN: json['nameEN'],
+//       nameFR: json['nameFR'],
+//       pointsMax: json['pointsMax'],
+//       imageUrl: json['imageUrl'],
+//     );
+//   }
+// }
+
+// class NextLevel {
+//   final String id;
+//   final String nameEN;
+//   final String nameFR;
+//   final int pointsMax;
+//   final String imageUrl;
+
+//   NextLevel({
+//     required this.id,
+//     required this.nameEN,
+//     required this.nameFR,
+//     required this.pointsMax,
+//     required this.imageUrl,
+//   });
+
+//   factory NextLevel.fromJson(Map<String, dynamic> json) {
+//     return NextLevel(
+//       id: json['_id'],
+//       nameEN: json['nameEN'],
+//       nameFR: json['nameFR'],
+//       pointsMax: json['pointsMax'],
+//       imageUrl: json['imageUrl'],
+//     );
+//   }
+// }

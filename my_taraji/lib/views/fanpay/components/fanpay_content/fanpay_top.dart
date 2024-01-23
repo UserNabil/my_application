@@ -1,54 +1,32 @@
-// ignore_for_file: deprecated_member_use
-
+import 'package:my_taraji/core/models/user_model.dart';
+import 'package:my_taraji/views/home/provider/home_provider.dart';
 import '../../imports.dart';
 
-class TopFanPay extends StatefulWidget {
-  const TopFanPay({super.key, required this.userData});
-  final Map<String, String> userData;
+class FanPayTop extends StatelessWidget {
+  const FanPayTop({super.key});
 
-  @override
-  TopFanPayState createState() => TopFanPayState();
-}
-
-class TopFanPayState extends State<TopFanPay> {
-  int myIndex = 1;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 505,
-      child: Stack(
+    return Container(
+      decoration: const BoxDecoration(
+        color: MyColors.white,
+      ),
+      height: 300,
+      child: const Stack(
         children: [
-          const CustomContainer(
+          CustomContainer(
             colorTo: MyColors.blueLinear1,
             colorFrom: MyColors.blueLinear2,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyTarajiLogo(
-                      logoImagePath: 'images/pngs/taraji.png',
-                      firstText: 'My',
-                      secondText: 'Taraji',
-                      logoSize: 40,
-                      textSize: 17,
-                      textPosition: TextPositionLogo.right,
-                    ),
-                    MyProfile(
-                      greetingText: 'Bonjour',
-                      textPosition: TextPositionLogo.left,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                AllCards(userData: widget.userData),
-                const FanPayMiddleContent(),
-              ],
-            ),
-          ),
+          Column(
+            children: [
+              SizedBox(height: 80),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: AllCards(),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -56,8 +34,7 @@ class TopFanPayState extends State<TopFanPay> {
 }
 
 class AllCards extends StatelessWidget {
-  const AllCards({super.key, required this.userData});
-  final Map<String, String> userData;
+  const AllCards({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,20 +67,30 @@ class AllCards extends StatelessWidget {
               color: MyColors.orange,
               width: 347,
               height: 237)),
-      PaymentCard(userData: userData)
-    ];
-    return Expanded(
-      child: Stack(
-        // alignment: Alignment.center,
-        children: cards,
+      FutureBuilder(
+        future: context.watch<HomeProvider>().getUserData(),
+        builder: (context, AsyncSnapshot<UserData> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          final userData = snapshot.data!;
+          return PaymentCard(userData: userData);
+        },
       ),
+    ];
+    return Stack(
+      children: cards,
     );
   }
 }
 
 class PaymentCard extends StatelessWidget {
   const PaymentCard({super.key, required this.userData});
-  final Map<String, String> userData;
+  final UserData userData;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +103,7 @@ class PaymentCard extends StatelessWidget {
                 left: 24,
                 top: 50,
                 child: Text(
-                  userData['name']!.toUpperCase(),
+                  userData.pseudo.toUpperCase(),
                   style: const TextStyle(
                     color: MyColors.white,
                     fontSize: 18,
@@ -197,12 +184,14 @@ class PaymentCard extends StatelessWidget {
                     SvgPicture.asset(
                       'images/icons/pay_card.svg',
                       width: 175,
+                      // ignore: deprecated_member_use
                       color: MyColors.orangeLight,
                     ),
                     Padding(
                         padding: const EdgeInsets.only(right: 20),
                         child: SvgPicture.asset(
                           'images/icons/mastercard.svg',
+                          // ignore: deprecated_member_use
                           color: MyColors.white,
                         ))
                   ],

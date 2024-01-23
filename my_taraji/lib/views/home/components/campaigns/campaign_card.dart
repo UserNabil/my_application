@@ -1,6 +1,6 @@
 import '../../import.dart';
 
-class CompaignCard extends StatefulWidget {
+class CompaignCard extends StatelessWidget {
   const CompaignCard({
     super.key,
     required this.context,
@@ -16,34 +16,12 @@ class CompaignCard extends StatefulWidget {
   final bool isLister;
 
   @override
-  CompaignCardState createState() => CompaignCardState();
-}
-
-class CompaignCardState extends State<CompaignCard> {
-  bool? isCardAvailable = false;
-
-  @override
   Widget build(BuildContext context) {
     return buildCarouselItem(
-      widget.campaign,
-      widget.titleFontSize,
-      widget.subtitleFontSize,
+      campaign,
+      titleFontSize,
+      subtitleFontSize,
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    onInitData();
-  }
-
-  void onInitData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isCardAvailable = prefs.getBool(
-        widget.campaign.id,
-      );
-    });
   }
 
   Widget buildCarouselItem(
@@ -52,12 +30,10 @@ class CompaignCardState extends State<CompaignCard> {
     double subtitleFontSize,
   ) {
     return InkWell(
-      onTap: () => isCardAvailable == true
-          ? goToCompagneDetails(context, campaign)
-          : null,
+      onTap: () => goToCompagneDetails(context, campaign),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        constraints: widget.isLister ? null : const BoxConstraints.expand(),
+        constraints: isLister ? null : const BoxConstraints.expand(),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           image: DecorationImage(
@@ -66,92 +42,76 @@ class CompaignCardState extends State<CompaignCard> {
           ),
         ),
         child: Container(
-            width: 100,
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              gradient: LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-                colors: [
-                  MyColors.red.withOpacity(0.3),
-                  MyColors.red,
-                ],
-              ),
+          width: 100,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            gradient: LinearGradient(
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+              colors: [
+                MyColors.red.withOpacity(0.3),
+                MyColors.red,
+              ],
             ),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 5, bottom: 5),
-                      decoration: const BoxDecoration(
-                        color: MyColors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      ),
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          campaign.tag,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+          ),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  campaign.tag != "null"
+                      ? Container(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 5, bottom: 5),
+                          decoration: const BoxDecoration(
+                            color: MyColors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        campaign.title,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: titleFontSize,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        campaign.description,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: subtitleFontSize,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                if (isCardAvailable == false)
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: const BoxDecoration(
-                        color: MyColors.yellow,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      child: const Text(
-                        'Réalisée',
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              campaign.tag,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      campaign.title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: titleFontSize,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-              ],
-            )),
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      campaign.description,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: subtitleFontSize,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

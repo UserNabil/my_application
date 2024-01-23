@@ -1,4 +1,5 @@
 import 'package:my_taraji/views/home/components/campaigns/type/smiley.dart';
+import 'package:my_taraji/views/home/provider/home_provider.dart';
 
 import '../../../import.dart';
 
@@ -258,7 +259,6 @@ void openDialog(BuildContext context, Campaign campaign) {
 
 Widget campaignDialog(
     Campaign campaign, GlobalKey? dialogKey, BuildContext context) {
-  LocalService localService = LocalService();
   return AlertDialog(
     key: dialogKey,
     actionsAlignment: MainAxisAlignment.center,
@@ -282,7 +282,7 @@ Widget campaignDialog(
           backgroundColor: MyColors.yellow,
         ),
         onPressed: () {
-          localService.getUserData();
+          context.read<HomeProvider>().getUserData();
           Navigator.of(context).pop();
         },
         child: const Text(

@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/components/background_top.dart';
 import 'package:my_taraji/core/components/custom_card.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/core/theme/style.dart';
+import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 import 'package:my_taraji/views/selfcare/models/pages_enum.dart';
 import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
 import 'package:my_taraji/views/selfcare/view/widget_builder.dart';
@@ -31,11 +30,10 @@ class _SelfCarePageState extends State<SelfCarePage> {
           color: Colors.white,
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            log(Provider.of<SelfCareProvider>(context, listen: false)
-                .toString());
             if (Provider.of<SelfCareProvider>(context, listen: false).page ==
                 PageViewEnum.selfcare) {
-              Navigator.pushNamed(context, '/');
+              context.read<InitProvider>().initCurrentIndex();
+              Navigator.popAndPushNamed(context, "/");
             } else {
               context
                   .read<SelfCareProvider>()
@@ -81,7 +79,7 @@ class _SelfCarePageState extends State<SelfCarePage> {
           ),
           Column(
             children: [
-              const SizedBox(height: 125),
+              const SizedBox(height: 140),
               Container(
                 width: screenSize.width,
                 padding: const EdgeInsets.only(left: 10, right: 10),
@@ -92,10 +90,9 @@ class _SelfCarePageState extends State<SelfCarePage> {
                     topRight: Radius.circular(50),
                   ),
                 ),
-                // the body of the page
                 child: selfCareBody(context.watch<SelfCareProvider>().page),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
             ],
           ),
         ],

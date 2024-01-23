@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/core/models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:my_taraji/views/home/provider/home_provider.dart';
+import 'package:provider/provider.dart';
 import '../../../core/theme/my_color.dart';
 import 'my_taraji_logo.dart';
 
@@ -25,25 +26,6 @@ class MyProfile extends StatelessWidget {
     this.nameTextColor = MyColors.white,
     this.coinsTextColor = MyColors.white,
   });
-
-  Future<UserData> getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserData userData = UserData(
-      id: prefs.getString('id')!,
-      pseudo: prefs.getString('name')!,
-      phone: prefs.getString('phone')!,
-      myRewards: MyRewards(coins: int.parse(prefs.getString('coins')!)),
-      myGamification: MyGamification(
-        id: prefs.getString('id')!,
-        expPoints: int.parse(prefs.getString('xp')!),
-        expPointsHistory: [],
-        createdAt: '',
-        updatedAt: '',
-      ),
-    );
-
-    return userData;
-  }
 
   Widget buildPhoto(String profileImagePath) {
     return GestureDetector(
@@ -155,9 +137,9 @@ class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.topLeft, // Align content to the left
+      alignment: Alignment.topLeft,
       child: FutureBuilder(
-        future: getUserData(),
+        future: context.read<HomeProvider>().getUserData(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SizedBox(

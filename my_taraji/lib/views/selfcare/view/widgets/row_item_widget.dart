@@ -1,4 +1,3 @@
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
 class RowItemWidget extends StatelessWidget {

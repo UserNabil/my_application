@@ -1,3 +1,5 @@
+import 'package:my_taraji/views/home/provider/home_provider.dart';
+
 import '../../import.dart';
 
 class MyNavBar extends StatefulWidget {
@@ -15,8 +17,6 @@ class MyNavBar extends StatefulWidget {
 }
 
 class MyNavBarState extends State<MyNavBar> {
-  int selectedIndex = 1;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,15 +26,12 @@ class MyNavBarState extends State<MyNavBar> {
         children: List.generate(widget.items.length, (index) {
           return GestureDetector(
             onTap: () {
-              setState(() {
-                selectedIndex = index;
-              });
-              widget.onItemSelected(index);
+              context.read<HomeProvider>().setCurrentCardIndex(index);
             },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: index == selectedIndex
+                color: index == context.watch<HomeProvider>().currentCardIndex
                     ? MyColors.red
                     : MyColors.transparent,
               ),
@@ -45,7 +42,8 @@ class MyNavBarState extends State<MyNavBar> {
                 children: [
                   Icon(widget.items[index].icon,
                       size: 25,
-                      color: index == selectedIndex
+                      color: index ==
+                              context.watch<HomeProvider>().currentCardIndex
                           ? Colors.white
                           : MyColors.grey),
                   const Padding(padding: EdgeInsets.all(5.0)),
@@ -53,8 +51,10 @@ class MyNavBarState extends State<MyNavBar> {
                     widget.items[index].label,
                     style: TextStyle(
                       fontSize: 15,
-                      color:
-                          index == selectedIndex ? Colors.white : MyColors.grey,
+                      color: index ==
+                              context.watch<HomeProvider>().currentCardIndex
+                          ? Colors.white
+                          : MyColors.grey,
                       fontWeight: FontWeight.w500,
                     ),
                     textAlign: TextAlign.center,

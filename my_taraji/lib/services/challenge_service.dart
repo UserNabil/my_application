@@ -113,7 +113,6 @@ class ChallengeService {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print("leaderbord api ${response.body}");
         final Map<String, dynamic> jsonData = json.decode(response.body);
 
         APIResponseModel<LeaderBordResult> leaderbord =

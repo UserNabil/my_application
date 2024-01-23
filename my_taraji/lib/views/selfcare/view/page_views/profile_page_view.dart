@@ -37,8 +37,6 @@ class ProfilePageView extends StatelessWidget {
         const Align(
           alignment: Alignment.centerLeft,
           child: UserInfoWidget(
-            title: 'xxczdz',
-            subtitle: '50',
             imagePath:
                 'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
           ),

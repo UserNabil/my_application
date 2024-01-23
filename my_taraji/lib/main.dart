@@ -1,13 +1,21 @@
-import 'package:flutter/material.dart';
+import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/home/components/news/provider/news_provider.dart';
+import 'package:my_taraji/views/home/provider/home_provider.dart';
+import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
-import 'package:provider/provider.dart';
 import 'core/context/routes.dart';
 import 'core/pages/loading_page.dart';
 
-void main() {
+void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => SelfCareProvider()),
+      ChangeNotifierProvider(create: (_) => FanPayProvider()),
+      ChangeNotifierProvider(create: (_) => DonProvider()),
+      ChangeNotifierProvider(create: (_) => HistoriqueProvider()),
+      ChangeNotifierProvider(create: (_) => InitProvider()),
+      ChangeNotifierProvider(create: (_) => NewsProvider()),
+      ChangeNotifierProvider(create: (_) => HomeProvider()),
     ],
     child: const MyApp(),
   ));
@@ -18,6 +26,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<InitProvider>().initStatusPermissions();
     return MaterialApp(
       locale: const Locale('fr', 'FR'),
       title: 'My Taraji',

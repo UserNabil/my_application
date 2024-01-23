@@ -65,7 +65,7 @@ class Content extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      margin: const EdgeInsets.symmetric(vertical: 5.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
       decoration: const BoxDecoration(
         color: MyColors.transparent,
       ),
@@ -82,7 +82,7 @@ class Content extends StatelessWidget {
             ],
           ),
           const Positioned(
-            top: 0,
+            top: 5,
             left: 0,
             child:
                 Image(image: AssetImage('images/pngs/football.png'), width: 30),
@@ -104,6 +104,7 @@ class BuyButton extends StatelessWidget {
         Navigator.pushNamed(context, redirectionPage);
       },
       style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         backgroundColor: MyColors.redDarker,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50.0),
@@ -131,7 +132,7 @@ class NextMatchTitle extends StatelessWidget {
       title,
       style: const TextStyle(
         color: MyColors.black,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.w600,
       ),
     );
@@ -148,7 +149,7 @@ class NextMatchSubTitle extends StatelessWidget {
       subTitle,
       style: const TextStyle(
         color: MyColors.yellow,
-        fontSize: 11,
+        fontSize: 10,
         fontWeight: FontWeight.w400,
       ),
     );
@@ -166,7 +167,7 @@ class NextMatchSubContent extends StatelessWidget {
       children: [
         MyTeam(team: match.teamOne),
         Padding(
-          padding: const EdgeInsets.only(bottom: 30, right: 9, left: 9),
+          padding: const EdgeInsets.only(bottom: 0, right: 9, left: 9),
           child: MyVersus(match: match),
         ),
         MyTeam(team: match.teamTwo)
@@ -183,12 +184,12 @@ class MyTeam extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image(image: AssetImage(team.logo), width: 60),
+        Image(image: AssetImage(team.logo), width: 45),
         Text(
           team.name,
           style: const TextStyle(
             color: MyColors.black,
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
           ),
         )

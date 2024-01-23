@@ -1,5 +1,5 @@
+import 'package:my_taraji/views/home/components/news/service/news_service.dart';
 import '../../../import.dart';
-import '../components/fakedata.dart';
 
 class ListNews extends StatefulWidget {
   const ListNews({super.key});
@@ -9,7 +9,7 @@ class ListNews extends StatefulWidget {
 }
 
 class ListNewsState extends State<ListNews> {
-  FakeData fakeData = FakeData();
+  NewsService newsService = NewsService();
   List<News> newsDataList = [];
 
   @override
@@ -17,26 +17,24 @@ class ListNewsState extends State<ListNews> {
     super.initState();
   }
 
-  Future<List<News>> getNews() async {
-    return await fakeData.newNews();
+  Future<List<News>> _getAllNews() async {
+    return await newsService.getAllNews();
   }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     return FutureBuilder(
-      future: getNews(),
+      future: _getAllNews(),
       builder: (context, AsyncSnapshot<List<News>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // return const SizedBox(
-          //   height: 100,
-          //   child: Center(
-          //     child: CircularProgressIndicator(
-          //       color: MyColors.yellow,
-          //     ),
-          //   ),
-          // );
           return Container();
+        }
+
+        if (snapshot.hasError || snapshot.data == null) {
+          return Center(
+            child: Text('${snapshot.error}'),
+          );
         }
 
         newsDataList = snapshot.data!;
