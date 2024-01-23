@@ -58,3 +58,5 @@ export 'package:my_taraji/views/home/components/news/components/content/social_s
 export 'package:my_taraji/views/home/components/news/components/content/text_content.dart';
 export 'package:my_taraji/views/home/components/news/components/see_all.dart';
 export 'package:my_taraji/views/home/components/news/models/news_models.dart';
+export 'package:my_taraji/views/home/components/news/provider/news_provider.dart';
+export 'package:provider/provider.dart';

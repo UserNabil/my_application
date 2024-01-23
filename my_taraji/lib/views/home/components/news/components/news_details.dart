@@ -1,83 +1,84 @@
-import '../../../import.dart';
+import 'package:my_taraji/views/home/components/news/service/news_service.dart';
+import 'package:my_taraji/views/home/import.dart';
 
-class NewsPageDetails extends StatefulWidget {
+class NewsPageDetails extends StatelessWidget {
   const NewsPageDetails({super.key, required this.news});
-
   final News news;
 
-  @override
-  NewsPageDetailsState createState() => NewsPageDetailsState();
-}
-
-class NewsPageDetailsState extends State<NewsPageDetails> {
-  bool isExpanded = false;
-  bool isShort = false;
-
-  @override
-  void initState() {
-    super.initState();
-    checkTextLength(widget.news.texts);
-  }
-
-  void checkTextLength(List<String> texts) {
-    const int maxCharacters = 280;
-
-    int totalCharacters = texts.join().length;
-    bool isTextShort = totalCharacters <= maxCharacters;
-
-    setState(() {
-      isShort = isTextShort;
-      isExpanded = isTextShort;
-    });
+  Future<News> _getNewsById(int id) async {
+    NewsService newsService = NewsService();
+    News newsApi = await newsService.getNewsById(id);
+    return newsApi;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: MyColors.blue2,
-      appBar: buildAppbar(context),
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          AnimatedContainer(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: MyColors.blue2,
-            ),
-            duration: const Duration(milliseconds: 250),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Image
-                  SizedBox(
-                    width: double.infinity,
-                    height: 350.0,
-                    child: Image.asset(
-                      widget.news.imagePath ?? '',
-                      fit: BoxFit.cover,
+    return FutureBuilder(
+      future: _getNewsById(news.id),
+      builder: (newsContext, AsyncSnapshot<News> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          newsContext.read<NewsProvider>().init();
+          context.read<NewsProvider>().calculateTotalHeight(news.content);
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.hasError || snapshot.data == null) {
+          return Center(
+            child: Text('${snapshot.error}'),
+          );
+        }
+
+        final finalNews = snapshot.data;
+        if (finalNews != null) {
+          return Scaffold(
+            backgroundColor: MyColors.blue2,
+            appBar: buildAppbar(newsContext),
+            extendBodyBehindAppBar: true,
+            body: Stack(
+              children: [
+                AnimatedContainer(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: MyColors.blue2,
+                  ),
+                  duration: const Duration(milliseconds: 250),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 350.0,
+                          child: Image.network(
+                            news.imagePath ?? '',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        NewsContent(news: finalNews),
+                      ],
                     ),
                   ),
-
-                  // Content
-                  NewsContent(isExpanded: isExpanded, news: widget.news),
-                ],
-              ),
-            ),
-          ),
-          isShort
-              ? const SizedBox()
-              : Positioned(
-                  bottom: 20.0,
-                  left: 70,
-                  right: 70,
-                  child: buildBottomBar(),
                 ),
-        ],
-      ),
+                newsContext.watch<NewsProvider>().isShort
+                    ? const SizedBox()
+                    : Positioned(
+                        bottom: 20.0,
+                        left: 70,
+                        right: 70,
+                        child: buildBottomBar(newsContext),
+                      ),
+              ],
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 
-  ElevatedButton buildBottomBar() {
+  ElevatedButton buildBottomBar(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         // ignore: deprecated_member_use
@@ -85,18 +86,19 @@ class NewsPageDetailsState extends State<NewsPageDetails> {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(50.0)),
         ),
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(14.0),
       ),
       onPressed: () {
-        setState(() {
-          isExpanded = !isExpanded;
-        });
+        var isExpanded = context.read<NewsProvider>().isExpanded;
+        context.read<NewsProvider>().setIsExpanded(!isExpanded);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            isExpanded ? 'Réduire' : 'Afficher tout',
+            context.watch<NewsProvider>().isExpanded
+                ? 'Réduire'
+                : 'Afficher tout',
             style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -105,7 +107,9 @@ class NewsPageDetailsState extends State<NewsPageDetails> {
           ),
           const SizedBox(width: 10.0),
           Icon(
-            isExpanded ? TablerIcons.chevron_up : TablerIcons.chevron_down,
+            context.watch<NewsProvider>().isExpanded
+                ? TablerIcons.chevron_up
+                : TablerIcons.chevron_down,
             size: 20,
             color: MyColors.white,
           ),

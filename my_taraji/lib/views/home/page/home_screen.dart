@@ -24,7 +24,6 @@ class HomeScreenState extends State<HomeScreen> {
       const ListPartenaire(),
     ];
     return Scaffold(
-      backgroundColor: MyColors.transparent,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leadingWidth: 180.0,
@@ -57,6 +56,7 @@ class HomeScreenState extends State<HomeScreen> {
                 const TopScreen(),
                 Expanded(
                   child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 0),
                     itemCount: widgetsToDisplay.length,
                     itemBuilder: (context, index) {
                       return widgetsToDisplay[index];

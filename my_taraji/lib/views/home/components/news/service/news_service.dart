@@ -1,5 +1,4 @@
 import 'package:http/http.dart' as http;
-import 'package:my_taraji/core/models/api_response_model.dart';
 import 'dart:convert';
 import 'package:my_taraji/views/home/components/news/models/news_models.dart';
 
@@ -7,19 +6,15 @@ class NewsService {
   late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
   NewsService();
 
-  Future<APIResponseModel<List<News>>> getAllNews() async {
+  Future<List<News>> getAllNews() async {
     const path = "api/v1/news";
     final url = Uri.parse('$baseUrl/$path');
 
     try {
       var response = await http.get(url);
-      final Map<String, dynamic> jsonData = json.decode(response.body);
-
+      final List<dynamic> jsonData = json.decode(response.body);
       try {
-        return APIResponseModel<List<News>>.fromJson(
-          jsonData,
-          (data) => fromJsonListNews(data),
-        );
+        return fromJsonListNews(jsonData);
       } catch (e) {
         throw Exception('fromJsonListNews error : $e');
       }
@@ -28,7 +23,7 @@ class NewsService {
     }
   }
 
-  Future<APIResponseModel<News>> getNewsById(String id) async {
+  Future<News> getNewsById(int id) async {
     const path = "api/v1/news";
     final url = Uri.parse('$baseUrl/$path/$id');
 
@@ -36,10 +31,8 @@ class NewsService {
       final response = await http.get(url);
       final Map<String, dynamic> jsonData = json.decode(response.body);
       try {
-        return APIResponseModel<News>.fromJson(
-          jsonData,
-          (data) => News.fromJson(data),
-        );
+        News news = News.fromJson(jsonData);
+        return news;
       } catch (e) {
         throw Exception('fromJsonListNews error : $e');
       }

@@ -1,11 +1,11 @@
 class News {
-  String id;
+  int id;
   String? imagePath;
   String title;
   String? citation;
   String date;
   String admin;
-  List<String> texts;
+  List<NewsDetailsModel> content;
   Social? social;
 
   News({
@@ -15,7 +15,7 @@ class News {
     this.citation,
     required this.date,
     required this.admin,
-    required this.texts,
+    required this.content,
     this.social,
   });
 
@@ -29,37 +29,13 @@ class News {
             orElse: () => Detail(detailHTML: "", detailValue: ""))
         .detailValue;
 
-    String citation = details
-        .firstWhere((detail) => detail.detailHTML == "em",
-            orElse: () => Detail(detailHTML: "", detailValue: ""))
-        .detailValue;
-
-    List<String> texts = details
-        .where((detail) => detail.detailHTML == "p")
-        .map((detail) => detail.detailValue)
-        .toList();
-
     return News(
-      id: json['itemSourceId'] ?? '',
+      id: json['id'],
       imagePath: imagePath,
-      title: json['title'] ?? '',
-      citation: citation,
-      date: json['newsPublishDate'] ?? '',
-      admin: json['createdBy'] ?? '',
-      texts: texts,
-      social: json['social'] != null ? Social.fromJson(json['social']) : null,
-    );
-  }
-
-  factory News.fromMap(Map<String, dynamic> map) {
-    return News(
-      id: map['id'] ?? '',
-      imagePath: map['imageUri'] ?? '',
-      title: map['title'] ?? '',
-      date: map['date'] ?? '',
-      admin: map['admin'] ?? '',
-      texts: map['texts'] != null ? List<String>.from(map['texts']) : [],
-      social: map['social'] != null ? Social.fromJson(map['social']) : null,
+      title: json['title'],
+      date: json['newsPublishDate'],
+      admin: json['createdBy'],
+      content: fromJsonListNewsModel(json['details']),
     );
   }
 
@@ -70,9 +46,29 @@ class News {
       'title': title,
       'date': date,
       'admin': admin,
-      'texts': texts,
+      // 'texts': content,
       'social': social?.toJson(),
     };
+  }
+}
+
+class NewsDetailsModel {
+  int id;
+  String detailHTML;
+  String detailValue;
+
+  NewsDetailsModel({
+    required this.id,
+    required this.detailHTML,
+    required this.detailValue,
+  });
+
+  factory NewsDetailsModel.fromJson(Map<String, dynamic> json) {
+    return NewsDetailsModel(
+      id: json['id'] ?? 0,
+      detailHTML: json['detailHTML'] ?? '',
+      detailValue: json['detailValue'] ?? '',
+    );
   }
 }
 
@@ -125,13 +121,21 @@ class Social {
   }
 }
 
-List<News> fromJsonListNews(dynamic jsonList) {
-  List<News> news = [];
+List<News> fromJsonListNews(List<dynamic>? jsonList) {
+  if (jsonList == null || jsonList.isEmpty) {
+    return [];
+  } else {
+    return jsonList.map((json) => News.fromJson(json)).toList();
+  }
+}
+
+List<NewsDetailsModel> fromJsonListNewsModel(dynamic jsonList) {
+  List<NewsDetailsModel> news = [];
 
   if (jsonList != null && jsonList is List) {
     for (var jsonItem in jsonList) {
       if (jsonItem != null && jsonItem is Map<String, dynamic>) {
-        news.add(News.fromJson(jsonItem));
+        news.add(NewsDetailsModel.fromJson(jsonItem));
       }
     }
   }

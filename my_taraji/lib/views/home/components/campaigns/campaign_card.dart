@@ -85,6 +85,7 @@ class CompaignCardState extends State<CompaignCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    // ignore: unnecessary_null_comparison
                     Container(
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, top: 5, bottom: 5),

@@ -1,18 +1,9 @@
 import '../../../../import.dart';
 
-class NewsTextContent extends StatefulWidget {
-  const NewsTextContent(
-      {super.key, required this.isExpanded, required this.news});
+class NewsTextContent extends StatelessWidget {
+  const NewsTextContent({super.key, required this.news});
 
-  final bool isExpanded;
   final News news;
-
-  @override
-  NewsTextContentState createState() => NewsTextContentState();
-}
-
-class NewsTextContentState extends State<NewsTextContent> {
-  bool isShort = true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,32 +15,32 @@ class NewsTextContentState extends State<NewsTextContent> {
         children: [
           AnimatedCrossFade(
             duration: const Duration(milliseconds: 300),
-            crossFadeState: widget.isExpanded
+            crossFadeState: context.watch<NewsProvider>().isExpanded
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
-            firstChild: buildDescription(
-                widget.news.texts.join("\n\n"), widget.isExpanded),
-            secondChild: buildDescription(
-                widget.news.texts.join("\n\n"), widget.isExpanded),
+            firstChild: buildDescription(news.content, context),
+            secondChild: buildDescription(news.content, context),
           ),
         ],
       ),
     );
   }
 
-  Widget buildDescription(String text, bool isExpanded) {
+  Widget buildDescription(
+      List<NewsDetailsModel> content, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        isExpanded
-            ? buildText(text, isExpanded)
-            : buildExpandedText(text, isExpanded),
+        context.watch<NewsProvider>().isExpanded
+            ? buildRichText(content)
+            : buildNotExpandedText(content),
         const SizedBox(height: 50.0),
       ],
     );
   }
 
-  Widget buildExpandedText(String text, bool isExpanded) {
+  Widget buildNotExpandedText(List<NewsDetailsModel> content) {
+    List<NewsDetailsModel> contentToDisplay = content.getRange(0, 3).toList();
     return ShaderMask(
       shaderCallback: (Rect bounds) {
         return const LinearGradient(
@@ -62,19 +53,86 @@ class NewsTextContentState extends State<NewsTextContent> {
         ).createShader(bounds);
       },
       blendMode: BlendMode.dstIn,
-      child: buildText(text, isExpanded),
+      child: buildRichText(contentToDisplay),
     );
   }
 
-  Widget buildText(String text, bool isExpanded) {
-    return Text(
-      text,
-      maxLines: isExpanded ? null : 10,
-      overflow: isExpanded ? null : TextOverflow.ellipsis,
-      style: const TextStyle(
-        color: MyColors.white,
-        fontSize: 16.0,
-      ),
+  Widget buildRichText(List<NewsDetailsModel> content) {
+    return Column(
+      children: content.map((newsDetailsModel) {
+        switch (newsDetailsModel.detailHTML) {
+          case 'h1':
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: RichText(
+                text: TextSpan(
+                  text: newsDetailsModel.detailValue,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17.0,
+                    color: MyColors.white,
+                  ),
+                ),
+              ),
+            );
+          case 'h2':
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: RichText(
+                text: TextSpan(
+                  text: newsDetailsModel.detailValue,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
+                    color: MyColors.white,
+                  ),
+                ),
+              ),
+            );
+          case 'p':
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: RichText(
+                text: TextSpan(
+                  text: newsDetailsModel.detailValue,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 12.0,
+                    color: MyColors.white,
+                  ),
+                ),
+              ),
+            );
+          case 'em':
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: RichText(
+                text: TextSpan(
+                  text: newsDetailsModel.detailValue,
+                  style: const TextStyle(
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.bold,
+                    color: MyColors.white,
+                  ),
+                ),
+              ),
+            );
+          case 'src':
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              width: double.infinity,
+              height: 200.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(newsDetailsModel.detailValue),
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+              ),
+            );
+          default:
+            return const SizedBox.shrink();
+        }
+      }).toList(),
     );
   }
 }

@@ -20,7 +20,7 @@ class ListNewsState extends State<ListNews> {
     super.initState();
   }
 
-  Future<APIResponseModel<List<News>>> getNews() async {
+  Future<List<News>> _getAllNews() async {
     return await newsService.getAllNews();
   }
 
@@ -28,19 +28,22 @@ class ListNewsState extends State<ListNews> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     return FutureBuilder(
-      future: getNews(),
-      builder: (context, AsyncSnapshot<APIResponseModel<List<News>>> snapshot) {
+      future: _getAllNews(),
+      builder: (context, AsyncSnapshot<List<News>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(); // or a loading indicator
+          return Container();
+          // return const Center(
+          //   child: CircularProgressIndicator(),
+          // );
         }
 
         if (snapshot.hasError || snapshot.data == null) {
-          return Container(
-              // Handle error case, display an error message or retry button
-              );
+          return Center(
+            child: Text('${snapshot.error}'),
+          );
         }
 
-        newsDataList = snapshot.data!.data!;
+        newsDataList = snapshot.data!;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
