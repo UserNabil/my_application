@@ -22,7 +22,8 @@ class NewsCarouselItem extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
-              image: AssetImage(news.imagePath),
+              // image: AssetImage(news.imagePath ?? ''),
+              image: NetworkImage(news.imagePath ?? ''),
               fit: BoxFit.cover,
             ),
           ),
@@ -44,18 +45,19 @@ class NewsCarouselItem extends StatelessWidget {
               ),
               const SizedBox(height: 6.0),
               Text(
-                [news.social!.views, news.date].join(" • "),
+                // [news.social?.views ?? '', news.date].join(" • "),
+                [news.date].join(""),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 12.0, color: MyColors.grey),
               ),
-              const SizedBox(height: 6.0),
-              Text(
-                news.admin,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 13.0, color: MyColors.grey),
-              ),
+              // const SizedBox(height: 6.0),
+              // Text(
+              //   news.admin,
+              //   maxLines: 1,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: const TextStyle(fontSize: 13.0, color: MyColors.grey),
+              // ),
             ],
           ),
         )

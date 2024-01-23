@@ -1,6 +1,5 @@
 import '../../../init/components/my_card.dart';
 import '../../../../core/components/background_top.dart';
-
 import '../../import.dart';
 
 class TopScreen extends StatefulWidget {

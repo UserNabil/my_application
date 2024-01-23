@@ -1,6 +1,5 @@
 import 'package:my_taraji/views/fanpay/providers/fanpay_provider.dart';
 import 'package:my_taraji/views/home/import.dart';
-import 'package:provider/provider.dart';
 
 class FanPayAction {
   Icon icon;

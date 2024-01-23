@@ -1,4 +1,3 @@
-import 'package:my_taraji/views/init/components/my_card.dart';
 import 'package:my_taraji/views/init/components/my_profile.dart';
 import '../../init/components/my_taraji_logo.dart';
 import '../import.dart';
@@ -19,7 +18,6 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int myIndex = 1;
     List<Widget> widgetsToDisplay = [
       selectContent(context),
       const ListNews(),

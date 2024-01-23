@@ -112,6 +112,7 @@ class _ListPartenaireState extends State<ListPartenaire> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: GridView.builder(
+              padding: const EdgeInsets.all(0),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

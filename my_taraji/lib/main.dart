@@ -1,4 +1,5 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/home/components/news/provider/news_provider.dart';
 import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
 import 'core/context/routes.dart';
@@ -12,6 +13,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => DonProvider()),
       ChangeNotifierProvider(create: (_) => HistoriqueProvider()),
       ChangeNotifierProvider(create: (_) => InitProvider()),
+      ChangeNotifierProvider(create: (_) => NewsProvider()),
     ],
     child: const MyApp(),
   ));
