@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:my_taraji/core/models/campaign_type_model.dart';
+import 'package:my_taraji/views/home/components/campaigns/models/campaign_type_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Campaign {

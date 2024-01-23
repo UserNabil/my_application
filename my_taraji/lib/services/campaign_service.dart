@@ -1,9 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:my_taraji/core/models/api_response_model.dart';
 import 'dart:convert';
-
-import 'package:my_taraji/core/models/campaign_response.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
+import 'package:my_taraji/views/home/components/campaigns/models/campaign_response.dart';
+import 'package:my_taraji/views/home/components/campaigns/models/compaign_model.dart';
 
 class CampaignService {
   late String baseUrl = "https://devmytarajiapi.azurewebsites.net";

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/views/fanpay/page/fanpay_screen.dart';
+import 'package:my_taraji/views/fanpay/views/fanpay/fanpay.dart';
 import 'package:my_taraji/views/selfcare/view/self_care_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../fanzone/page/fanzone_screen.dart';

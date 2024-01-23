@@ -30,7 +30,6 @@ class NewsService {
     try {
       final response = await http.get(url);
       final Map<String, dynamic> jsonData = json.decode(response.body);
-      print("jsonData : ${jsonData["id"]}");
       try {
         News news = News.fromJson(jsonData);
         return news;

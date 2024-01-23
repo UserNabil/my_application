@@ -26,3 +26,6 @@ export 'package:my_taraji/views/fanpay/providers/fanpay_provider.dart';
 export 'package:provider/provider.dart';
 export 'package:my_taraji/views/fanpay/providers/fanpay_don_provider.dart';
 export 'package:my_taraji/views/fanpay/providers/fanpay_historique_provider.dart';
+export 'package:my_taraji/core/models/user_model.dart';
+export 'package:my_taraji/views/home/provider/home_provider.dart';
+export 'package:my_taraji/views/fanpay/views/izi/fanpay_izi.dart';

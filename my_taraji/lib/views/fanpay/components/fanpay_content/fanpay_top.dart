@@ -1,5 +1,3 @@
-import 'package:my_taraji/core/models/user_model.dart';
-import 'package:my_taraji/views/home/provider/home_provider.dart';
 import '../../imports.dart';
 
 class FanPayTop extends StatelessWidget {

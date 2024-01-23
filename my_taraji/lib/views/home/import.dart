@@ -1,6 +1,6 @@
 export 'package:flutter/material.dart';
-export 'package:my_taraji/core/models/campaign_response.dart';
-export 'package:my_taraji/core/models/compaign_model.dart';
+export './components/campaigns/models/campaign_response.dart';
+export 'package:my_taraji/views/home/components/campaigns/models/compaign_model.dart';
 export 'package:my_taraji/core/models/device_configuration.dart';
 export 'package:my_taraji/services/campaign_service.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/date.dart';
@@ -42,7 +42,7 @@ export 'package:my_taraji/views/home/components/campaigns/type/radio.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/select.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/lead_generation.dart';
 export 'package:my_taraji/views/home/components/campaigns/type/formula.dart';
-export 'package:my_taraji/core/models/campaign_type_model.dart';
+export 'package:my_taraji/views/home/components/campaigns/models/campaign_type_model.dart';
 export 'package:flutter/foundation.dart';
 export 'package:my_taraji/core/models/api_response_model.dart';
 export 'package:my_taraji/views/home/components/campaigns/campaign.dart';

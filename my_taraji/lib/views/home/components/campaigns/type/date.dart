@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
+import 'package:my_taraji/views/home/components/campaigns/models/compaign_model.dart';
 import 'package:intl/intl.dart';
 
 class DateInput extends StatefulWidget {

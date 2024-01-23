@@ -1,5 +1,5 @@
 import 'package:my_taraji/core/models/challenge_model.dart';
-import 'package:my_taraji/core/models/compaign_model.dart';
+import 'package:my_taraji/views/home/components/campaigns/models/compaign_model.dart';
 
 class AllDataContent {
   final List<Campaign> campagnes;

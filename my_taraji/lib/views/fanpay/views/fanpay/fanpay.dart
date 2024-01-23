@@ -1,12 +1,8 @@
-import 'package:my_taraji/core/models/user_model.dart';
-import 'package:my_taraji/views/home/provider/home_provider.dart';
-
-import '../imports.dart';
+import '../../imports.dart';
 
 class MyFanPay extends StatelessWidget {
   const MyFanPay({super.key});
   static const routeName = '/fanpay';
-
   @override
   Widget build(BuildContext context) {
     FanPayModal transactionModal = FanPayModal(
@@ -129,8 +125,15 @@ class MyFanPay extends StatelessWidget {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }
-        final userData = snapshot.data!;
-        return buildPage(userData, context);
+        UserData userData = snapshot.data!;
+        return context.watch<FanPayProvider>().iziAccount == false
+            ? Stack(
+                children: [
+                  buildPage(userData, context),
+                  const FanPayIzi(),
+                ],
+              )
+            : buildPage(userData, context);
       },
     );
   }

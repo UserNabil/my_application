@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:my_taraji/core/models/user_model.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
-import 'package:my_taraji/views/home/provider/home_provider.dart';
 
 class MyDon extends StatelessWidget {
   const MyDon({super.key});

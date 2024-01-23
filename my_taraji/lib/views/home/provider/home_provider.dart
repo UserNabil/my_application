@@ -27,6 +27,7 @@ class HomeProvider with ChangeNotifier {
         createdAt: '',
         updatedAt: '',
       ),
+      iziAccount: prefs.getBool('iziAccount'),
     );
 
     return userData;
@@ -38,6 +39,7 @@ class HomeProvider with ChangeNotifier {
     UserData userDataFromApi = await userService.getUserData().then((value) {
       return value.data ?? userData;
     });
+    prefs.setBool('iziAccount', false);
     prefs.setString('id', userDataFromApi.id);
     prefs.setString('name', userDataFromApi.pseudo);
     prefs.setString('phone', userDataFromApi.phone);

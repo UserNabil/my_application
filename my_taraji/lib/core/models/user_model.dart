@@ -4,6 +4,7 @@ class UserData {
   final MyGamification myGamification;
   final String pseudo;
   final String phone;
+  bool? iziAccount = false;
   // final String currentToken;
   // final Level level;
   // final bool onBoardingDone;
@@ -37,6 +38,7 @@ class UserData {
     required this.myGamification,
     required this.pseudo,
     required this.phone,
+    this.iziAccount,
     // required this.currentToken,
     // required this.level,
     // required this.onBoardingDone,
