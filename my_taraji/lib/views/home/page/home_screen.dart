@@ -25,35 +25,13 @@ class HomeScreenState extends State<HomeScreen> {
     ];
     return Scaffold(
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   leadingWidth: 180,
-      //   leading: const MyTarajiLogo(
-      //     logoImagePath: 'images/pngs/taraji.png',
-      //     firstText: 'My',
-      //     secondText: 'Taraji',
-      //     logoSize: 40,
-      //     textSize: 17,
-      //     textPosition: TextPositionLogo.right,
-      //   ),
-      //   backgroundColor: MyColors.transparent,
-      //   actions: const [
-      //     Padding(
-      //       padding: EdgeInsets.only(right: 22.0),
-      //       child: MyProfile(
-      //         greetingText: 'Bonjour',
-      //         textPosition: TextPositionLogo.left,
-      //       ),
-      //     ),
-      //   ],
-      // ),
       body: CustomScrollView(
         slivers: <Widget>[
           const SliverAppBar(
             pinned: true,
             snap: false,
             floating: false,
-            expandedHeight: 405.0,
+            expandedHeight: 415.0,
             leadingWidth: 180,
             leading: MyTarajiLogo(
               logoImagePath: 'images/pngs/taraji.png',

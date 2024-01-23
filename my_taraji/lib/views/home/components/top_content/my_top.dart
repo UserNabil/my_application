@@ -10,9 +10,9 @@ class TopScreen extends StatefulWidget {
 }
 
 class TopScreenState extends State<TopScreen> {
+  int myIndex = 1;
   @override
   Widget build(BuildContext context) {
-    int myIndex = 1;
     return Stack(
       children: [
         Container(
