@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
-<<<<<<< HEAD
 import 'package:my_taraji/views/fanpay/views/izi/components/pin_code/pin_code.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_in/sign_in.dart';
-=======
->>>>>>> Develop
 
 class MyDon extends StatelessWidget {
   const MyDon({super.key});
