@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/core/models/user_model.dart';
+import 'package:my_taraji/views/init/models/user.dart';
 import 'package:my_taraji/views/home/provider/home_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/my_color.dart';
@@ -42,10 +42,7 @@ class MyProfile extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () {
-        // ignore: avoid_print
-        print("profile clicked photo");
-      },
+      onTap: () {},
     );
   }
 
@@ -83,9 +80,10 @@ class MyProfile extends StatelessWidget {
     );
   }
 
-  Widget buildContent(UserData userData) {
-    final String pseudo = userData.pseudo;
-    final String coins = userData.myRewards.coins.toString();
+  Widget buildContent(User? userData) {
+    final String pseudo = userData?.pseudo ?? '';
+    final String coins = userData?.myRewards?.coins.toString() ?? '';
+
     const String profileImagePath =
         'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
 
@@ -156,7 +154,7 @@ class MyProfile extends StatelessWidget {
             return const Text('Error', style: TextStyle(color: MyColors.red));
           }
 
-          final userData = snapshot.data!;
+          final userData = snapshot.data;
           return buildContent(userData);
         },
       ),

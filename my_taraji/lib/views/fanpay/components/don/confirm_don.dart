@@ -16,7 +16,9 @@ class ConfirmDon extends StatelessWidget {
           ),
           donUI.divider(20.0),
           Text(
-            "${context.watch<DonProvider>().amountController.text} DT",
+            context.watch<DonProvider>().isTypeCash
+                ? "${context.watch<DonProvider>().convertedAmount} Coins"
+                : "${context.watch<DonProvider>().amountController.text} DT",
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 32.0,
@@ -50,7 +52,7 @@ class ConfirmDon extends StatelessWidget {
             children: [
               donUI.textType1("Nombre des coins", false, false),
               donUI.textType2(
-                  "${context.watch<DonProvider>().amountController.text} Coins"),
+                  "${context.watch<DonProvider>().convertedAmount} Coins"),
             ],
           ),
           donUI.divider(40.0),
@@ -76,7 +78,7 @@ class ConfirmDon extends StatelessWidget {
               backgroundColor: MyColors.orange,
             ),
             onPressed: () {
-              context.read<DonProvider>().setStep("finishDon");
+              context.read<DonProvider>().createDonation(false, context);
             },
             child: const Text(
               "Confirmer",

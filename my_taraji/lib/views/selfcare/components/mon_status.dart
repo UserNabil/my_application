@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/theme/my_color.dart';
+import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/init/models/level.dart';
 import '../../home/components/top_content/my_progress.dart';
 
 class MonStatus extends StatefulWidget {
@@ -12,24 +10,6 @@ class MonStatus extends StatefulWidget {
 }
 
 class MonStatusState extends State<MonStatus> {
-  Future<Map<String, String>> _getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String xp = prefs.getString('xp') ?? 'Error';
-    final String name = prefs.getString("name") ?? 'Error';
-    final String coins = prefs.getString("coins") ?? 'Error';
-    final String profileImagePath = prefs.getString('profileImagePath') ??
-        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
-    final String phone = prefs.getString('phone') ?? 'Error';
-
-    return {
-      'xp': xp,
-      'name': name,
-      'coins': coins,
-      'profileImagePath': profileImagePath,
-      'phone': phone,
-    };
-  }
-
   double calculateXp(int xp, int total) {
     return (xp / total) * 100;
   }
@@ -37,8 +17,8 @@ class MonStatusState extends State<MonStatus> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getUserData(),
-      builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
+      future: context.read<HomeProvider>().getUserData(),
+      builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
@@ -52,12 +32,14 @@ class MonStatusState extends State<MonStatus> {
     );
   }
 
-  Widget buildStatut(Map<String, String> userData) {
-    final String xp = userData['xp']!;
-    final String name = userData['name']!;
-    final String coins = userData['coins']!;
-    final String profileImagePath = userData['profileImagePath']!;
-    final String phone = userData['phone']!;
+  Widget buildStatut(User userData) {
+    final String xp = userData.myGamification?.expPoints.toString() ?? '0';
+    final String name = userData.pseudo ?? '';
+    final String coins = userData.myRewards?.coins.toString() ?? '';
+    final String phone = userData.phone ?? '';
+    final Level? level = userData.level;
+    String profileImagePath =
+        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -110,7 +92,7 @@ class MonStatusState extends State<MonStatus> {
                 Text('$coins Coins',
                     style: const TextStyle(color: Colors.green)),
                 const SizedBox(height: 15.0),
-                Text(int.parse(xp) < 100 ? 'Silver' : 'gold',
+                Text(level?.currentLevel.nameFR ?? '',
                     style: const TextStyle(color: MyColors.red)),
               ],
             ),
@@ -124,9 +106,9 @@ class MonStatusState extends State<MonStatus> {
             Column(
               children: [
                 Image.asset('images/pngs/trophesilver.png', fit: BoxFit.cover),
-                const Text(
-                  'Silver',
-                  style: TextStyle(
+                Text(
+                  level?.currentLevel.nameFR ?? '',
+                  style: const TextStyle(
                       color: MyColors.grey, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -141,18 +123,19 @@ class MonStatusState extends State<MonStatus> {
                   children: [
                     Text(xp, style: const TextStyle(fontSize: 9.0)),
                     const SizedBox(width: 140.0),
-                    const Text('100', style: TextStyle(fontSize: 9.0)),
+                    Text(level?.nextLevel.pointsMax.toString() ?? '0',
+                        style: const TextStyle(fontSize: 9.0)),
                   ],
                 ),
                 MyProgressBar(
-                    value: calculateXp(int.parse(xp), 100) / 100,
+                    value: (level?.currentPercentage ?? 0) / 100,
                     width: 180,
                     height: 15),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(calculateXp(int.parse(xp), 100).toString(),
+                    Text("${(level?.currentPercentage ?? "0")}%",
                         style: const TextStyle(fontSize: 9.0)),
                     const SizedBox(width: 140.0),
                     const Text('100%', style: TextStyle(fontSize: 9.0)),
@@ -163,9 +146,9 @@ class MonStatusState extends State<MonStatus> {
             Column(
               children: [
                 Image.asset('images/pngs/trophegold.png', fit: BoxFit.cover),
-                const Text(
-                  'Gold',
-                  style: TextStyle(
+                Text(
+                  level?.nextLevel.nameFR ?? '',
+                  style: const TextStyle(
                       color: MyColors.yellow, fontWeight: FontWeight.bold),
                 ),
               ],

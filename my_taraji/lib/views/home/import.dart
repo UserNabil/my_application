@@ -45,7 +45,6 @@ export 'package:my_taraji/views/home/components/campaigns/type/formula.dart';
 export 'package:my_taraji/views/home/components/campaigns/models/campaign_type_model.dart';
 export 'package:flutter/foundation.dart';
 export 'package:my_taraji/core/models/api_response_model.dart';
-export 'package:my_taraji/views/home/components/campaigns/campaign.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:my_taraji/views/home/components/news/components/carousel/carousel_item.dart';
 export 'package:my_taraji/views/home/components/news/components/carousel/carousel_builder.dart';

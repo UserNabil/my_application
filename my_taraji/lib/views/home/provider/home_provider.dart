@@ -1,50 +1,41 @@
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
-import 'package:my_taraji/core/models/user_model.dart';
+import 'package:my_taraji/views/init/models/user.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/home/import.dart';
 
 class HomeProvider with ChangeNotifier {
-  int _currentCardIndex = 1;
-  final UserService userService = UserService();
+  int _currentCardIndex = 0;
+  UserService userService = UserService();
   int get currentCardIndex => _currentCardIndex;
 
   void setCurrentCardIndex(int value) {
-    _currentCardIndex = value;
+    // _currentCardIndex = value;
     notifyListeners();
   }
 
-  Future<UserData> getUserData() async {
+  Future<User?> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserData userData = UserData(
-      id: prefs.getString('id') ?? '',
-      pseudo: prefs.getString('name') ?? '',
-      phone: prefs.getString('phone') ?? '',
-      myRewards: MyRewards(coins: int.parse(prefs.getString('coins') ?? '0')),
-      myGamification: MyGamification(
-        id: prefs.getString('id') ?? '',
-        expPoints: int.parse(prefs.getString('xp') ?? '0'),
-        expPointsHistory: [],
-        createdAt: '',
-        updatedAt: '',
-      ),
-      iziAccount: prefs.getBool('iziAccount'),
-    );
+    const key = 'user';
 
+    final value = prefs.getString(key);
+    if (value == null) {
+      return null;
+    }
+
+    Map<String, dynamic> userDataMap = jsonDecode(value) ?? {};
+
+    User userData = User.fromJson(userDataMap);
     return userData;
   }
 
   Future<void> setUserData() async {
-    UserData userData = await getUserData();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserData userDataFromApi = await userService.getUserData().then((value) {
-      return value.data ?? userData;
+    await userService.getUserData().then((value) {
+      const key = 'user';
+      prefs.setString(key, jsonEncode(value.data?.toMap()));
     });
-    prefs.setBool('iziAccount', false);
-    prefs.setString('id', userDataFromApi.id);
-    prefs.setString('name', userDataFromApi.pseudo);
-    prefs.setString('phone', userDataFromApi.phone);
-    prefs.setString('coins', userDataFromApi.myRewards.coins.toString());
-    prefs.setString('xp', userDataFromApi.myGamification.expPoints.toString());
   }
 
   setCurrentLocation() async {
@@ -80,7 +71,6 @@ class HomeProvider with ChangeNotifier {
     }
     saveCampaigns(loadedCampaigns);
     saveChallenges(loadedChallenges);
-    setUserData();
 
     AllDataContent allContent = AllDataContent(
       campagnes: loadedCampaigns,

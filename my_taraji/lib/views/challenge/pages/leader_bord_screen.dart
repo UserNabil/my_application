@@ -1,31 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/models/leader_bord_result.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
+import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_taraji/core/models/challenge_by_id_model.dart';
-// void main() {
-//   runApp(const MaterialApp(
-//     home: LeaderBord(""),
-//   ));
-// }
 
 class LeaderBord extends StatefulWidget {
   final String challengeId;
   const LeaderBord(this.challengeId, {super.key});
 
   @override
-  LeaderBordState createState() =>
-      // ignore: no_logic_in_create_state
-      LeaderBordState(challengeid: challengeId);
+  LeaderBordState createState() => LeaderBordState();
 }
 
 class LeaderBordState extends State<LeaderBord> {
-  final String challengeid;
-  LeaderBordState({required this.challengeid});
   int currentSelectedIndex = 0;
   String profileImagePath = "";
   String xp = "";
@@ -47,41 +35,24 @@ class LeaderBordState extends State<LeaderBord> {
   @override
   void initState() {
     super.initState();
-    // getuserinfo();
-    // _loadChallenge();
-    // loadLeaderBordInfo();
   }
 
   Future<bool> initBuilder() async {
-    bool userresult = await getuserinfo();
+    context.read<HomeProvider>().getUserData();
     bool challengeresult = await _loadChallenge();
     bool leaderresult = await loadLeaderBordInfo();
-    if (userresult && challengeresult && leaderresult) {
+    if (challengeresult && leaderresult) {
       return true;
     } else {
       return false;
     }
   }
 
-  Future<bool> getuserinfo() async {
-    if (!isUserInfoDataLoaded) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      profileImagePath = prefs.getString('profileImagePath') ??
-          'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
-      coins = prefs.getString('coins') ?? '0';
-      xp = prefs.getString('xp') ?? '0';
-      setState(() {
-        isUserInfoDataLoaded = true;
-      });
-    }
-    return isUserInfoDataLoaded;
-  }
-
   Future<bool> loadLeaderBordInfo() async {
     try {
       if (!isLeaderBordDataLoaded) {
         LeaderBordResult? loadedLeaderBord = await challengeService
-            .getLeaderBordInfoByChallengeId(challengeid)
+            .getLeaderBordInfoByChallengeId(widget.challengeId)
             .then((value) => value.data);
 
         setState(() {
@@ -90,14 +61,10 @@ class LeaderBordState extends State<LeaderBord> {
             isLeaderBordDataLoaded = true;
           }
         });
-        // ignore: avoid_print
-        print('leader bord: ${leaderbord?.toMap()}');
       }
       return isLeaderBordDataLoaded;
     } catch (e) {
-      // ignore: avoid_print
-      print('Failed to load leader bord data: $e');
-      return false;
+      throw ('Failed to load leader bord data: $e');
     }
   }
 
@@ -106,7 +73,7 @@ class LeaderBordState extends State<LeaderBord> {
       if (!isChallengeDataLoaded) {
         var challengeService = ChallengeService();
         ChallengeById? loadedChallenge = await challengeService
-            .getChallengeById(challengeid)
+            .getChallengeById(widget.challengeId)
             .then((value) => value.data);
         if (loadedChallenge != null) {
           List<ChallengeStep> unfinishedSteps = loadedChallenge.steps
@@ -120,14 +87,10 @@ class LeaderBordState extends State<LeaderBord> {
             isChallengeDataLoaded = true;
           });
         }
-        // ignore: avoid_print
-        print("has step $hasstep");
       }
       return isChallengeDataLoaded;
     } catch (e) {
-      // ignore: avoid_print
-      print('Failed to load challenge data by id: $e');
-      return false;
+      throw ('Failed to load challenge data by id: $e');
     }
   }
 
@@ -480,8 +443,8 @@ class LeaderBordState extends State<LeaderBord> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        StepOneCoinChallenge(challengeid),
+                                    builder: (context) => StepOneCoinChallenge(
+                                        challengeId: widget.challengeId),
                                   ),
                                 );
                               },

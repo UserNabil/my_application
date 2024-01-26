@@ -1,65 +1,36 @@
-import 'package:flutter/material.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/views/challenge/components/stars_result.dart';
+import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/init/page/init_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-// void main() {
-//   runApp(const MaterialApp(
-//     home: ResponseQuestionChallenge(
-//       stepid: "659564607428f60708a9be76",
-//       challengeid: "",
-//       textQuestion: "Question 1",
-//       message: "Bien Joué !",
-//       image: AssetImage('images/pngs/Check.png'), // Remplacez par votre image
-//       description: "Vous avez gagné",
-//     ),
-//   ));
-// }
-
-// ignore: must_be_immutable
 class ResponseLastStepChallenge extends StatelessWidget {
   final String message;
   final String image;
   final String description;
-  String profileImagePath = "";
-  String xp = "";
-  String coins = "";
-  ResponseLastStepChallenge({
+
+  const ResponseLastStepChallenge({
     super.key,
     required this.message,
     required this.image,
     required this.description,
   });
 
-  Future<void> getuserinfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    profileImagePath = prefs.getString('profileImagePath') ??
-        'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
-    coins = prefs.getString('coins')!;
-    xp = prefs.getString('xp')!;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getuserinfo(),
+      future: context.read<HomeProvider>().getUserData(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Container();
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          //return const Text("loading");
-        }
-
-        return buildContent(context);
+        if (snapshot.connectionState == ConnectionState.waiting) {}
+        User user = snapshot.data as User;
+        return buildContent(context, user);
       },
     );
   }
 
-  Widget buildContent(BuildContext context) {
-    // var width = MediaQuery.of(context).size.width;
+  Widget buildContent(BuildContext context, User user) {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -84,10 +55,11 @@ class ResponseLastStepChallenge extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             child: ClipOval(
                               child: Image(
-                                image: NetworkImage(profileImagePath),
+                                image: NetworkImage(
+                                    'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg'),
                                 fit: BoxFit.cover,
                                 width: 60.0,
                                 height: 60.0,
@@ -180,7 +152,7 @@ class ResponseLastStepChallenge extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                coins,
+                                user.myRewards?.coins.toString() ?? '0',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 15.0,

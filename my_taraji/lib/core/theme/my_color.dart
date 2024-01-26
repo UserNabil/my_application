@@ -20,4 +20,7 @@ class MyColors {
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color transparent = Colors.transparent;
+  static const Color iziOrange = Color(0xffFF9E2F);
+  static const Color iziRed = Color(0xffEF4D98);
+  static const Color iziBlue = Color(0xff39D6C5);
 }

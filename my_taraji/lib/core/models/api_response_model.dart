@@ -11,7 +11,7 @@ class APIResponseModel<T> {
       Map<String, dynamic> json, Function fromJsonT) {
     return APIResponseModel(
       isSuccess: json['IsSuccess'] ?? false,
-      data: json['Data'] != null && json['IsSuccess']
+      data: json['Data'] != null && json['IsSuccess'] == true
           ? fromJsonT(json['Data'])
           : null,
     );

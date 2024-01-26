@@ -76,32 +76,6 @@ class HomeScreen extends StatelessWidget {
           );
         }
 
-        if (snapshot.hasError) {
-          return SizedBox(
-            height: 100,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MyColors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: const Icon(
-                      TablerIcons.refresh,
-                      color: MyColors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
         AllDataContent allDataContent = snapshot.data!;
         if (allDataContent.campagnes.isNotEmpty &&
             allDataContent.challenges.isNotEmpty) {

@@ -1,41 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/models/challenge_by_id_model.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/services/challenge_service.dart';
 import 'package:my_taraji/views/challenge/pages/leader_bord_screen.dart';
 import 'package:my_taraji/views/challenge/components/question_one_challenge_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-// void main() {
-//   runApp(const MaterialApp(
-//     home: StepOneCoinChallenge("6595376beb16ee594ceb90d8"),
-//   ));
-// }
+import 'package:my_taraji/views/fanpay/imports.dart';
 
 class StepOneCoinChallenge extends StatefulWidget {
+  const StepOneCoinChallenge({super.key, required this.challengeId});
   final String challengeId;
 
-  // ignore: use_super_parameters
-  const StepOneCoinChallenge(this.challengeId, {Key? key}) : super(key: key);
-
   @override
-  StepOneCoinChallengeState createState() =>
-      // ignore: no_logic_in_create_state
-      StepOneCoinChallengeState(challengeid: challengeId);
+  StepOneCoinChallengeState createState() => StepOneCoinChallengeState();
 }
 
 class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
-  String profileImagePath = "";
+  String profileImagePath =
+      "https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg";
   String xp = "";
   String coins = "";
   bool laststep = false;
-  final String challengeid;
   ChallengeById? challenge;
   ChallengeStep? currentstep;
   bool isUserInfoDataLoaded = false;
   bool isChallengeDataLoaded = false;
-  StepOneCoinChallengeState({required this.challengeid});
 
   bool isDataLoaded = false;
   @override
@@ -44,27 +30,13 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
   }
 
   Future<bool> initBuilder() async {
-    bool userresult = await getuserinfo();
+    context.read<HomeProvider>().getUserData();
     bool challengeresult = await _loadChallenge();
-    if (userresult && challengeresult) {
+    if (challengeresult) {
       return true;
     } else {
       return false;
     }
-  }
-
-  Future<bool> getuserinfo() async {
-    if (!isUserInfoDataLoaded) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      profileImagePath = prefs.getString('profileImagePath') ??
-          'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg';
-      coins = prefs.getString('coins') ?? '0';
-      xp = prefs.getString('xp') ?? '0';
-      setState(() {
-        isUserInfoDataLoaded = true;
-      });
-    }
-    return isUserInfoDataLoaded;
   }
 
   Future<bool> _loadChallenge() async {
@@ -72,7 +44,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
       if (!isChallengeDataLoaded) {
         var challengeService = ChallengeService();
         ChallengeById? loadedChallenge = await challengeService
-            .getChallengeById(challengeid)
+            .getChallengeById(widget.challengeId)
             .then((value) => value.data);
         if (loadedChallenge != null) {
           List<ChallengeStep> unfinishedSteps = loadedChallenge.steps
@@ -93,9 +65,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
       }
       return isChallengeDataLoaded;
     } catch (e) {
-      // ignore: avoid_print
-      print('Failed to load challenge data by id: $e');
-      return false;
+      throw ('Failed to load challenge data by id: $e');
     }
   }
 
@@ -177,7 +147,6 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
 
   Widget buildContent(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    //  var height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -323,7 +292,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        LeaderBord(challengeid)),
+                                        LeaderBord(widget.challengeId)),
                               );
                             },
                             child: Image.asset(
@@ -499,7 +468,7 @@ class StepOneCoinChallengeState extends State<StepOneCoinChallenge> {
                           laststep,
                           currentstep!.id,
                           currentstep!.questionNumber,
-                          challengeid,
+                          widget.challengeId,
                         ),
                       ),
                     );

@@ -7,7 +7,7 @@ class NewsService {
   NewsService();
 
   Future<List<News>> getAllNews() async {
-    const path = "api/v1/news/published-news";
+    const path = "api/v1/news-mobile/published-news";
     final url = Uri.parse('$baseUrl/$path');
 
     try {
@@ -24,7 +24,7 @@ class NewsService {
   }
 
   Future<News> getNewsById(int id) async {
-    const path = "api/v1/news";
+    const path = "api/v1/news-mobile";
     final url = Uri.parse('$baseUrl/$path/$id');
 
     try {

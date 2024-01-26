@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/core/models/user_model.dart';
+import 'package:my_taraji/views/init/models/user.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/views/home/provider/home_provider.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class UserInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: context.watch<HomeProvider>().getUserData(),
-      builder: (context, AsyncSnapshot<UserData> snapshot) {
+      builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
@@ -23,14 +23,14 @@ class UserInfoWidget extends StatelessWidget {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }
-        final userData = snapshot.data!;
+        final userData = snapshot.data;
         return ListTile(
           leading: CircleAvatar(
             radius: 30,
             backgroundImage: NetworkImage(imagePath),
           ),
           title: Text(
-            userData.pseudo,
+            userData?.pseudo ?? '',
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -38,7 +38,7 @@ class UserInfoWidget extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            userData.myRewards.coins.toString(),
+            userData?.myRewards?.coins.toString() ?? '',
             style: const TextStyle(
               color: MyColors.grey,
               fontSize: 10,

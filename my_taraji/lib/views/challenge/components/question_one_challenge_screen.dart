@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print, duplicate_ignore
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -23,19 +21,6 @@ import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_scr
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
-// void main() {
-//   runApp(const MaterialApp(
-//     home: QuestionOneCoinChallenge(
-//         "659564607428f60708a9be76", "6595376beb16ee594ceb90d8"),
-//   ));
-// }
-// void main() {
-//   runApp(const MaterialApp(
-//     home: QuestionOneCoinChallenge(
-//         "659564607428f60708a9be76", "6595376beb16ee594ceb90d8"),
-//   ));
-// }
-
 class QuestionOneCoinChallenge extends StatefulWidget {
   final bool lastStep;
   final String stepId;
@@ -46,29 +31,16 @@ class QuestionOneCoinChallenge extends StatefulWidget {
       {super.key});
 
   @override
-  // ignore: no_logic_in_create_state
-  QuestionOneCoinChallengeState createState() => QuestionOneCoinChallengeState(
-      laststep: lastStep,
-      stepid: stepId,
-      questionnumber: questionNumber,
-      challengeid: challengeId);
+  QuestionOneCoinChallengeState createState() =>
+      QuestionOneCoinChallengeState();
 }
 
 class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
-  final bool laststep;
-  final String stepid;
-  final int questionnumber;
-  final String challengeid;
   bool isJokerFiftyButtonDisabled = false;
   bool isJokerSpyButtonDisabled = false;
   bool isLoading = false;
   bool isApiCalled = false;
   int numquestion = 0;
-  QuestionOneCoinChallengeState(
-      {required this.laststep,
-      required this.stepid,
-      required this.questionnumber,
-      required this.challengeid});
   ChallengeQuestionResult? question;
   List<JokerFiftyResponse>? jokerFifTy;
   JokerExtraTimeResponse? jokerExtraTime;
@@ -89,15 +61,6 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     super.initState();
     _loadQuestion();
   }
-
-  // Future<bool> initBuilder() async {
-  //   bool questionresult = await _loadQuestion();
-  //   if (questionresult) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   Future<void> startTimer(double counterTime) async {
     const oneSecond = Duration(seconds: 1);
@@ -143,33 +106,31 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                 deviceConfiguration: "",
                 geoLocation: userGeolocation,
                 answers: answers);
-            // print('GeoLocation: ${userGeolocation.toMap()}');
-            // print('Answer: ${answer.toMap()}');
-            // print('ChallengeAnswerRequest: ${answerRequest.toMap()}');
             var challengeService = ChallengeService();
             ChallengeAnswerResponse? response = await challengeService
-                .submitChallengeAnswers(answerRequest, stepid)
+                .submitChallengeAnswers(answerRequest, widget.stepId)
                 .then((value) => value.data);
             ChallengeQuestionResult? loadedQuestion = await challengeService
-                .getNextQuestionByStepId(stepid)
+                .getNextQuestionByStepId(widget.stepId)
                 .then((value) => value.data);
             setState(() {
               answerResponse = response;
               if (answerResponse != null) isLoading = false;
 
-              if (laststep == false && loadedQuestion!.nextQuestion == null) {
+              if (widget.lastStep == false &&
+                  loadedQuestion!.nextQuestion == null) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ResponseStepChallenge(
-                      challengeid: challengeid,
+                      challengeid: widget.challengeId,
                       message: "Bravo",
                       image: const AssetImage('images/pngs/Star.png'),
                       description: "Vous avez gagné ${response!.score} points",
                     ),
                   ),
                 );
-              } else if (laststep == true &&
+              } else if (widget.lastStep == true &&
                   loadedQuestion!.nextQuestion == null) {
                 Navigator.push(
                   context,
@@ -187,10 +148,10 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ResponseQuestionChallenge(
-                      laststep: laststep,
-                      stepid: stepid,
-                      questionnumber: questionnumber,
-                      challengeid: challengeid,
+                      laststep: widget.lastStep,
+                      stepid: widget.stepId,
+                      questionnumber: widget.questionNumber,
+                      challengeid: widget.challengeId,
                       textQuestion: question!.nextQuestion!.title,
                       message: "Dommage",
                       image: const AssetImage('images/pngs/dommage.png'),
@@ -203,7 +164,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
             cancelTimer();
             // ignore: duplicate_ignore
           } catch (e) {
-            print('Failed to submit answer response data: $e');
+            throw ('Failed to submit answer response data: $e');
           }
         }
       },
@@ -215,7 +176,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
       if (!isQuestionDataLoaded) {
         var challengeService = ChallengeService();
         ChallengeQuestionResult? loadedQuestion = await challengeService
-            .getNextQuestionByStepId(stepid)
+            .getNextQuestionByStepId(widget.stepId)
             .then((value) => value.data);
 
         if (loadedQuestion != null) {
@@ -232,11 +193,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         }
       }
       return isQuestionDataLoaded;
-      // }
     } catch (e) {
-      // ignore: avoid_print
-      print('Failed to load next question data: $e');
-      return false;
+      throw ('Failed to load next question data: $e');
     }
   }
 
@@ -280,7 +238,7 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
 
       var challengeService = ChallengeService();
       ChallengeAnswerResponse? response = await challengeService
-          .submitChallengeAnswers(answerRequest, stepid)
+          .submitChallengeAnswers(answerRequest, widget.stepId)
           .then((value) => value.data);
 
       // Move the asynchronous part outside setState
@@ -302,24 +260,27 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
     try {
       var challengeService = ChallengeService();
       ChallengeQuestionResult? loadedQuestion = await challengeService
-          .getNextQuestionByStepId(stepid)
+          .getNextQuestionByStepId(widget.stepId)
           .then((value) => value.data);
       Answer currentquestionresponse = response!.answers
           .where((answer) => answer.questionId == question!.nextQuestion!.id)
           .first;
-      if (laststep == false && loadedQuestion!.nextQuestion == null) {
+      if (widget.lastStep == false && loadedQuestion!.nextQuestion == null) {
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ResponseStepChallenge(
-              challengeid: challengeid,
+              challengeid: widget.challengeId,
               message: "Bravo",
               image: const AssetImage('images/pngs/Star.png'),
               description: "Vous avez gagné ${response.score} points",
             ),
           ),
         );
-      } else if (laststep == true && loadedQuestion!.nextQuestion == null) {
+      } else if (widget.lastStep == true &&
+          loadedQuestion!.nextQuestion == null) {
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -332,14 +293,15 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
           ),
         );
       } else if (currentquestionresponse.score != 0) {
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ResponseQuestionChallenge(
-              laststep: laststep,
-              stepid: stepid,
-              questionnumber: questionnumber,
-              challengeid: challengeid,
+              laststep: widget.lastStep,
+              stepid: widget.stepId,
+              questionnumber: widget.questionNumber,
+              challengeid: widget.challengeId,
               textQuestion: question!.nextQuestion!.title,
               message: "Bien Joué !",
               image: const AssetImage('images/pngs/Check.png'),
@@ -348,14 +310,15 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
           ),
         );
       } else if (currentquestionresponse.score == 0) {
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ResponseQuestionChallenge(
-              laststep: laststep,
-              stepid: stepid,
-              questionnumber: questionnumber,
-              challengeid: challengeid,
+              laststep: widget.lastStep,
+              stepid: widget.stepId,
+              questionnumber: widget.questionNumber,
+              challengeid: widget.challengeId,
               textQuestion: question!.nextQuestion!.title,
               message: "Dommage",
               image: const AssetImage('images/pngs/dommage.png'),
@@ -371,10 +334,8 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
 
   Future<void> useJoker(int joker) async {
     try {
-      // ignore: avoid_print
-      print("joker $joker");
-      JokerRequest jokerRequest =
-          JokerRequest(questionId: question!.nextQuestion!.id, stepId: stepid);
+      JokerRequest jokerRequest = JokerRequest(
+          questionId: question!.nextQuestion!.id, stepId: widget.stepId);
       setState(() {
         isLoading = true;
       });
@@ -474,11 +435,10 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
         isLoading = false;
       });
     } catch (e) {
-      // ignore: avoid_print
-      print('Failed to use joker: $e');
       setState(() {
         isLoading = false;
       });
+      throw ('Failed to use joker: $e');
     }
   }
 
@@ -533,7 +493,9 @@ class QuestionOneCoinChallengeState extends State<QuestionOneCoinChallenge> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            StepOneCoinChallenge(challengeid)),
+                                            StepOneCoinChallenge(
+                                                challengeId:
+                                                    widget.challengeId)),
                                   );
                                 },
                                 child: Image.asset(

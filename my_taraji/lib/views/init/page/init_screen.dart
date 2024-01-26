@@ -12,6 +12,7 @@ class InitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<HomeProvider>().setCurrentLocation();
+    context.read<HomeProvider>().setUserData();
     context.read<HomeProvider>().getUserData();
     List<Widget> pages = context.watch<InitProvider>().pages;
 
@@ -19,10 +20,9 @@ class InitScreen extends StatelessWidget {
       return Scaffold(
         body: Stack(
           children: [
-            pages[context.watch<InitProvider>().currentIndex],
-            // AnimatedSwitcher(
-            //     duration: const Duration(milliseconds: 300),
-            //     child: pages[context.watch<InitProvider>().currentIndex]),
+            AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                child: pages[context.watch<InitProvider>().currentIndex]),
             Align(
               alignment: Alignment.bottomCenter,
               child: MyBottomBar(

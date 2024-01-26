@@ -1,3 +1,5 @@
+import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
+
 import '../../imports.dart';
 
 class MyFanPay extends StatelessWidget {
@@ -58,7 +60,7 @@ class MyFanPay extends StatelessWidget {
       );
     }
 
-    Widget buildPage(UserData userData, BuildContext context) {
+    Widget buildPage(User? userData, BuildContext context) {
       List<Widget> widgetsToDisplay = [
         const FanPayMiddleContent(),
         menuSection(transactionModal, context),
@@ -117,7 +119,7 @@ class MyFanPay extends StatelessWidget {
 
     return FutureBuilder(
       future: context.watch<HomeProvider>().getUserData(),
-      builder: (context, AsyncSnapshot<UserData> snapshot) {
+      builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
@@ -125,9 +127,10 @@ class MyFanPay extends StatelessWidget {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }
-        UserData userData = snapshot.data!;
-        return context.watch<FanPayProvider>().iziAccount == false
+        User? userData = snapshot.data;
+        return context.watch<IziProvider>().isConnected == false
             ? Stack(
+                alignment: Alignment.topCenter,
                 children: [
                   buildPage(userData, context),
                   const FanPayIzi(),

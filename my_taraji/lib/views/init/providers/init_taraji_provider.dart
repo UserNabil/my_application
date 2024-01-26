@@ -8,7 +8,10 @@ import '../../shop/page/shop_screen.dart';
 
 class InitProvider with ChangeNotifier {
   int _currentIndex = 0;
-  PermissionStatus _status = PermissionStatus.restricted;
+  PermissionStatus _statusLocation = PermissionStatus.restricted;
+  // PermissionStatus _statusPhoto = PermissionStatus.restricted;
+  PermissionStatus _statusCamera = PermissionStatus.restricted;
+  // PermissionStatus _statusStorage = PermissionStatus.restricted;
 
   final List<Widget> _pages = [
     const HomeScreen(),
@@ -31,11 +34,18 @@ class InitProvider with ChangeNotifier {
   }
 
   void initStatusPermissions() async {
-    _status = await Permission.location.request();
+    _statusLocation = await Permission.location.request();
+    // _statusPhoto = await Permission.photos.request();
+    _statusCamera = await Permission.camera.request();
+    // _statusStorage = await Permission.storage.request();
+
     notifyListeners();
   }
 
   int get currentIndex => _currentIndex;
   List<Widget> get pages => _pages;
-  PermissionStatus get status => _status;
+  PermissionStatus get status => _statusLocation;
+  // PermissionStatus get statusPhoto => _statusPhoto;
+  PermissionStatus get statusCamera => _statusCamera;
+  // PermissionStatus get statusFile => _statusStorage;
 }

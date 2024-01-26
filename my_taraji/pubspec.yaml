@@ -41,6 +41,9 @@ dependencies:
   slide_action: ^0.0.2
   flutter_native_splash: ^2.3.9
   permission_handler: ^11.2.0
+  rive: ^0.12.4
+  image_picker: ^1.0.7
+  file_picker: ^6.1.1
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +55,7 @@ flutter:
 
   assets:
     - images/
+    - images/rives/
     - images/icons/
     - images/pngs/
     - images/pngs/campaigns/

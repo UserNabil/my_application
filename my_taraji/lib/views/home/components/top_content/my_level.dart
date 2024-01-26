@@ -1,25 +1,15 @@
+import 'package:my_taraji/views/fanpay/imports.dart';
+
 import '../../import.dart';
 
 class MyCardLevel extends StatelessWidget {
   const MyCardLevel({super.key});
 
-  Future<Map<String, String>> _getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String xp = prefs.getString('xp') ?? '0';
-    return {
-      'xp': xp,
-    };
-  }
-
-  double calculateXp(int xp, int total) {
-    return (xp / total * 100).roundToDouble();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getUserData(),
-      builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
+      future: context.read<HomeProvider>().getUserData(),
+      builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
             height: 100,
@@ -30,16 +20,16 @@ class MyCardLevel extends StatelessWidget {
         }
 
         if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Container();
         }
-        final userData = snapshot.data!;
+        final userData = snapshot.data;
         return buildGamification(userData);
       },
     );
   }
 
-  Widget buildGamification(Map<String, String> userData) {
-    String xp = userData['xp']!;
+  Widget buildGamification(User? userData) {
+    String xp = userData?.myGamification?.expPoints.toString() ?? '0';
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -77,10 +67,14 @@ class MyCardLevel extends StatelessWidget {
               children: [
                 const Text("Niveau actuel",
                     style: TextStyle(fontSize: 11, color: MyColors.grey)),
-                Text(int.parse(xp) < 100 ? "SILVER" : "GOLD",
+                Text(userData?.level?.currentLevel.nameFR ?? "",
                     style: TextStyle(
                         fontSize: 25,
-                        color: int.parse(xp) < 100
+                        color: int.parse(xp) <
+                                double.parse(
+                                  (userData?.level?.nextLevel.pointsMax ?? 0)
+                                      .toString(),
+                                )
                             ? MyColors.grey
                             : MyColors.yellow,
                         fontWeight: FontWeight.w700)),
@@ -118,43 +112,55 @@ class MyCardLevel extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(int.parse(xp) > 100 ? "Gold" : "Silver",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                        color: MyColors.black)),
-                Text(int.parse(xp) > 100 ? "Diamond" : "Gold",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                        color: MyColors.black))
+                Text(
+                  userData?.level?.currentLevel.nameFR ?? "",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                    color: MyColors.black,
+                  ),
+                ),
+                Text(
+                  userData?.level?.nextLevel.nameFR ?? "",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                    color: MyColors.black,
+                  ),
+                )
               ],
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 MyProgressBar(
-                    value: calculateXp(
-                            int.parse(xp), int.parse(xp) > 100 ? 1000 : 100) /
-                        100,
-                    width: 285,
-                    height: 15),
+                  value: double.parse(
+                    ((userData?.level?.currentPercentage ?? 0) / 100)
+                        .toString(),
+                  ),
+                  width: 285,
+                  height: 15,
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("XP:$xp/${int.parse(xp) > 100 ? 1000 : 100}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                        color: MyColors.black)),
                 Text(
-                  "${calculateXp(int.parse(xp), int.parse(xp) > 100 ? 1000 : 100)} %",
+                  "XP: $xp / ${userData?.level?.nextLevel.pointsMax}",
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                      color: MyColors.black),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                    color: MyColors.black,
+                  ),
+                ),
+                Text(
+                  "${userData?.level?.currentPercentage} %",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                    color: MyColors.black,
+                  ),
                 )
               ],
             ),

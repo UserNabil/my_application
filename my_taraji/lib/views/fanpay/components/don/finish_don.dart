@@ -1,5 +1,4 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
-import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 
 class FinishDon extends StatefulWidget {
   const FinishDon({super.key});
@@ -92,7 +91,9 @@ class FinishDonState extends State<FinishDon> {
               const SizedBox(height: 20),
               donUI.textType1("Total don", false, false),
               Text(
-                "${context.watch<DonProvider>().amountController.text} DT",
+                context.watch<DonProvider>().isTypeCash
+                    ? "${context.watch<DonProvider>().convertedAmount} Coins"
+                    : "${context.watch<DonProvider>().amountController.text} DT",
                 style: const TextStyle(
                   color: MyColors.blue,
                   fontWeight: FontWeight.w600,
@@ -111,8 +112,8 @@ class FinishDonState extends State<FinishDon> {
           onPressed: () {
             context.read<DonProvider>().initAllData();
             context.read<FanPayProvider>().openModal();
-            context.read<InitProvider>().initCurrentIndex();
-            Navigator.popAndPushNamed(context, "/");
+            // context.read<InitProvider>().initCurrentIndex();
+            Navigator.pop(context);
           },
           child: const Text(
             "Retour à l'accueil",

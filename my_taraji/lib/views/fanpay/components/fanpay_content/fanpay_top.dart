@@ -67,7 +67,7 @@ class AllCards extends StatelessWidget {
               height: 237)),
       FutureBuilder(
         future: context.watch<HomeProvider>().getUserData(),
-        builder: (context, AsyncSnapshot<UserData> snapshot) {
+        builder: (context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           }
@@ -75,7 +75,7 @@ class AllCards extends StatelessWidget {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
-          final userData = snapshot.data!;
+          final userData = snapshot.data;
           return PaymentCard(userData: userData);
         },
       ),
@@ -88,7 +88,7 @@ class AllCards extends StatelessWidget {
 
 class PaymentCard extends StatelessWidget {
   const PaymentCard({super.key, required this.userData});
-  final UserData userData;
+  final User? userData;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class PaymentCard extends StatelessWidget {
                 left: 24,
                 top: 50,
                 child: Text(
-                  userData.pseudo.toUpperCase(),
+                  userData?.pseudo?.toUpperCase() ?? '',
                   style: const TextStyle(
                     color: MyColors.white,
                     fontSize: 18,
