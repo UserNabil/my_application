@@ -128,7 +128,7 @@ class MyFanPay extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         }
         User? userData = snapshot.data;
-        return context.watch<IziProvider>().isConnected == false
+        return userData?.isIzi == false
             ? Stack(
                 alignment: Alignment.topCenter,
                 children: [

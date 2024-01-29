@@ -4,38 +4,12 @@ import 'package:my_taraji/views/fanpay/views/izi/components/pin_code/pin_code.da
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_in/sign_in.dart';
 
 class MyDon extends StatelessWidget {
-  const MyDon({super.key});
+  const MyDon({super.key, required this.user});
 
-  manageStep(User? user, BuildContext globalContext) {
-    switch (globalContext.watch<DonProvider>().step) {
-      case "don":
-        globalContext.read<DonProvider>().getDonSettings();
-        return don(user, globalContext);
-      case "confirmDon":
-        return const ConfirmDon();
-      case "finishDon":
-        return const FinishDon();
-      case "connect":
-        return SignIn(
-          onPressed: () {
-            globalContext.read<DonProvider>().setStep("pinCode");
-          },
-          paddingTop: 0,
-        );
-      case "pinCode":
-        return PinCode(
-          onPressed: () {
-            globalContext.read<DonProvider>().setStep("finishDon");
-          },
-          paddingTop: 0,
-        );
-    }
-  }
+  final User? user;
 
-  Widget don(
-    User? user,
-    BuildContext context,
-  ) {
+  @override
+  Widget build(BuildContext context) {
     DonUI donUI = DonUI();
     bool isActiveMinimum =
         context.watch<DonProvider>().donSettings.isMinimumThresholdAmountActive;

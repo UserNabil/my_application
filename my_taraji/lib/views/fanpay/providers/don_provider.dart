@@ -1,6 +1,4 @@
-import 'package:my_taraji/services/don_service.dart';
 import 'package:my_taraji/views/fanpay/models/don_model.dart';
-import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 
 import '../imports.dart';
 
@@ -17,11 +15,11 @@ class DonProvider with ChangeNotifier {
     isAnonymosContributionActivated: false,
   );
   final TextEditingController _amountController = TextEditingController();
-  bool _isTypeCash = true;
+  bool _isTypeCash = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _convertedAmount = "";
-  DonService donService = DonService();
   bool _isValidForm = false;
+  DonService donService = DonService();
 
   void setDonTitle(String newTitle) {
     _title = newTitle;
@@ -106,7 +104,7 @@ class DonProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void createDonation(bool isConnected, BuildContext context) async {
+  void createDonation(bool isConnected, BuildContext context, User user) async {
     DonModel donModel = DonModel(
       iziPinCode: 0,
       contributionMethod: _isTypeCash ? 2 : 1,
@@ -115,7 +113,7 @@ class DonProvider with ChangeNotifier {
     );
     donModel = await donService.createDonation(donModel);
     // ignore: use_build_context_synchronously
-    isConnected = context.read<IziProvider>().isConnected;
+    isConnected = user.isIzi ?? false;
 
     if (isConnected) {
       if (donModel.iziPinCode != 0) {

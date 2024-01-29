@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_in/sign_in_form.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +14,12 @@ class SignInScreen extends StatefulWidget {
 class SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
-    onPressed() {
+    onPressedToConnect() {
       context.read<IziProvider>().validateSignInForm(context);
+    }
+
+    onPressedToVerif() {
+      context.read<IziProvider>().validateVerifForm(context);
     }
 
     return Scaffold(
@@ -25,7 +28,9 @@ class SignInScreenState extends State<SignInScreen> {
       appBar: AppBar(
         backgroundColor: MyColors.transparent,
       ),
-      body: SignIn(onPressed: onPressed, paddingTop: 70),
+      body: context.watch<IziProvider>().connectionStep == "pinCode"
+          ? PinCode(onPressed: onPressedToVerif, paddingTop: 150)
+          : SignIn(onPressed: onPressedToConnect, paddingTop: 150),
     );
   }
 }
@@ -70,8 +75,9 @@ class SignIn extends StatelessWidget {
                 const IziSignInForm(),
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {
-                      onPressed!();
+                    onPressed: () async {
+                      context.read<IziProvider>().setIsProcissing(true);
+                      await onPressed!();
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
