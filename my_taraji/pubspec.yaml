@@ -27,7 +27,7 @@ dependencies:
   flutter_custom_clippers: ^2.1.0
   page_transition: ^2.1.0
   flutter_xlider: ^3.5.0
-  http: ^1.1.2
+  http: any
   flutter_rating_bar: ^4.0.1
   share_plus: ^7.2.1
   geolocator: ^10.1.0
@@ -44,6 +44,8 @@ dependencies:
   rive: ^0.12.4
   image_picker: ^1.0.7
   file_picker: ^6.1.1
+  flutter_appauth: ^6.0.3
+  aad_oauth: any
 
 dev_dependencies:
   flutter_test:
