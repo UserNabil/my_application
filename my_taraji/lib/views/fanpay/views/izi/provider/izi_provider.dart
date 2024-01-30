@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
 class IziProvider with ChangeNotifier {
@@ -26,9 +27,15 @@ class IziProvider with ChangeNotifier {
   Color _selfiColorInput = Colors.black54;
   Color _cinRectoColorInput = Colors.black54;
   Color _cinVersoColorInput = Colors.black54;
-  bool _wallet = false;
-  bool _isConnected = true;
+  bool _wallet = true;
   bool _showPassword = false;
+  String _connectionStep = "connection";
+  bool _isProcissing = false;
+
+  void setIsProcissing(bool value) {
+    _isProcissing = value;
+    notifyListeners();
+  }
 
   void togglePassword() {
     _showPassword = !_showPassword;
@@ -119,9 +126,45 @@ class IziProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setConnected() {
-    _isConnected = true;
+  Future<String> setConnected() async {
+    UserService userService = UserService();
+    return userService.authUserIzi(_signinId.text, _signinPwd.text);
+  }
+
+  void validateSignInForm(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      Future.delayed(const Duration(seconds: 2), () {
+        setConnected().then((value) {
+          print("value: $value");
+          // _formKey.currentState?.reset();
+          // init();
+          // _wallet = true;
+          // Navigator.pop(context);
+          if (value.isNotEmpty) {
+            _connectionStep = "pinCode";
+          } else {
+            _connectionStep = "connection";
+          }
+        });
+      });
+    }
     notifyListeners();
+  }
+
+  void setVerif() {
+    UserService userService = UserService();
+    userService.confirmAuthIzi(_pinCode.text).then((value) {
+      print("value: $value");
+      if (value) {
+        setIsProcissing(false);
+        // _formKey.currentState?.reset();
+        // init();
+        // Navigator.pop(context);
+      } else {
+        setIsProcissing(false);
+        _connectionStep = "pinCode";
+      }
+    });
   }
 
   void validateSignUpForm(BuildContext context) async {
@@ -143,13 +186,10 @@ class IziProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void validateSignInForm(BuildContext context) async {
+  void validateVerifForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      Future.delayed(const Duration(seconds: 2), () {
-        _formKey.currentState?.reset();
-        init();
-        setConnected();
-        Navigator.pop(context);
+      Future.delayed(const Duration(seconds: 3), () {
+        setVerif();
       });
     }
     notifyListeners();
@@ -250,4 +290,6 @@ class IziProvider with ChangeNotifier {
   bool get isConnected => _isConnected;
   bool get showPassword => _showPassword;
   TextEditingController get pinCode => _pinCode;
+  String get connectionStep => _connectionStep;
+  bool get isProcissing => _isProcissing;
 }

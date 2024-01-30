@@ -13,8 +13,6 @@ class FanPayIzi extends StatefulWidget {
 }
 
 class FanPayIziState extends State<FanPayIzi> {
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -30,11 +28,11 @@ class FanPayIziState extends State<FanPayIzi> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: SafeArea(
-      child: Padding(
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+                children: [
                   const Spacer(),
                   SizedBox(
                     width: 300,
@@ -64,7 +62,7 @@ class FanPayIziState extends State<FanPayIzi> {
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
                         ),
-              )
+                      )
                     ]),
                   ),
                   const SizedBox(height: 20),
@@ -100,8 +98,8 @@ class FanPayIziState extends State<FanPayIzi> {
                   const Spacer(
                     flex: 2,
                   ),
-            ],
-          ),
+                ],
+              ),
             ),
           ),
         )
@@ -121,7 +119,7 @@ class FanPayIziState extends State<FanPayIzi> {
       MaterialPageRoute(
         barrierDismissible: true,
         builder: (context) => const SignUpScreen(),
-        ),
+      ),
     );
   }
 

@@ -14,6 +14,7 @@ class User {
   final Level? level;
   final Address? address;
   bool? wallet = false;
+  bool? isIzi = false;
 
   User({
     required this.id,
@@ -26,6 +27,7 @@ class User {
     required this.level,
     required this.address,
     required this.wallet,
+    required this.isIzi,
   });
 
   factory User.fromJson(Map<String, dynamic>? json) {
@@ -46,6 +48,7 @@ class User {
       level: Level.fromJson(jsonLevel ?? json?['level'] ?? {}),
       address: Address.fromJson(jsonAddress ?? json?['address'] ?? {}),
       wallet: json?['wallet'] ?? false,
+      isIzi: json?['isIzi'] ?? false,
     );
   }
 
@@ -61,6 +64,7 @@ class User {
       'level': level?.toMap(),
       'address': address?.toMap(),
       'wallet': wallet,
+      'isIzi': isIzi,
     };
   }
 }

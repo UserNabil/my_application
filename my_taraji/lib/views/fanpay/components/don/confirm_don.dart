@@ -1,7 +1,8 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
 
 class ConfirmDon extends StatelessWidget {
-  const ConfirmDon({super.key});
+  const ConfirmDon({super.key, required this.user});
+  final User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +47,21 @@ class ConfirmDon extends StatelessWidget {
               donUI.textType2("Coins"),
             ],
           ),
-          donUI.divider(40.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              donUI.textType1("Nombre des coins", false, false),
-              donUI.textType2(
-                  "${context.watch<DonProvider>().convertedAmount} Coins"),
-            ],
-          ),
+          context.watch<DonProvider>().isTypeCash
+              ? Column(
+                  children: [
+                    donUI.divider(40.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        donUI.textType1("Nombre des coins", false, false),
+                        donUI.textType2(
+                            "${context.watch<DonProvider>().convertedAmount} Coins"),
+                      ],
+                    ),
+                  ],
+                )
+              : const SizedBox(),
           donUI.divider(40.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +85,7 @@ class ConfirmDon extends StatelessWidget {
               backgroundColor: MyColors.orange,
             ),
             onPressed: () {
-              context.read<DonProvider>().createDonation(false, context);
+              context.read<DonProvider>().createDonation(false, context, user!);
             },
             child: const Text(
               "Confirmer",
