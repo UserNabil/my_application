@@ -39,6 +39,12 @@ final List<RowItem> rowsSelfCare = [
     icon: TablerIcons.box_seam,
     pageName: PageViewEnum.myOrders,
   ),
+  RowItem(
+    title: 'Désactiver mon compte',
+    location: 'account',
+    icon: TablerIcons.user_x,
+    // pageName: PageViewEnum.myAccount,
+  ),
 ];
 final List<RowItem> rowsAccount = [
   RowItem(

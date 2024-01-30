@@ -37,6 +37,12 @@ class PinCodeForm extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
+            Text(
+              context.watch<IziProvider>().verifIsWrong == false
+                  ? ""
+                  : "Votre code PIN est incorrecte, il vous reste ${4 - context.watch<IziProvider>().countVerif} essais",
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            ),
             const SizedBox(height: 20),
           ],
         ),

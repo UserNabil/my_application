@@ -12,6 +12,7 @@ class UserService {
   Future<APIResponseModel<User>> getUserData() async {
     const path = "api/v1/users";
     final url = Uri.parse('$baseUrl/$path');
+    // prefs
 
     try {
       final response = await http.get(url);
@@ -34,8 +35,7 @@ class UserService {
     }
   }
 
-  Future<String> authUserIzi(String username, String password) async {
-    // Future<bool> authUserIzi(String username, String password) async {
+  Future<bool> authUserIzi(String username, String password) async {
     const path = "api/v1/payments/auth";
     final url = Uri.parse('$baseUrl/$path');
 
@@ -48,10 +48,9 @@ class UserService {
         },
       );
       if (response.statusCode == 200) {
-        // final Map<String, dynamic> jsonData = json.decode(response.body);
+        final Map<String, dynamic> jsonData = json.decode(response.body);
 
-        // return jsonData['isSuccess'];
-        return response.body.toString();
+        return jsonData['data'];
       } else {
         throw Exception('Failed API call: ${response.reasonPhrase}');
       }
@@ -64,17 +63,20 @@ class UserService {
     }
   }
 
-  // https://devmytarajiapi.azurewebsites.net/api/v1/payments/confirmAuth?pin=3442
   Future<bool> confirmAuthIzi(String pin) async {
     const path = "api/v1/payments/confirmAuth";
-    final url = Uri.parse('$baseUrl/$path?pin=$pin');
+    final url = Uri.parse('$baseUrl/$path');
 
     try {
-      final response = await http.get(url);
+      final response = await http.post(
+        url,
+        body: {
+          'pin': pin,
+        },
+      );
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-
-        return jsonData['isSuccess'];
+        return jsonData['IsSuccess'];
       } else {
         throw Exception('Failed API call: ${response.reasonPhrase}');
       }

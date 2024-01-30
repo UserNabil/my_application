@@ -1,11 +1,9 @@
 class DonModel {
-  final int iziPinCode;
   final int contributionMethod;
   final int amountContributed;
   final int coinsCountContributed;
 
   DonModel({
-    required this.iziPinCode,
     required this.contributionMethod,
     required this.amountContributed,
     required this.coinsCountContributed,
@@ -13,7 +11,6 @@ class DonModel {
 
   factory DonModel.fromJson(Map<String, dynamic>? json) {
     return DonModel(
-      iziPinCode: json?['iziPinCode'] ?? 0,
       contributionMethod: json?['contributionMethod'] ?? 0,
       amountContributed: json?['amountContributed'] ?? 0,
       coinsCountContributed: json?['coinsCountContributed'] ?? 0,
@@ -21,7 +18,6 @@ class DonModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'iziPinCode': iziPinCode,
         'contributionMethod': contributionMethod,
         'amountContributed': amountContributed,
         'coinsCountContributed': coinsCountContributed,
@@ -36,6 +32,7 @@ class DonSettings {
   final String minimumThresholdViloationMessage;
   final int organizationAgentCode;
   final bool isAnonymosContributionActivated;
+  final int transactionType;
 
   DonSettings({
     required this.authorizedAmounts,
@@ -45,6 +42,7 @@ class DonSettings {
     required this.minimumThresholdViloationMessage,
     required this.organizationAgentCode,
     required this.isAnonymosContributionActivated,
+    required this.transactionType,
   });
 
   factory DonSettings.fromJson(Map<String, dynamic> json) {
@@ -57,6 +55,7 @@ class DonSettings {
           json['minimumThresholdViloationMessage'],
       organizationAgentCode: json['organizationAgentCode'],
       isAnonymosContributionActivated: json['isAnonymosContributionActivated'],
+      transactionType: json['transactionType'],
     );
   }
 
@@ -68,6 +67,7 @@ class DonSettings {
         'minimumThresholdViloationMessage': minimumThresholdViloationMessage,
         'organizationAgentCode': organizationAgentCode,
         'isAnonymosContributionActivated': isAnonymosContributionActivated,
+        'transactionType': transactionType,
       };
 }
 

@@ -1,54 +1,89 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/fanpay/views/izi/components/overlay_loader.dart';
+import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 
 class ManageDonPage extends StatelessWidget {
   const ManageDonPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    User? user;
-    context.read<HomeProvider>().getUserData().then((value) => user = value!);
-
-    return context.watch<DonProvider>().step != "finishDon"
-        ? _buildBody(context, user)
-        : Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              _buildBody(context, user),
-              Positioned(
-                top: 30,
-                child: SvgPicture.asset(
-                  "images/svgs/fanpay/finish_don.svg",
-                  height: 160,
-                  width: 160,
-                ),
-              )
-            ],
-          );
+    return FutureBuilder<User?>(
+      future: context.read<HomeProvider>().getUserData(),
+      builder: (context, snapshot) {
+        final value = snapshot.data;
+        if (snapshot.hasData) {
+          return context.watch<DonProvider>().step != "finishDon"
+              ? _buildBody(context, value)
+              : Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    _buildBody(context, value),
+                    Positioned(
+                      top: 30,
+                      child: SvgPicture.asset(
+                        "images/svgs/fanpay/finish_don.svg",
+                        height: 160,
+                        width: 160,
+                      ),
+                    )
+                  ],
+                );
+        } else if (snapshot.hasError) {
+          return const Center(child: Text("Une erreur est survenue"));
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   Widget _manageStep(User? user, BuildContext context) {
-    final donProvider = context.watch<DonProvider>();
-    final step = donProvider.step;
-    final donProviderReader = context.read<DonProvider>();
+    final step = context.watch<DonProvider>().step;
 
+    context.read<DonProvider>().getDonSettingsProv();
     switch (step) {
       case "don":
-        donProviderReader.getDonSettings();
         return MyDon(user: user);
       case "confirmDon":
         return ConfirmDon(user: user);
       case "finishDon":
         return const FinishDon();
       case "connect":
-        return SignIn(
-          onPressed: () => donProviderReader.setStep("pinCode"),
-          paddingTop: 0,
-        );
-      case "pinCode":
-        return PinCode(
-          onPressed: () => donProviderReader.setStep("finishDon"),
-          paddingTop: 0,
-        );
+        // return SignIn(
+        //   onPressed: () async {
+        //     Future.delayed(const Duration(milliseconds: 500), () {
+        //       // context.read<DonProvider>().setStep("pinCode");
+        //     });
+        //     // context.read<DonProvider>().setStep("pinCode")
+        //   },
+        //   paddingTop: 0,
+        // );
+        String step = context.watch<IziProvider>().connectionStep;
+        onPressedToConnect() {
+          context.read<IziProvider>().setConnectProcissing(false);
+          // context.read<IziProvider>().validateSignInForm(context);
+        }
+
+        onPressedToVerif() {
+          // context.read<IziProvider>().validateVerifForm(context);
+        }
+        return step == "pinCode"
+            ? context.watch<IziProvider>().isVerifProcissing == true
+                ? Stack(
+                    children: [
+                      PinCode(onPressed: onPressedToVerif, paddingTop: 0),
+                      const OverlayLoader(),
+                    ],
+                  )
+                : PinCode(onPressed: onPressedToVerif, paddingTop: 0)
+            : context.watch<IziProvider>().isConnectProcissing == true
+                ? Stack(
+                    children: [
+                      SignIn(onPressed: onPressedToConnect, paddingTop: 0),
+                      const OverlayLoader(),
+                    ],
+                  )
+                : SignIn(onPressed: onPressedToConnect, paddingTop: 0);
       default:
         return Container();
     }
@@ -112,7 +147,8 @@ class ManageDonPage extends StatelessWidget {
         Navigator.pop(context);
         break;
       case "confirmDon":
-      case "finishDon":
+        donProvider.setStep("don");
+        break;
       case "connect":
       case "pinCode":
         donProvider.setStep("confirmDon");

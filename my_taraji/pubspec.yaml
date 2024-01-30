@@ -45,16 +45,17 @@ dependencies:
   image_picker: ^1.0.7
   file_picker: ^6.1.1
   mask: ^1.0.5
-  gif_view: ^0.4.1
+  gif_view: ^0.3.1
   # qr_flutter: ^4.1.0
   # ai_barcode_scanner: ^3.4.1
-  flutter_appauth: ^6.0.3
-  aad_oauth: any
+  aad_oauth: ^0.4.4
+  flutter_appauth: ^6.0.4
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
+  flutter_lints: ^2.0.3
   change_app_package_name: ^1.1.0
 
 flutter:
@@ -85,3 +86,4 @@ flutter:
         - asset: fonts/Poppins-Thin.ttf
         - asset: fonts/Poppins-Italic.ttf
           style: italic
+

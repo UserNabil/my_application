@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:my_taraji/views/home/provider/home_provider.dart';
 import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
@@ -36,10 +35,10 @@ class _InitScreenState extends State<InitScreen> {
   }
 
   loadData() async {
-    FlutterAppAuth _appauth = FlutterAppAuth();
+    FlutterAppAuth appauth = const FlutterAppAuth();
     AuthorizationTokenResponse? result;
     try {
-      result = await _appauth.authorizeAndExchangeCode(
+      result = await appauth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(clientId, redirectURL,
             //issuer: "https://prodplatform.b2clogin.com/ccab738-09c1-45df-8aca-7c17c285b689/v2.0/",
             discoveryUrl: discoveryURL,
@@ -51,7 +50,10 @@ class _InitScreenState extends State<InitScreen> {
     }
 
     prefs = await SharedPreferences.getInstance();
-    while (prefs == null || result == null) continue;
+    // ignore: unnecessary_null_comparison
+    while (prefs == null || result == null) {
+      continue;
+    }
     setState(() {
       prefs.setString('token', result?.idToken ?? 'no token');
     });

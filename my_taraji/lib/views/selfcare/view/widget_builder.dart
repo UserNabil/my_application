@@ -51,6 +51,14 @@ Widget selfCareBody(PageViewEnum pageName) {
         animationDirection: 1,
         child: ListCommande(),
       );
+    case PageViewEnum.myAccount:
+      return const AnimationSelfCareMenu(
+        animationDirection: 1,
+        child: SizedBox(
+          height: 300,
+          child: Center(child: Text('myAccount')),
+        ),
+      );
   }
 }
 
@@ -70,5 +78,7 @@ String appBarTitle(PageViewEnum pageName) {
       return 'Parraiange';
     case PageViewEnum.myOrders:
       return 'Mes commandes';
+    case PageViewEnum.myAccount:
+      return 'Désactiver mon compte';
   }
 }

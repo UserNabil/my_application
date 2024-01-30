@@ -1,3 +1,4 @@
+import 'package:my_taraji/services/enums/financial_transaction_type.dart';
 import 'package:my_taraji/views/fanpay/models/don_model.dart';
 
 import '../imports.dart';
@@ -13,6 +14,7 @@ class DonProvider with ChangeNotifier {
     minimumThresholdViloationMessage: "",
     organizationAgentCode: 0,
     isAnonymosContributionActivated: false,
+    transactionType: 0,
   );
   final TextEditingController _amountController = TextEditingController();
   bool _isTypeCash = false;
@@ -20,6 +22,12 @@ class DonProvider with ChangeNotifier {
   String _convertedAmount = "";
   bool _isValidForm = false;
   DonService donService = DonService();
+  bool _isLoading = false;
+
+  void setIsLoading(bool isLoading) {
+    _isLoading = isLoading;
+    notifyListeners();
+  }
 
   void setDonTitle(String newTitle) {
     _title = newTitle;
@@ -75,19 +83,17 @@ class DonProvider with ChangeNotifier {
     _title = "Don";
     _isValidForm = false;
     _formKey.currentState?.reset();
+    _convertedAmount = "";
+    _isLoading = false;
     manageAmountController();
     notifyListeners();
   }
 
-  void setDonSettings(DonSettings newDonSettings) {
-    _donSettings = newDonSettings;
-    notifyListeners();
-  }
-
-  void getDonSettings() async {
-    DonSettings donSettings = await donService.getDonSettings();
+  void getDonSettingsProv() async {
+    TransactionType type = getTransactionType(1);
+    DonSettings donSettings = await donService.getDonSettings(type);
     donSettings.authorizedAmounts.sort((a, b) => a.amount.compareTo(b.amount));
-    setDonSettings(donSettings);
+    _donSettings = donSettings;
   }
 
   void manageAmountController() {
@@ -98,29 +104,29 @@ class DonProvider with ChangeNotifier {
   }
 
   void convertAmount() async {
-    double convertedAmount = await donService
-        .getCoinsConvertor(double.parse(_amountController.text));
-    _convertedAmount = convertedAmount.toStringAsFixed(0);
+    try {
+      double amoutConverted =
+          await donService.getCoinsConvertor(_amountController.text);
+      // debugPrint(amoutConverted.toString());
+      _convertedAmount = amoutConverted.toStringAsFixed(0);
+    } catch (e) {
+      throw ('Error converting amount: $e');
+    }
     notifyListeners();
   }
 
-  void createDonation(bool isConnected, BuildContext context, User user) async {
+  void createDonation(User? user) async {
     DonModel donModel = DonModel(
-      iziPinCode: 0,
       contributionMethod: _isTypeCash ? 2 : 1,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
     );
-    donModel = await donService.createDonation(donModel);
-    // ignore: use_build_context_synchronously
-    isConnected = user.isIzi ?? false;
+    debugPrint(donModel.toJson().toString());
+    bool result = await donService.createDonation(donModel);
 
-    if (isConnected) {
-      if (donModel.iziPinCode != 0) {
-        setStep("finishDon");
-      } else {
-        setStep("pinCode");
-      }
+    // review here
+    if ((user?.mytarajiUser?.isSubscribedIZI ?? false) && result) {
+      setStep("finishDon");
     } else {
       setStep("connect");
     }
@@ -134,4 +140,5 @@ class DonProvider with ChangeNotifier {
   GlobalKey<FormState>? get formKey => _formKey;
   String get convertedAmount => _convertedAmount;
   bool get isValidForm => _isValidForm;
+  bool get isLoading => _isLoading;
 }

@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: aad_oauth
-      sha256: be81e967d4791918ebe62f783e0995d1643af0afeb68d0b03374df1771d620b9
+      sha256: "0f0d7d3da870e0eac1462ea587c0e16acca61b598f0e0a69dacc8ecfbee07291"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.4"
   ansicolor:
     dependency: transitive
     description:
@@ -137,6 +137,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
+  dartz:
+    dependency: transitive
+    description:
+      name: dartz
+      sha256: e6acf34ad2e31b1eb00948692468c30ab48ac8250e0f0df661e29f12dd252168
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.1"
   device_info:
     dependency: "direct main"
     description:
@@ -161,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.7"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -282,10 +298,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: e2a421b7e59244faef694ba7b30562e489c2b489866e505074eb005cd7060db7
+      sha256: a25a15ebbdfc33ab1cd26c63a6ee519df92338a9c10f122adda92938253bef04
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "2.0.3"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -314,10 +330,50 @@ packages:
     dependency: transitive
     description:
       name: flutter_secure_storage
-      sha256: "9f3dd2ac3b6875b0fde5b04734789c3ef35ba3965c18e99dd564a7a2f8056df6"
+      sha256: "22dbf16f23a4bcf9d35e51be1c84ad5bb6f627750565edd70dab70f3ff5fff8f"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.1"
+    version: "8.1.0"
+  flutter_secure_storage_linux:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_linux
+      sha256: "3d5032e314774ee0e1a7d0a9f5e2793486f0dff2dd9ef5a23f4e3fb2a0ae6a9e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
+  flutter_secure_storage_macos:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_macos
+      sha256: bd33935b4b628abd0b86c8ca20655c5b36275c3a3f5194769a7b3f37c905369c
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
+  flutter_secure_storage_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_platform_interface
+      sha256: "0d4d3a5dd4db28c96ae414d7ba3b8422fd735a8255642774803b2532c9a61d7e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
+  flutter_secure_storage_web:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_web
+      sha256: "30f84f102df9dcdaa2241866a958c2ec976902ebdaa8883fbfe525f1f2f3cf20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  flutter_secure_storage_windows:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_windows
+      sha256: "38f9501c7cb6f38961ef0e1eacacee2b2d4715c63cc83fe56449c4d3d0b47255"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -344,14 +400,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_webview_plugin:
-    dependency: transitive
-    description:
-      name: flutter_webview_plugin
-      sha256: ec410b10822b06432e11f9680b319609d6f34bcdabb31fcc4990ac8a2aaf9ff0
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.0"
   flutter_xlider:
     dependency: "direct main"
     description:
@@ -420,10 +468,10 @@ packages:
     dependency: "direct main"
     description:
       name: gif_view
-      sha256: "2e25f3f83e5b66bb0337bda52ae8aa77748fb559279cf9f68af475bf9d8baf7f"
+      sha256: c14dc41501b479d9a14cd9135532c1e5bcad7d915d497a0f3e6d77c4edbc8f0e
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.1"
+    version: "0.3.1"
   graphs:
     dependency: transitive
     description:
@@ -548,10 +596,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: cbf8d4b858bb0134ef3ef87841abdf8d63bfc255c266b7bf6b39daa1085c4290
+      sha256: "0a217c6c989d21039f1498c3ed9f3ed71b354e69873f13a8dfc3c9fe76f1b452"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "2.1.1"
   liquid_swipe:
     dependency: "direct main"
     description:

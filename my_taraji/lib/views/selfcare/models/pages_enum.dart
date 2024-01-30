@@ -6,4 +6,5 @@ enum PageViewEnum {
   notifications,
   sponsorship,
   myOrders,
+  myAccount
 }

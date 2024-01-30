@@ -27,11 +27,15 @@ class HomeProvider with ChangeNotifier {
     Map<String, dynamic> userDataMap = jsonDecode(value) ?? {};
 
     User userData = User.fromJson(userDataMap);
+
+    // userData.isIzi = prefs.getBool('isIzi');
+
     return userData;
   }
 
   Future<void> setUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isIzi', prefs.getBool('isIzi') ?? true);
     await userService.getUserData().then((value) {
       const key = 'user';
       prefs.setString(key, jsonEncode(value.data?.toMap()));

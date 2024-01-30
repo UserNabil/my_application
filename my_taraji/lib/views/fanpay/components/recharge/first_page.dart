@@ -7,7 +7,6 @@ class RechargeFistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("phone: ${user?.phone}");
     DonUI rechargeUI = DonUI();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

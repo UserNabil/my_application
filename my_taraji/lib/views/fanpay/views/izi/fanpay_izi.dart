@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:my_taraji/views/fanpay/imports.dart';
-import 'package:my_taraji/views/fanpay/views/izi/components/sign_in/sign_in.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_up/sign_up.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 import 'package:rive/rive.dart';

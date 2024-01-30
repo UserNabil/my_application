@@ -30,10 +30,28 @@ class IziProvider with ChangeNotifier {
   bool _wallet = true;
   bool _showPassword = false;
   String _connectionStep = "connection";
-  bool _isProcissing = false;
+  bool _isConnectProcissing = false;
+  bool _isVerifProcissing = false;
+  int _countVerif = 0;
+  bool _wrongVerif = false;
 
-  void setIsProcissing(bool value) {
-    _isProcissing = value;
+  void setWrongVerif(bool value) {
+    _wrongVerif = value;
+    notifyListeners();
+  }
+
+  void incrementCountVerif() {
+    _countVerif++;
+    notifyListeners();
+  }
+
+  void setConnectProcissing(bool value) {
+    _isConnectProcissing = value;
+    notifyListeners();
+  }
+
+  void setVerifProcissing(bool value) {
+    _isVerifProcissing = value;
     notifyListeners();
   }
 
@@ -126,43 +144,55 @@ class IziProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> setConnected() async {
+  Future<bool> setConnected() async {
     UserService userService = UserService();
     return userService.authUserIzi(_signinId.text, _signinPwd.text);
   }
 
   void validateSignInForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      Future.delayed(const Duration(seconds: 2), () {
+      FocusScope.of(context).unfocus();
+      setConnectProcissing(true);
+      Future.delayed(const Duration(seconds: 0), () {
         setConnected().then((value) {
-          print("value: $value");
-          // _formKey.currentState?.reset();
-          // init();
-          // _wallet = true;
-          // Navigator.pop(context);
-          if (value.isNotEmpty) {
+          if (value) {
             _connectionStep = "pinCode";
+            notifyListeners();
           } else {
             _connectionStep = "connection";
+            notifyListeners();
           }
+          setConnectProcissing(false);
         });
       });
     }
-    notifyListeners();
   }
 
-  void setVerif() {
+  void setVerif(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     UserService userService = UserService();
     userService.confirmAuthIzi(_pinCode.text).then((value) {
-      print("value: $value");
-      if (value) {
-        setIsProcissing(false);
-        // _formKey.currentState?.reset();
-        // init();
-        // Navigator.pop(context);
+      if (_countVerif < 3) {
+        incrementCountVerif();
+        if (value) {
+          setWrongVerif(!value);
+          setVerifProcissing(false);
+          prefs.setBool('isIzi', value);
+          _formKey.currentState?.reset();
+          init();
+          Navigator.pop(context);
+          notifyListeners();
+        } else {
+          setWrongVerif(!value);
+          setVerifProcissing(false);
+          _connectionStep = "pinCode";
+        }
       } else {
-        setIsProcissing(false);
-        _connectionStep = "pinCode";
+        setVerifProcissing(false);
+        prefs.setBool('isIzi', value);
+        _formKey.currentState?.reset();
+        init();
+        Navigator.pop(context);
       }
     });
   }
@@ -188,8 +218,10 @@ class IziProvider with ChangeNotifier {
 
   void validateVerifForm(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      Future.delayed(const Duration(seconds: 3), () {
-        setVerif();
+      FocusScope.of(context).unfocus();
+      setVerifProcissing(true);
+      Future.delayed(const Duration(seconds: 0), () {
+        setVerif(context);
       });
     }
     notifyListeners();
@@ -241,6 +273,12 @@ class IziProvider with ChangeNotifier {
     _pinCode.clear();
     _signinId.clear();
     _signinPwd.clear();
+    _connectionStep = "connection";
+    _isConnectProcissing = false;
+    _isVerifProcissing = false;
+    _showPassword = false;
+    _countVerif = 0;
+    _wrongVerif = false;
 
     _selfiColorInput = Colors.black54;
     _cinRectoColorInput = Colors.black54;
@@ -249,22 +287,6 @@ class IziProvider with ChangeNotifier {
 
     notifyListeners();
   }
-
-  // Future<bool> checkPinCode(BuildContext context) async {
-  //   if (_pinCode.text == '1234') {
-  //     Future.delayed(const Duration(seconds: 2), () {
-  //       _formKey.currentState?.reset();
-  //       return true;
-  //     });
-  //   }else {
-  //     Future.delayed(const Duration(seconds: 2), () {
-  //       _formKey.currentState?.reset();
-  //       return false;
-  //     });
-  //   }
-
-  //   notifyListeners();
-  // }
 
   File? get selfie => _selfie;
   File? get cinRectoFile => _cinRectoFile;
@@ -287,9 +309,11 @@ class IziProvider with ChangeNotifier {
   Color get cinRectoColorInput => _cinRectoColorInput;
   Color get cinVersoColorInput => _cinVersoColorInput;
   bool get wallet => _wallet;
-  bool get isConnected => _isConnected;
   bool get showPassword => _showPassword;
   TextEditingController get pinCode => _pinCode;
   String get connectionStep => _connectionStep;
-  bool get isProcissing => _isProcissing;
+  bool get isConnectProcissing => _isConnectProcissing;
+  bool get isVerifProcissing => _isVerifProcissing;
+  int get countVerif => _countVerif;
+  bool get verifIsWrong => _wrongVerif;
 }

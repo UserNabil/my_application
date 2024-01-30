@@ -25,6 +25,7 @@ class RechargeProvider with ChangeNotifier {
     minimumThresholdViloationMessage: "",
     organizationAgentCode: 0,
     isAnonymosContributionActivated: false,
+    transactionType: 3,
   );
   final TextEditingController _numberController = TextEditingController();
   bool _isTypeRecharge = true;
@@ -120,7 +121,7 @@ class RechargeProvider with ChangeNotifier {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            print("test");
+            // print("test");
           },
           onPageStarted: (String url) {},
           onPageFinished: (String url) {},

@@ -74,7 +74,6 @@ class PinCode extends StatelessWidget {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      context.read<IziProvider>().setIsProcissing(true);
                       onPressed!();
                     },
                     style: ElevatedButton.styleFrom(
@@ -84,7 +83,7 @@ class PinCode extends StatelessWidget {
                       ),
                       backgroundColor: MyColors.iziBlue,
                     ),
-                    child: context.watch<IziProvider>().isProcissing
+                    child: context.watch<IziProvider>().isVerifProcissing
                         ? const CupertinoActivityIndicator(
                             color: Colors.white,
                           )

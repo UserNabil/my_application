@@ -1,5 +1,3 @@
-import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
-
 import '../../imports.dart';
 
 class MyFanPay extends StatelessWidget {
@@ -128,7 +126,8 @@ class MyFanPay extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         }
         User? userData = snapshot.data;
-        return userData?.isIzi == false
+        // return userData?.isIzi == false
+        return userData?.mytarajiUser?.isSubscribedIZI == true
             ? Stack(
                 alignment: Alignment.topCenter,
                 children: [

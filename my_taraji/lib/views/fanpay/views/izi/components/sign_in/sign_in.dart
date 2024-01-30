@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/fanpay/views/izi/components/overlay_loader.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_in/sign_in_form.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
-import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -29,8 +29,22 @@ class SignInScreenState extends State<SignInScreen> {
         backgroundColor: MyColors.transparent,
       ),
       body: context.watch<IziProvider>().connectionStep == "pinCode"
-          ? PinCode(onPressed: onPressedToVerif, paddingTop: 150)
-          : SignIn(onPressed: onPressedToConnect, paddingTop: 150),
+          ? context.watch<IziProvider>().isVerifProcissing == true
+              ? Stack(
+                  children: [
+                    PinCode(onPressed: onPressedToVerif, paddingTop: 150),
+                    const OverlayLoader(),
+                  ],
+                )
+              : PinCode(onPressed: onPressedToVerif, paddingTop: 150)
+          : context.watch<IziProvider>().isConnectProcissing == true
+              ? Stack(
+                  children: [
+                    SignIn(onPressed: onPressedToConnect, paddingTop: 150),
+                    const OverlayLoader(),
+                  ],
+                )
+              : SignIn(onPressed: onPressedToConnect, paddingTop: 150),
     );
   }
 }
@@ -76,7 +90,6 @@ class SignIn extends StatelessWidget {
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
-                      context.read<IziProvider>().setIsProcissing(true);
                       await onPressed!();
                     },
                     style: ElevatedButton.styleFrom(

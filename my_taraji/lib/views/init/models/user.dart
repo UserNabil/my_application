@@ -1,7 +1,36 @@
+import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/init/models/address.dart';
 import 'package:my_taraji/views/init/models/gamifications.dart';
 import 'package:my_taraji/views/init/models/level.dart';
 import 'package:my_taraji/views/init/models/rewards.dart';
+
+class MyTarajiUser {
+  final int? id;
+  final String? azUserId;
+  final bool? isSubscribedIZI;
+
+  MyTarajiUser({
+    required this.id,
+    required this.azUserId,
+    required this.isSubscribedIZI,
+  });
+
+  factory MyTarajiUser.fromJson(Map<String, dynamic>? json) {
+    return MyTarajiUser(
+      id: json?['Id'],
+      azUserId: json?['AzUserId'],
+      isSubscribedIZI: json?['IsSubscribedIZI'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'Id': id,
+      'AzUserId': azUserId,
+      'IsSubscribedIZI': isSubscribedIZI,
+    };
+  }
+}
 
 class User {
   final String? id;
@@ -14,7 +43,7 @@ class User {
   final Level? level;
   final Address? address;
   bool? wallet = false;
-  bool? isIzi = false;
+  MyTarajiUser? mytarajiUser;
 
   User({
     required this.id,
@@ -27,7 +56,7 @@ class User {
     required this.level,
     required this.address,
     required this.wallet,
-    required this.isIzi,
+    required this.mytarajiUser,
   });
 
   factory User.fromJson(Map<String, dynamic>? json) {
@@ -35,6 +64,8 @@ class User {
     Map<String, dynamic>? jsonGamification = json?['user']?['myGamification'];
     Map<String, dynamic>? jsonLevel = json?['user']?['level'];
     Map<String, dynamic>? jsonAddress = json?['user']?['address'];
+    Map<String, dynamic>? jsonMytarajiUser = json?['user']?['mytarajiUser'];
+    debugPrint("jsonMytarajiUser: $jsonMytarajiUser");
 
     return User(
       id: json?['user']?['_id'] ?? json?['id'],
@@ -48,7 +79,8 @@ class User {
       level: Level.fromJson(jsonLevel ?? json?['level'] ?? {}),
       address: Address.fromJson(jsonAddress ?? json?['address'] ?? {}),
       wallet: json?['wallet'] ?? false,
-      isIzi: json?['isIzi'] ?? false,
+      mytarajiUser: MyTarajiUser.fromJson(
+          jsonMytarajiUser ?? json?['mytarajiUser'] ?? {}),
     );
   }
 
@@ -64,7 +96,7 @@ class User {
       'level': level?.toMap(),
       'address': address?.toMap(),
       'wallet': wallet,
-      'isIzi': isIzi,
+      'mytarajiUser': mytarajiUser?.toMap(),
     };
   }
 }
