@@ -1,4 +1,4 @@
-package com.trendit.my_taraji
+package com.trendit.mytaraji
 
 import io.flutter.embedding.android.FlutterActivity
 
