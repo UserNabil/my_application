@@ -1,3 +1,5 @@
+import 'package:my_taraji/views/fanpay/imports.dart';
+
 class TransactionResponse {
   String message;
   bool isSuccess;
@@ -12,12 +14,15 @@ class TransactionResponse {
   });
 
   factory TransactionResponse.fromJson(Map<String, dynamic> json) {
-    String message = json['Message'] ?? json['message'] ?? "";
-    bool isSuccess = json['IsSuccess'] ??= json['isSuccess'] ?? false;
-    bool isIZIAuthenticated =
-        json['IsIZIAuthenticated'] ?? json['isIZIAuthenticated'] ?? false;
-    bool isIZIAuthorized =
-        json['IsIZIAuthorized'] ?? json['isIZIAuthorized'] ?? false;
+    debugPrint("authUserIzi: ${json}");
+    String message = json['Data']['Message'] ?? json['Message'] ?? "";
+    bool isSuccess = json['Data']['IsSuccess'] ?? json['IsSuccess'] ?? false;
+    bool isIZIAuthenticated = json['Data']['IsIZIAuthenticated'] ??
+        json['Data']['IsIZIAuthenticated'] ??
+        false;
+    bool isIZIAuthorized = json['Data']['IsIZIAuthorized'] ??
+        json['Data']['IsIZIAuthorized'] ??
+        false;
 
     return TransactionResponse(
       message: message,

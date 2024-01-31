@@ -51,7 +51,7 @@ class UserService {
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        debugPrint("authUserIzi: $jsonData");
+
         return TransactionResponse.fromJson(jsonData);
       } else {
         throw Exception('Failed API call: ${response.reasonPhrase}');
@@ -79,6 +79,28 @@ class UserService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
         return jsonData['IsSuccess'];
+      } else {
+        throw Exception('Failed API call: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      if (e.toString().contains('400')) {
+        throw Exception('Failed to load user data');
+      } else {
+        throw Exception('Failed to connect to the server for user data $e');
+      }
+    }
+  }
+
+  Future<TransactionResponse> getAuthDetails() async {
+    const path = "api/v1/payments/authDetails";
+    final url = Uri.parse('$baseUrl/$path');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+        debugPrint("getAuthDetails: $jsonData");
+        return TransactionResponse.fromJson(jsonData);
       } else {
         throw Exception('Failed API call: ${response.reasonPhrase}');
       }

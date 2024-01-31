@@ -1,8 +1,12 @@
+import 'package:my_taraji/services/user_service.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
+
 import '../../imports.dart';
 
 class MyFanPay extends StatelessWidget {
   const MyFanPay({super.key});
   static const routeName = '/fanpay';
+  static UserService userService = UserService();
   @override
   Widget build(BuildContext context) {
     FanPayModal transactionModal = FanPayModal(
@@ -115,27 +119,59 @@ class MyFanPay extends StatelessWidget {
       );
     }
 
-    return FutureBuilder(
+    return FutureBuilder<User?>(
       future: context.watch<HomeProvider>().getUserData(),
-      builder: (context, AsyncSnapshot<User?> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+      builder: (context, AsyncSnapshot<User?> userSnapshot) {
+        if (userSnapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
 
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+        if (userSnapshot.hasError) {
+          return Text('Error: ${userSnapshot.error}');
         }
-        User? userData = snapshot.data;
-        // return userData?.isIzi == false
-        return userData?.mytarajiUser?.isSubscribedIZI == true
-            ? Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  buildPage(userData, context),
-                  const FanPayIzi(),
-                ],
-              )
-            : buildPage(userData, context);
+
+        User? userData = userSnapshot.data;
+        // return Text('Error: ${userData?.mytarajiUser?.isSubscribedIZI}');
+
+        return FutureBuilder<TransactionResponse>(
+          future: userService.getAuthDetails(),
+          builder: (context,
+              AsyncSnapshot<TransactionResponse> authDetailsSnapshot) {
+            if (authDetailsSnapshot.connectionState ==
+                ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: MyColors.blue,
+                ),
+              );
+            }
+
+            if (authDetailsSnapshot.hasError) {
+              return Text('Error: ${authDetailsSnapshot.error}');
+            }
+            if (authDetailsSnapshot.hasData) {
+              // TransactionResponse? authDetails = authDetailsSnapshot.data;
+              // if (userData?.mytarajiUser?.isSubscribedIZI == true &&
+              //     authDetails?.isIZIAuthenticated == true &&
+              //     authDetails?.isIZIAuthorized == true) {
+              return buildPage(userData, context);
+              // } else {
+              //   return Stack(
+              //     alignment: Alignment.topCenter,
+              //     children: [
+              //       buildPage(userData, context),
+              //       FanPayIzi(
+              //         authDetails: authDetails,
+              //         user: userData,
+              //       ),
+              //     ],
+              //   );
+              // }
+            } else {
+              return Container();
+            }
+          },
+        );
       },
     );
   }

@@ -1,11 +1,14 @@
 import 'dart:ui';
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_up/sign_up.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 import 'package:rive/rive.dart';
 
 class FanPayIzi extends StatelessWidget {
-  const FanPayIzi({super.key});
+  const FanPayIzi({super.key, required this.authDetails, required this.user});
+  final TransactionResponse? authDetails;
+  final User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +80,12 @@ Widget buildBody(BuildContext context, User? user) {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: context.watch<IziProvider>().wallet
+                  onPressed: user?.mytarajiUser?.isSubscribedIZI == true
                       ? () => goToSignUpIzi(context)
                       : () => goToSignInIzi(context),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: MyColors.white,
-                    backgroundColor: context.watch<IziProvider>().wallet
+                    backgroundColor: user?.mytarajiUser?.isSubscribedIZI == true
                         ? MyColors.blue3
                         : MyColors.yellow,
                     shape: RoundedRectangleBorder(
@@ -95,7 +98,7 @@ Widget buildBody(BuildContext context, User? user) {
                   ),
                   child: Center(
                     child: Text(
-                      context.watch<IziProvider>().wallet
+                      user?.mytarajiUser?.isSubscribedIZI == true
                           ? 'Me connecter'
                           : 'Cr�er mon compte',
                       style: const TextStyle(

@@ -106,6 +106,8 @@ class DonProvider with ChangeNotifier {
     _formKey.currentState?.reset();
     _convertedAmount = "";
     _isLoading = false;
+    _isValid = false;
+
     manageAmountController();
     notifyListeners();
   }
@@ -147,15 +149,20 @@ class DonProvider with ChangeNotifier {
     );
     await transactionService.createTransaction(donModel).then((value) {
       setIsLoading(false);
-      if (value.data?.isIZIAuthenticated == true &&
-          value.data?.isIZIAuthorized == true) {
+      debugPrint("value: ${value.data?.isIZIAuthenticated.toString()}");
+      if (_isTypeCash == true) {
         setStep("finishDon");
-      } else if (value.data?.isIZIAuthenticated == true &&
-          value.data?.isIZIAuthorized == false) {
-        setStep("pinCode");
-      } else if (value.data?.isIZIAuthenticated == false &&
-          value.data?.isIZIAuthorized == false) {
-        setStep("connect");
+      } else {
+        if (value.data?.isIZIAuthenticated == true &&
+            value.data?.isIZIAuthorized == true) {
+          setStep("finishDon");
+        } else if (value.data?.isIZIAuthenticated == true &&
+            value.data?.isIZIAuthorized == false) {
+          setStep("pinCode");
+        } else if (value.data?.isIZIAuthenticated == false &&
+            value.data?.isIZIAuthorized == false) {
+          setStep("connect");
+        }
       }
     });
   }
