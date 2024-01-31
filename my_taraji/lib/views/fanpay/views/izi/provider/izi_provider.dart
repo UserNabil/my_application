@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
 
 class IziProvider with ChangeNotifier {
   final TextEditingController _lastNameController = TextEditingController();
@@ -144,7 +145,7 @@ class IziProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> setConnected() async {
+  Future<TransactionResponse> setConnected() async {
     UserService userService = UserService();
     return userService.authUserIzi(_signinId.text, _signinPwd.text);
   }
@@ -153,21 +154,27 @@ class IziProvider with ChangeNotifier {
     if (_formKey.currentState?.validate() ?? false) {
       FocusScope.of(context).unfocus();
       setConnectProcissing(true);
-      Future.delayed(const Duration(seconds: 0), () {
-        setConnected().then((value) {
-          if (value) {
-            _connectionStep = "pinCode";
-            notifyListeners();
-          } else {
-            _connectionStep = "connection";
-            notifyListeners();
-          }
-          setConnectProcissing(false);
-        });
+      setConnected().then((value) {
+        debugPrint(value.isIZIAuthenticated.toString());
+        if (value.isIZIAuthenticated == true &&
+            value.isIZIAuthorized == false) {
+          _connectionStep = "pinCode";
+          notifyListeners();
+        } else if (value.isIZIAuthenticated == false &&
+            value.isIZIAuthorized == false) {
+          _connectionStep = "connection";
+          notifyListeners();
+        } else if (value.isIZIAuthenticated == true &&
+            value.isIZIAuthorized == true) {
+          Navigator.pop(context);
+          notifyListeners();
+        }
+        setConnectProcissing(false);
       });
     }
   }
 
+  // review here
   void setVerif(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserService userService = UserService();
@@ -177,7 +184,6 @@ class IziProvider with ChangeNotifier {
         if (value) {
           setWrongVerif(!value);
           setVerifProcissing(false);
-          prefs.setBool('isIzi', value);
           _formKey.currentState?.reset();
           init();
           Navigator.pop(context);
@@ -220,9 +226,7 @@ class IziProvider with ChangeNotifier {
     if (_formKey.currentState?.validate() ?? false) {
       FocusScope.of(context).unfocus();
       setVerifProcissing(true);
-      Future.delayed(const Duration(seconds: 0), () {
-        setVerif(context);
-      });
+      setVerif(context);
     }
     notifyListeners();
   }

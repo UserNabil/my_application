@@ -15,6 +15,7 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+// Mohamed Ben Halima récupération des données de l'utilisateur
   Future<User?> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     const key = 'user';
@@ -27,9 +28,6 @@ class HomeProvider with ChangeNotifier {
     Map<String, dynamic> userDataMap = jsonDecode(value) ?? {};
 
     User userData = User.fromJson(userDataMap);
-
-    // userData.isIzi = prefs.getBool('isIzi');
-
     return userData;
   }
 

@@ -1,4 +1,3 @@
-import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/init/models/address.dart';
 import 'package:my_taraji/views/init/models/gamifications.dart';
 import 'package:my_taraji/views/init/models/level.dart';
@@ -65,7 +64,6 @@ class User {
     Map<String, dynamic>? jsonLevel = json?['user']?['level'];
     Map<String, dynamic>? jsonAddress = json?['user']?['address'];
     Map<String, dynamic>? jsonMytarajiUser = json?['user']?['mytarajiUser'];
-    debugPrint("jsonMytarajiUser: $jsonMytarajiUser");
 
     return User(
       id: json?['user']?['_id'] ?? json?['id'],
@@ -97,6 +95,30 @@ class User {
       'address': address?.toMap(),
       'wallet': wallet,
       'mytarajiUser': mytarajiUser?.toMap(),
+    };
+  }
+}
+
+class AuthenticationModel {
+  final String username;
+  final String password;
+
+  AuthenticationModel({
+    required this.username,
+    required this.password,
+  });
+
+  factory AuthenticationModel.fromJson(Map<String, dynamic>? json) {
+    return AuthenticationModel(
+      username: json?['username'],
+      password: json?['password'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'password': password,
     };
   }
 }

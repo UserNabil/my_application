@@ -3,6 +3,7 @@ import 'package:my_taraji/views/fanpay/providers/don_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/fanpay_historique_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/fanpay_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/recharge_provider.dart';
+import 'package:my_taraji/views/fanpay/providers/transfert_provider.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 import 'package:my_taraji/views/home/components/news/provider/news_provider.dart';
 import 'package:my_taraji/views/home/provider/home_provider.dart';
@@ -24,6 +25,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => HomeProvider()),
       ChangeNotifierProvider(create: (_) => IziProvider()),
       ChangeNotifierProvider(create: (_) => RechargeProvider()),
+      ChangeNotifierProvider(create: (_) => TransfertProvider()),
     ],
     child: const MyApp(),
   ));

@@ -50,6 +50,7 @@ dependencies:
   # ai_barcode_scanner: ^3.4.1
   aad_oauth: ^0.4.4
   flutter_appauth: ^6.0.4
+  flutter_contacts: ^1.1.7+1
 
 
 dev_dependencies:

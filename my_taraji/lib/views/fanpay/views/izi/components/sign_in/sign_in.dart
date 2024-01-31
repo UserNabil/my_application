@@ -32,27 +32,68 @@ class SignInScreenState extends State<SignInScreen> {
           ? context.watch<IziProvider>().isVerifProcissing == true
               ? Stack(
                   children: [
-                    PinCode(onPressed: onPressedToVerif, paddingTop: 150),
+                    PinCode(
+                      onPressed: onPressedToVerif,
+                      paddingTop: 150,
+                      formKey: context.watch<IziProvider>().formKey,
+                      pinCode: context.watch<IziProvider>().pinCode,
+                      isLoading: context.watch<IziProvider>().isVerifProcissing,
+                      valid: context.watch<IziProvider>().verifIsWrong,
+                    ),
                     const OverlayLoader(),
                   ],
                 )
-              : PinCode(onPressed: onPressedToVerif, paddingTop: 150)
+              : PinCode(
+                  onPressed: onPressedToVerif,
+                  paddingTop: 150,
+                  formKey: context.watch<IziProvider>().formKey,
+                  pinCode: context.watch<IziProvider>().pinCode,
+                  isLoading: context.watch<IziProvider>().isVerifProcissing,
+                  valid: context.watch<IziProvider>().verifIsWrong,
+                )
           : context.watch<IziProvider>().isConnectProcissing == true
               ? Stack(
                   children: [
-                    SignIn(onPressed: onPressedToConnect, paddingTop: 150),
+                    SignIn(
+                      onPressed: onPressedToConnect,
+                      paddingTop: 150,
+                      formKey: context.watch<IziProvider>().formKey,
+                      signinId: context.watch<IziProvider>().signinId,
+                      signinPwd: context.watch<IziProvider>().signinPwd,
+                      isLoading:
+                          context.watch<IziProvider>().isConnectProcissing,
+                    ),
                     const OverlayLoader(),
                   ],
                 )
-              : SignIn(onPressed: onPressedToConnect, paddingTop: 150),
+              : SignIn(
+                  onPressed: onPressedToConnect,
+                  paddingTop: 150,
+                  formKey: context.watch<IziProvider>().formKey,
+                  signinId: context.watch<IziProvider>().signinId,
+                  signinPwd: context.watch<IziProvider>().signinPwd,
+                  isLoading: context.watch<IziProvider>().isConnectProcissing,
+                ),
     );
   }
 }
 
 class SignIn extends StatelessWidget {
-  const SignIn({super.key, required this.onPressed, required this.paddingTop});
+  const SignIn({
+    super.key,
+    required this.onPressed,
+    required this.paddingTop,
+    required this.formKey,
+    required this.signinId,
+    required this.signinPwd,
+    required this.isLoading,
+  });
   final Function? onPressed;
   final double paddingTop;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController signinId;
+  final TextEditingController signinPwd;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +127,11 @@ class SignIn extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const IziSignInForm(),
+                IziSignInForm(
+                  formKey: formKey,
+                  signinId: signinId,
+                  signinPwd: signinPwd,
+                ),
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
@@ -99,7 +144,7 @@ class SignIn extends StatelessWidget {
                       ),
                       backgroundColor: MyColors.iziBlue,
                     ),
-                    child: context.watch<IziProvider>().isValid
+                    child: isLoading
                         ? const CupertinoActivityIndicator(
                             color: Colors.white,
                           )

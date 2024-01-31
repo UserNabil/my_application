@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:my_taraji/core/models/api_response_model.dart';
 import 'package:my_taraji/services/enums/financial_transaction_type.dart';
-import 'package:my_taraji/views/fanpay/models/don_model.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_model.dart';
 
-class DonService {
+class TransactionService {
   late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
 
-  DonService();
-
-  Future<DonSettings> getDonSettings(TransactionType type) async {
+  TransactionService();
+// récupération des settings de transaction
+  Future<TransactionSettings> getTransactionSettings(
+      TransactionType type) async {
     const path = "api/v1/settings-mobile";
     final url = Uri.parse('$baseUrl/$path/?settingsType=${type.index}');
 
@@ -17,7 +20,7 @@ class DonService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
 
-        return DonSettings.fromJson(jsonData);
+        return TransactionSettings.fromJson(jsonData);
       } else {
         throw Exception('Failed API call: ${response.reasonPhrase}');
       }
@@ -43,7 +46,8 @@ class DonService {
     }
   }
 
-  Future<bool> createDonation(DonModel don) async {
+  Future<APIResponseModel<TransactionResponse>> createTransaction(
+      TransactionModel don) async {
     const path = "api/v1/donation";
     final url = Uri.parse('$baseUrl/$path');
 
@@ -58,7 +62,10 @@ class DonService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = json.decode(response.body);
 
-      return jsonData["IsSuccess"];
+      return APIResponseModel<TransactionResponse>.fromJson(
+        jsonData,
+        (data) => TransactionResponse.fromJson(data),
+      );
     } else {
       throw Exception('Failed to create donation - ${response.reasonPhrase}');
     }

@@ -1,8 +1,12 @@
+import 'package:my_taraji/views/fanpay/components/transfert/confirm_transfert.dart';
+import 'package:my_taraji/views/fanpay/components/transfert/finish_transfert.dart';
+import 'package:my_taraji/views/fanpay/components/transfert/transfert.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/fanpay/providers/transfert_provider.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/overlay_loader.dart';
 
-class ManageDonPage extends StatelessWidget {
-  const ManageDonPage({super.key});
+class ManageTransfertPage extends StatelessWidget {
+  const ManageTransfertPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +15,7 @@ class ManageDonPage extends StatelessWidget {
       builder: (context, snapshot) {
         final value = snapshot.data;
         if (snapshot.hasData) {
-          return context.watch<DonProvider>().step != "finishDon"
+          return context.watch<TransfertProvider>().step != "finishTransfert"
               ? _buildBody(context, value)
               : Stack(
                   alignment: Alignment.topCenter,
@@ -37,34 +41,34 @@ class ManageDonPage extends StatelessWidget {
   }
 
   Widget _manageStep(User? user, BuildContext context) {
-    final step = context.watch<DonProvider>().step;
+    final step = context.watch<TransfertProvider>().step;
     onPressedToConnect() {
-      context.read<DonProvider>().validateConnectionForm(context);
+      context.read<TransfertProvider>().validateConnectionForm(context);
     }
 
     onPressedToVerif() {
-      context.read<DonProvider>().validateVerifForm(context);
+      context.read<TransfertProvider>().validateVerifForm(context);
     }
 
-    context.read<DonProvider>().getDonSettings();
+    context.read<TransfertProvider>().getTransfertSettings();
     switch (step) {
-      case "don":
-        return MyDon(user: user);
-      case "confirmDon":
-        return ConfirmDon(user: user);
-      case "finishDon":
-        return const FinishDon();
+      case "transfert":
+        return MyTransfert(user: user);
+      case "confirmTransfert":
+        return ConfirmTransfert(user: user);
+      case "finishTransfert":
+        return const FinishTransfert();
       case "pinCode":
-        return context.watch<DonProvider>().isLoading == true
+        return context.watch<TransfertProvider>().isLoading == true
             ? Stack(
                 children: [
                   PinCode(
                     onPressed: onPressedToVerif,
                     paddingTop: 0,
-                    formKey: context.watch<DonProvider>().formKey,
-                    pinCode: context.watch<DonProvider>().pinCode,
-                    isLoading: context.watch<DonProvider>().isLoading,
-                    valid: context.watch<DonProvider>().isValid,
+                    formKey: context.watch<TransfertProvider>().formKey,
+                    pinCode: context.watch<TransfertProvider>().pinCode,
+                    isLoading: context.watch<TransfertProvider>().isLoading,
+                    valid: false,
                   ),
                   const OverlayLoader(),
                 ],
@@ -72,24 +76,24 @@ class ManageDonPage extends StatelessWidget {
             : PinCode(
                 onPressed: onPressedToVerif,
                 paddingTop: 0,
-                formKey: context.watch<DonProvider>().formKey,
-                pinCode: context.watch<DonProvider>().pinCode,
-                isLoading: context.watch<DonProvider>().isLoading,
-                valid: context.watch<DonProvider>().isValid,
+                formKey: context.watch<TransfertProvider>().formKey,
+                pinCode: context.watch<TransfertProvider>().pinCode,
+                isLoading: context.watch<TransfertProvider>().isLoading,
+                valid: false,
               );
 
       case "connect":
-        return context.watch<DonProvider>().isLoading == true
+        return context.watch<TransfertProvider>().isLoading == true
             ? Stack(
                 alignment: Alignment.center,
                 children: [
                   SignIn(
                     onPressed: onPressedToConnect,
                     paddingTop: 0,
-                    formKey: context.watch<DonProvider>().formKey,
-                    signinId: context.watch<DonProvider>().signinId,
-                    signinPwd: context.watch<DonProvider>().signinPwd,
-                    isLoading: context.watch<DonProvider>().isLoading,
+                    formKey: context.watch<TransfertProvider>().formKey,
+                    signinId: context.watch<TransfertProvider>().signinId,
+                    signinPwd: context.watch<TransfertProvider>().signinPwd,
+                    isLoading: context.watch<TransfertProvider>().isLoading,
                   ),
                   const OverlayLoader(),
                 ],
@@ -97,10 +101,10 @@ class ManageDonPage extends StatelessWidget {
             : SignIn(
                 onPressed: onPressedToConnect,
                 paddingTop: 0,
-                formKey: context.watch<DonProvider>().formKey,
-                signinId: context.watch<DonProvider>().signinId,
-                signinPwd: context.watch<DonProvider>().signinPwd,
-                isLoading: context.watch<DonProvider>().isLoading,
+                formKey: context.watch<TransfertProvider>().formKey,
+                signinId: context.watch<TransfertProvider>().signinId,
+                signinPwd: context.watch<TransfertProvider>().signinPwd,
+                isLoading: context.watch<TransfertProvider>().isLoading,
               );
 
       default:
@@ -109,9 +113,9 @@ class ManageDonPage extends StatelessWidget {
   }
 
   Widget _buildTop(BuildContext context) {
-    final donProvider = context.watch<DonProvider>();
+    final transfertProvider = context.watch<TransfertProvider>();
     final fanPayProvider = context.read<FanPayProvider>();
-    final step = donProvider.step;
+    final step = transfertProvider.step;
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.17,
@@ -133,7 +137,7 @@ class ManageDonPage extends StatelessWidget {
               ),
             ),
             Text(
-              donProvider.title,
+              transfertProvider.title,
               style: const TextStyle(
                 color: MyColors.white,
                 fontSize: 20,
@@ -142,7 +146,7 @@ class ManageDonPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {},
-              child: donProvider.step != "finishDon"
+              child: transfertProvider.step != "finishTransfert"
                   ? const SizedBox(height: 22, width: 22)
                   : const Icon(
                       size: 20,
@@ -158,25 +162,25 @@ class ManageDonPage extends StatelessWidget {
 
   void _handleTopGesture(
       BuildContext context, String step, FanPayProvider fanPayProvider) {
-    final donProvider = context.read<DonProvider>();
+    final transfertProvider = context.read<TransfertProvider>();
 
     switch (step) {
-      case "don":
+      case "transfert":
         fanPayProvider.openModal();
         Navigator.pop(context);
         break;
-      case "confirmDon":
-        donProvider.setStep("don");
+      case "confirmTransfert":
+        transfertProvider.setStep("transfert");
         break;
       case "connect":
       case "pinCode":
-        donProvider.setStep("confirmDon");
+        transfertProvider.setStep("confirmTransfert");
         break;
     }
   }
 
   Widget _buildMiddle(BuildContext context, User? user) {
-    final donProvider = context.watch<DonProvider>();
+    final transfertProvider = context.watch<TransfertProvider>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -196,7 +200,7 @@ class ManageDonPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              donProvider.step != "finishDon"
+              transfertProvider.step != "finishTransfert"
                   ? SvgPicture.asset(
                       'images/icons/drag.svg',
                       height: 5,
@@ -214,7 +218,7 @@ class ManageDonPage extends StatelessWidget {
                     padding: const EdgeInsets.all(30),
                     child: Column(
                       children: [
-                        donProvider.step != "finishDon"
+                        transfertProvider.step != "finishTransfert"
                             ? Container()
                             : const SizedBox(height: 50),
                         _manageStep(user, context),
