@@ -27,6 +27,7 @@ class _InitScreenState extends State<InitScreen> {
     'openid',
     // 'profile',
   ];
+  bool isConnected = false;
 
   @override
   void initState() {
@@ -45,20 +46,16 @@ class _InitScreenState extends State<InitScreen> {
             scopes: scopes),
       );
       log('token${result?.idToken}');
+      setState(() {
+        isConnected = true;
+      });
     } catch (e) {
       log('error catched $e');
     }
 
     prefs = await SharedPreferences.getInstance();
-    // ignore: unnecessary_null_comparison
-    while (prefs == null || result == null) {
-      continue;
-    }
-    setState(() {
-      prefs.setString('token', result?.idToken ?? 'no token');
-    });
-    //print(result);
-    var accessToken = result.accessToken;
+    prefs.setString('token', result?.idToken ?? '');
+    var accessToken = result?.accessToken;
     log('accessToken $accessToken');
   }
 
@@ -71,22 +68,34 @@ class _InitScreenState extends State<InitScreen> {
 
     Widget buildContent(BuildContext context) {
       return Scaffold(
-        body: Stack(
-          children: [
-            AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                child: pages[context.watch<InitProvider>().currentIndex]),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: MyBottomBar(
-                active: items[context.watch<InitProvider>().currentIndex],
-                onTap: (item) {
-                  context.read<InitProvider>().setCurrentIndex(item.index);
-                },
-              ),
-            ),
-          ],
-        ),
+        body: isConnected
+            ? Stack(
+                children: [
+                  AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      child: pages[context.watch<InitProvider>().currentIndex]),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: MyBottomBar(
+                      active: items[context.watch<InitProvider>().currentIndex],
+                      onTap: (item) {
+                        context
+                            .read<InitProvider>()
+                            .setCurrentIndex(item.index);
+                      },
+                    ),
+                  ),
+                ],
+              )
+            : const Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                  Text('Connexion en cours...'),
+                ],
+              )),
       );
     }
 
