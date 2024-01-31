@@ -28,15 +28,31 @@ class PinCodeScreenState extends State<PinCodeScreen> {
       body: PinCode(
         onPressed: onPressed,
         paddingTop: 70,
+        formKey: context.watch<IziProvider>().formKey,
+        pinCode: context.watch<IziProvider>().pinCode,
+        isLoading: context.watch<IziProvider>().isVerifProcissing,
+        valid: context.watch<IziProvider>().isValid,
       ),
     );
   }
 }
 
 class PinCode extends StatelessWidget {
-  const PinCode({super.key, required this.onPressed, required this.paddingTop});
+  const PinCode({
+    super.key,
+    required this.onPressed,
+    required this.paddingTop,
+    required this.formKey,
+    required this.pinCode,
+    required this.isLoading,
+    required this.valid,
+  });
   final Function? onPressed;
   final double paddingTop;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController pinCode;
+  final bool isLoading;
+  final bool valid;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +86,11 @@ class PinCode extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const PinCodeForm(),
+                PinCodeForm(
+                  formKey: formKey,
+                  pinCode: pinCode,
+                  valid: valid,
+                ),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -83,7 +103,7 @@ class PinCode extends StatelessWidget {
                       ),
                       backgroundColor: MyColors.iziBlue,
                     ),
-                    child: context.watch<IziProvider>().isVerifProcissing
+                    child: isLoading
                         ? const CupertinoActivityIndicator(
                             color: Colors.white,
                           )

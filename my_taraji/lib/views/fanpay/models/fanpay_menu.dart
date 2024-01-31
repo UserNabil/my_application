@@ -1,3 +1,4 @@
+import 'package:my_taraji/views/fanpay/components/transfert/manage_content.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
 enum FanPayMenuItem { don, transfer, payment, plus, recharge, retrait }
@@ -10,7 +11,7 @@ extension FanPayIconExtension on FanPayMenuItem {
             const ManageDonPage(), null);
       case FanPayMenuItem.transfer:
         return FanPayIconRedirection('images/svgs/fanpay/transfer.svg',
-            'Transfert', Scaffold(appBar: AppBar(toolbarHeight: 100)), null);
+            'Transfert', const ManageTransfertPage(), null);
       case FanPayMenuItem.payment:
         return FanPayIconRedirection('images/svgs/fanpay/payment.svg',
             'Paiement', Scaffold(appBar: AppBar(toolbarHeight: 100)), null);

@@ -1,16 +1,16 @@
-class DonModel {
+class TransactionModel {
   final int contributionMethod;
   final int amountContributed;
   final int coinsCountContributed;
 
-  DonModel({
+  TransactionModel({
     required this.contributionMethod,
     required this.amountContributed,
     required this.coinsCountContributed,
   });
 
-  factory DonModel.fromJson(Map<String, dynamic>? json) {
-    return DonModel(
+  factory TransactionModel.fromJson(Map<String, dynamic>? json) {
+    return TransactionModel(
       contributionMethod: json?['contributionMethod'] ?? 0,
       amountContributed: json?['amountContributed'] ?? 0,
       coinsCountContributed: json?['coinsCountContributed'] ?? 0,
@@ -24,7 +24,7 @@ class DonModel {
       };
 }
 
-class DonSettings {
+class TransactionSettings {
   final List<AuthorizedAmounts> authorizedAmounts;
   final bool isFreeInputAmountActivated;
   final bool isMinimumThresholdAmountActive;
@@ -34,7 +34,7 @@ class DonSettings {
   final bool isAnonymosContributionActivated;
   final int transactionType;
 
-  DonSettings({
+  TransactionSettings({
     required this.authorizedAmounts,
     required this.isFreeInputAmountActivated,
     required this.isMinimumThresholdAmountActive,
@@ -45,9 +45,9 @@ class DonSettings {
     required this.transactionType,
   });
 
-  factory DonSettings.fromJson(Map<String, dynamic> json) {
-    return DonSettings(
-      authorizedAmounts: fromJsonListCampaign(json['authorizedAmounts']),
+  factory TransactionSettings.fromJson(Map<String, dynamic> json) {
+    return TransactionSettings(
+      authorizedAmounts: fromJsonListTransactions(json['authorizedAmounts']),
       isFreeInputAmountActivated: json['isFreeInputAmountActivated'],
       isMinimumThresholdAmountActive: json['isMinimumThresholdAmountActive'],
       minimumThresholdAmount: json['minimumThresholdAmount'],
@@ -89,7 +89,7 @@ class AuthorizedAmounts {
       };
 }
 
-List<AuthorizedAmounts> fromJsonListCampaign(dynamic jsonList) {
+List<AuthorizedAmounts> fromJsonListTransactions(dynamic jsonList) {
   List<AuthorizedAmounts> authorizedAmounts = [];
 
   if (jsonList != null && jsonList is List) {

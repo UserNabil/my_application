@@ -1,6 +1,13 @@
+import 'package:intl/intl.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
 class DonUI {
+  String formatDate(DateTime date) {
+    String formattedDate = DateFormat('dd MMMM, y • HH:mm').format(date);
+
+    return formattedDate;
+  }
+
   Text textType1(String title, bool centred, bool? isLittle) {
     return Text(
       title,

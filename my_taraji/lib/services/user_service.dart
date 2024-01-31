@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_taraji/core/models/api_response_model.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
 import 'package:my_taraji/views/init/models/user.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
@@ -35,7 +36,8 @@ class UserService {
     }
   }
 
-  Future<bool> authUserIzi(String username, String password) async {
+  Future<TransactionResponse> authUserIzi(
+      String username, String password) async {
     const path = "api/v1/payments/auth";
     final url = Uri.parse('$baseUrl/$path');
 

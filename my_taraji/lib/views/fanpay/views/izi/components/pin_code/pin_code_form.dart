@@ -1,13 +1,21 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
-import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
+// import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 
 class PinCodeForm extends StatelessWidget {
-  const PinCodeForm({super.key});
+  const PinCodeForm({
+    super.key,
+    required this.formKey,
+    required this.pinCode,
+    required this.valid,
+  });
+  final GlobalKey<FormState> formKey;
+  final TextEditingController pinCode;
+  final bool valid;
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: context.watch<IziProvider>().formKey,
+      key: formKey,
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Column(
@@ -15,7 +23,7 @@ class PinCodeForm extends StatelessWidget {
             const SizedBox(height: 20),
             // PinCode
             TextFormField(
-              controller: context.watch<IziProvider>().pinCode,
+              controller: pinCode,
               keyboardType: TextInputType.number,
               maxLength: 4,
               validator: (value) {
@@ -37,12 +45,12 @@ class PinCodeForm extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
-            Text(
-              context.watch<IziProvider>().verifIsWrong == false
-                  ? ""
-                  : "Votre code PIN est incorrecte, il vous reste ${4 - context.watch<IziProvider>().countVerif} essais",
-              style: const TextStyle(color: Colors.red, fontSize: 12),
-            ),
+            // Text(
+            //   valid == false
+            //       ? ""
+            //       : "Votre code PIN est incorrecte, il vous reste ${4 - context.watch<IziProvider>().countVerif} essais",
+            //   style: const TextStyle(color: Colors.red, fontSize: 12),
+            // ),
             const SizedBox(height: 20),
           ],
         ),

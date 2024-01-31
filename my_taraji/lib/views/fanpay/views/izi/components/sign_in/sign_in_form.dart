@@ -2,12 +2,21 @@ import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 
 class IziSignInForm extends StatelessWidget {
-  const IziSignInForm({super.key});
+  const IziSignInForm({
+    super.key,
+    required this.formKey,
+    required this.signinId,
+    required this.signinPwd,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController signinId;
+  final TextEditingController signinPwd;
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: context.watch<IziProvider>().formKey,
+      key: formKey,
       child: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Column(
@@ -15,7 +24,7 @@ class IziSignInForm extends StatelessWidget {
             const SizedBox(height: 20),
             // Téléphone
             TextFormField(
-              controller: context.watch<IziProvider>().signinId,
+              controller: signinId,
               keyboardType: TextInputType.phone,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -39,7 +48,7 @@ class IziSignInForm extends StatelessWidget {
             const SizedBox(height: 20),
             // Mot de passe
             TextFormField(
-              controller: context.watch<IziProvider>().signinPwd,
+              controller: signinPwd,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Ce champs est obligatoire.';

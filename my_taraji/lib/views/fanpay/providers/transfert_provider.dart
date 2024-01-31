@@ -1,15 +1,15 @@
 import 'package:my_taraji/services/enums/financial_transaction_type.dart';
-import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_model.dart';
+
 import '../imports.dart';
 
-class DonProvider with ChangeNotifier {
+class TransfertProvider with ChangeNotifier {
   final TextEditingController _signinId = TextEditingController();
   final TextEditingController _pinCode = TextEditingController();
   final TextEditingController _signinPwd = TextEditingController();
-  String _step = "don";
-  String _title = "Don";
-  TransactionSettings _donSettings = TransactionSettings(
+  String _step = "transfert";
+  String _title = "Transfert";
+  TransactionSettings _transactionSettings = TransactionSettings(
     authorizedAmounts: [],
     isFreeInputAmountActivated: false,
     isMinimumThresholdAmountActive: false,
@@ -25,21 +25,21 @@ class DonProvider with ChangeNotifier {
   String _convertedAmount = "";
   bool _isValidForm = false;
   TransactionService transactionService = TransactionService();
-  UserService userService = UserService();
   bool _isLoading = false;
-  bool _isValid = false;
+  bool _showContact = false;
 
-  void setIsValid(bool isValid) {
-    _isValid = isValid;
+  bool get showContact => _showContact;
+
+  void toggleShowContact() {
+    _showContact = !_showContact;
     notifyListeners();
   }
 
   void setIsLoading(bool isLoading) {
     _isLoading = isLoading;
-    notifyListeners();
   }
 
-  void setDonTitle(String newTitle) {
+  void setTransfertTitle(String newTitle) {
     _title = newTitle;
     notifyListeners();
   }
@@ -50,38 +50,33 @@ class DonProvider with ChangeNotifier {
   }
 
   void setStep(String newStep) {
-    print("test $newStep");
     switch (newStep) {
-      case "confirmDon":
+      case "confirmTransfert":
         if (_formKey.currentState?.validate() == true || _isValidForm) {
           _isValidForm = true;
           _step = newStep;
-          setDonTitle("Confirmer don");
+          setTransfertTitle("Confirmer transfert");
           convertAmount();
         }
-        // notifyListeners();
         break;
-      case "finishDon":
+      case "finishTransfert":
         _step = newStep;
-        setDonTitle("");
-        // notifyListeners();
+        setTransfertTitle("");
         break;
-      case "don":
-        _step = "don";
-        setDonTitle("Don");
-        // notifyListeners();
+      case "transfert":
+        _step = "transfert";
+        setTransfertTitle("Transfert");
         break;
       case "pinCode":
         _step = newStep;
-        setDonTitle("Code PIN");
-        // notifyListeners();
+        setTransfertTitle("Code PIN");
         break;
       case "connect":
         _step = newStep;
-        setDonTitle("Connexion");
-        // notifyListeners();
+        setTransfertTitle("Connexion");
         break;
     }
+
     notifyListeners();
   }
 
@@ -91,7 +86,7 @@ class DonProvider with ChangeNotifier {
   }
 
   void initAllData() {
-    _step = "don";
+    _step = "transfert";
     _amountController.text = "";
     _amountController.value = TextEditingValue.empty;
     _pinCode.text = "";
@@ -101,29 +96,28 @@ class DonProvider with ChangeNotifier {
     _signinPwd.text = "";
     _signinPwd.value = TextEditingValue.empty;
     _isTypeCash = false;
-    _title = "Don";
+    _title = "Transfert";
     _isValidForm = false;
     _formKey.currentState?.reset();
     _convertedAmount = "";
     _isLoading = false;
-    _isValid = false;
-
     manageAmountController();
     notifyListeners();
   }
 
-  void getDonSettings() async {
-    TransactionType type = getTransactionType(1);
-    TransactionSettings donSettings =
+  void getTransfertSettings() async {
+    TransactionType type = getTransactionType(2);
+    TransactionSettings transactionSettings =
         await transactionService.getTransactionSettings(type);
-    donSettings.authorizedAmounts.sort((a, b) => a.amount.compareTo(b.amount));
-    _donSettings = donSettings;
-    notifyListeners();
+    transactionSettings.authorizedAmounts
+        .sort((a, b) => a.amount.compareTo(b.amount));
+    _transactionSettings = transactionSettings;
   }
 
   void manageAmountController() {
-    if (_donSettings.isMinimumThresholdAmountActive) {
-      _amountController.text = _donSettings.minimumThresholdAmount.toString();
+    if (_transactionSettings.isMinimumThresholdAmountActive) {
+      _amountController.text =
+          _transactionSettings.minimumThresholdAmount.toString();
     }
     notifyListeners();
   }
@@ -132,7 +126,7 @@ class DonProvider with ChangeNotifier {
     try {
       double amoutConverted =
           await transactionService.getCoinsConvertor(_amountController.text);
-
+      // debugPrint(amoutConverted.toString());
       _convertedAmount = amoutConverted.toStringAsFixed(0);
     } catch (e) {
       throw ('Error converting amount: $e');
@@ -140,76 +134,53 @@ class DonProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void createDonation(User? user) async {
+  void createTransfert(User? user) async {
     setIsLoading(true);
-    TransactionModel donModel = TransactionModel(
+    TransactionModel transfertModel = TransactionModel(
       contributionMethod: _isTypeCash ? 2 : 1,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
     );
-    await transactionService.createTransaction(donModel).then((value) {
+    await transactionService.createTransaction(transfertModel).then((value) {
       setIsLoading(false);
-      debugPrint("value: ${value.data?.isIZIAuthenticated.toString()}");
-      if (_isTypeCash == true) {
-        setStep("finishDon");
-      } else {
-        if (value.data?.isIZIAuthenticated == true &&
-            value.data?.isIZIAuthorized == true) {
-          setStep("finishDon");
-        } else if (value.data?.isIZIAuthenticated == true &&
-            value.data?.isIZIAuthorized == false) {
-          setStep("pinCode");
-        } else if (value.data?.isIZIAuthenticated == false &&
-            value.data?.isIZIAuthorized == false) {
-          setStep("connect");
-        }
-      }
+      // review here
+      // if ((user?.mytarajiUser?.isSubscribedIZI ?? false) && value) {
+      //   setStep("finishTransfert");
+      // } else {
+      //   setStep("connect");
+      // }
     });
   }
 
   void validateConnectionForm(BuildContext context) async {
-    setIsLoading(true);
+    _isLoading = true;
+    notifyListeners();
     if (_formKey.currentState?.validate() ?? false) {
-      FocusScope.of(context).unfocus();
-      AuthenticationModel authModel = AuthenticationModel(
-        username: _signinId.text,
-        password: _signinPwd.text,
-      );
-      await userService
-          .authUserIzi(authModel.username, authModel.password)
-          .then((value) {
-        setIsLoading(false);
-        if (value.isIZIAuthenticated == true && value.isIZIAuthorized == true) {
-          setStep("finishDon");
-        } else if (value.isIZIAuthenticated == true &&
-            value.isIZIAuthorized == false) {
-          setStep("pinCode");
-        } else if (value.isIZIAuthenticated == false &&
-            value.isIZIAuthorized == false) {
-          setStep("connect");
-        }
+      Future.delayed(const Duration(seconds: 3), () {
+        FocusScope.of(context).unfocus();
+        setStep("pinCode");
+        _isLoading = false;
+        notifyListeners();
       });
     } else {
-      setIsLoading(false);
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
   void validateVerifForm(BuildContext context) async {
-    setIsLoading(true);
-    setIsValid(true);
+    _isLoading = true;
+    notifyListeners();
     if (_formKey.currentState?.validate() ?? false) {
-      FocusScope.of(context).unfocus();
-      await userService.confirmAuthIzi(_pinCode.text).then((value) {
-        setIsLoading(false);
-        if (value) {
-          setStep("finishDon");
-        } else {
-          setIsValid(false);
-          setStep("pinCode");
-        }
+      Future.delayed(const Duration(seconds: 3), () {
+        FocusScope.of(context).unfocus();
+        setStep("finishTransfert");
+        _isLoading = false;
+        notifyListeners();
       });
     } else {
-      setIsLoading(false);
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -217,7 +188,7 @@ class DonProvider with ChangeNotifier {
   String get title => _title;
   TextEditingController get amountController => _amountController;
   bool get isTypeCash => _isTypeCash;
-  TransactionSettings get donSettings => _donSettings;
+  TransactionSettings get transfertSettings => _transactionSettings;
   GlobalKey<FormState> get formKey => _formKey;
   String get convertedAmount => _convertedAmount;
   bool get isValidForm => _isValidForm;
@@ -225,5 +196,4 @@ class DonProvider with ChangeNotifier {
   TextEditingController get signinId => _signinId;
   TextEditingController get signinPwd => _signinPwd;
   TextEditingController get pinCode => _pinCode;
-  bool get isValid => _isValid;
 }

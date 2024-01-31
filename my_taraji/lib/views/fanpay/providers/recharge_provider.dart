@@ -1,4 +1,4 @@
-import 'package:my_taraji/views/fanpay/models/don_model.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../imports.dart';
@@ -6,7 +6,7 @@ import '../imports.dart';
 class RechargeProvider with ChangeNotifier {
   String _step = "recharge";
   String _title = "Recharge";
-  final DonSettings _rechargeSettings = DonSettings(
+  final TransactionSettings _rechargeSettings = TransactionSettings(
     authorizedAmounts: [
       AuthorizedAmounts(amount: 1000),
       AuthorizedAmounts(amount: 2000),
@@ -30,7 +30,7 @@ class RechargeProvider with ChangeNotifier {
   final TextEditingController _numberController = TextEditingController();
   bool _isTypeRecharge = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DonService donService = DonService();
+  TransactionService donService = TransactionService();
   bool _isValidForm = false;
   int _selectedRadio = 2;
   String _mask = '#### ##### #### #### ##';
@@ -149,7 +149,7 @@ class RechargeProvider with ChangeNotifier {
   String get maskHint => _maskHint;
   Icon get icon => _icon;
   bool get isTypeRecharge => _isTypeRecharge;
-  DonSettings get rechargeSettings => _rechargeSettings;
+  TransactionSettings get rechargeSettings => _rechargeSettings;
   WebViewController get webViewController => _webViewController;
   bool get showWebView => _showWebView;
 }
