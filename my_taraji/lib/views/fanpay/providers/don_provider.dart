@@ -1,12 +1,12 @@
 import 'package:my_taraji/services/enums/financial_transaction_type.dart';
-import 'package:my_taraji/views/fanpay/models/don_model.dart';
-
+import 'package:my_taraji/services/user_service.dart';
+import 'package:my_taraji/views/fanpay/models/transaction_model.dart';
 import '../imports.dart';
 
 class DonProvider with ChangeNotifier {
   String _step = "don";
   String _title = "Don";
-  DonSettings _donSettings = DonSettings(
+  TransactionSettings _donSettings = TransactionSettings(
     authorizedAmounts: [],
     isFreeInputAmountActivated: false,
     isMinimumThresholdAmountActive: false,
@@ -21,7 +21,8 @@ class DonProvider with ChangeNotifier {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _convertedAmount = "";
   bool _isValidForm = false;
-  DonService donService = DonService();
+  TransactionService transactionService = TransactionService();
+  UserService userService = UserService();
   bool _isLoading = false;
 
   void setIsLoading(bool isLoading) {
@@ -66,7 +67,6 @@ class DonProvider with ChangeNotifier {
         setDonTitle("Connexion");
         break;
     }
-
     notifyListeners();
   }
 
@@ -79,21 +79,31 @@ class DonProvider with ChangeNotifier {
     _step = "don";
     _amountController.text = "";
     _amountController.value = TextEditingValue.empty;
-    _isTypeCash = true;
+    _pinCode.text = "";
+    _pinCode.value = TextEditingValue.empty;
+    _signinId.text = "";
+    _signinId.value = TextEditingValue.empty;
+    _signinPwd.text = "";
+    _signinPwd.value = TextEditingValue.empty;
+    _isTypeCash = false;
     _title = "Don";
     _isValidForm = false;
     _formKey.currentState?.reset();
     _convertedAmount = "";
     _isLoading = false;
+    _isValid = false;
+
     manageAmountController();
     notifyListeners();
   }
 
-  void getDonSettingsProv() async {
+  void getDonSettings() async {
     TransactionType type = getTransactionType(1);
-    DonSettings donSettings = await donService.getDonSettings(type);
+    TransactionSettings donSettings =
+        await transactionService.getTransactionSettings(type);
     donSettings.authorizedAmounts.sort((a, b) => a.amount.compareTo(b.amount));
     _donSettings = donSettings;
+    notifyListeners();
   }
 
   void manageAmountController() {
@@ -106,8 +116,8 @@ class DonProvider with ChangeNotifier {
   void convertAmount() async {
     try {
       double amoutConverted =
-          await donService.getCoinsConvertor(_amountController.text);
-      // debugPrint(amoutConverted.toString());
+          await transactionService.getCoinsConvertor(_amountController.text);
+
       _convertedAmount = amoutConverted.toStringAsFixed(0);
     } catch (e) {
       throw ('Error converting amount: $e');
@@ -116,19 +126,75 @@ class DonProvider with ChangeNotifier {
   }
 
   void createDonation(User? user) async {
-    DonModel donModel = DonModel(
+    setIsLoading(true);
+    TransactionModel donModel = TransactionModel(
       contributionMethod: _isTypeCash ? 2 : 1,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
     );
-    debugPrint(donModel.toJson().toString());
-    bool result = await donService.createDonation(donModel);
+    await transactionService.createTransaction(donModel).then((value) {
+      setIsLoading(false);
+      debugPrint("value: ${value.data?.isIZIAuthenticated.toString()}");
+      if (_isTypeCash == true) {
+        setStep("finishDon");
+      } else {
+        if (value.data?.isIZIAuthenticated == true &&
+            value.data?.isIZIAuthorized == true) {
+          setStep("finishDon");
+        } else if (value.data?.isIZIAuthenticated == true &&
+            value.data?.isIZIAuthorized == false) {
+          setStep("pinCode");
+        } else if (value.data?.isIZIAuthenticated == false &&
+            value.data?.isIZIAuthorized == false) {
+          setStep("connect");
+        }
+      }
+    });
+  }
 
-    // review here
-    if ((user?.mytarajiUser?.isSubscribedIZI ?? false) && result) {
-      setStep("finishDon");
+  void validateConnectionForm(BuildContext context) async {
+    setIsLoading(true);
+    if (_formKey.currentState?.validate() ?? false) {
+      FocusScope.of(context).unfocus();
+      AuthenticationModel authModel = AuthenticationModel(
+        username: _signinId.text,
+        password: _signinPwd.text,
+      );
+      await userService
+          .authUserIzi(authModel.username, authModel.password)
+          .then((value) {
+        setIsLoading(false);
+        if (value.isIZIAuthenticated == true && value.isIZIAuthorized == true) {
+          setStep("finishDon");
+        } else if (value.isIZIAuthenticated == true &&
+            value.isIZIAuthorized == false) {
+          setStep("pinCode");
+        } else if (value.isIZIAuthenticated == false &&
+            value.isIZIAuthorized == false) {
+          setStep("connect");
+        }
+      });
     } else {
-      setStep("connect");
+      setIsLoading(false);
+    }
+  }
+
+  void validateVerifForm(BuildContext context) async {
+    setIsLoading(true);
+    setIsValid(true);
+    if (_formKey.currentState?.validate() ?? false) {
+      FocusScope.of(context).unfocus();
+      await userService.confirmAuthIzi(_pinCode.text).then((value) {
+        setIsLoading(false);
+        if (value) {
+          setStep("finishDon");
+        } else {
+          setIsValid(false);
+          setStep("pinCode");
+        }
+      });
+    } else {
+      setIsLoading(false);
     }
   }
 
@@ -136,9 +202,13 @@ class DonProvider with ChangeNotifier {
   String get title => _title;
   TextEditingController get amountController => _amountController;
   bool get isTypeCash => _isTypeCash;
-  DonSettings get donSettings => _donSettings;
-  GlobalKey<FormState>? get formKey => _formKey;
+  TransactionSettings get donSettings => _donSettings;
+  GlobalKey<FormState> get formKey => _formKey;
   String get convertedAmount => _convertedAmount;
   bool get isValidForm => _isValidForm;
   bool get isLoading => _isLoading;
+  TextEditingController get signinId => _signinId;
+  TextEditingController get signinPwd => _signinPwd;
+  TextEditingController get pinCode => _pinCode;
+  bool get isValid => _isValid;
 }
