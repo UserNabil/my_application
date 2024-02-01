@@ -13,10 +13,10 @@ class MyDon extends StatelessWidget {
         context.watch<DonProvider>().donSettings.isMinimumThresholdAmountActive;
     int minimumThresholdAmount =
         context.watch<DonProvider>().donSettings.minimumThresholdAmount;
-    String minimumThresholdViloationMessage = context
-        .watch<DonProvider>()
-        .donSettings
-        .minimumThresholdViloationMessage;
+    // String minimumThresholdViloationMessage = context
+    //     .watch<DonProvider>()
+    //     .donSettings
+    //     .minimumThresholdViloationMessage;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,55 +58,51 @@ class MyDon extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Form(
-                key: context.watch<DonProvider>().formKey,
-                child: TextFormField(
-                  textAlign: TextAlign.center,
-                  readOnly: !context
-                      .watch<DonProvider>()
-                      .donSettings
-                      .isFreeInputAmountActivated,
-                  controller: context.watch<DonProvider>().amountController,
-                  cursorColor: MyColors.blue3,
-                  style: const TextStyle(
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.none,
-                  ),
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Veuillez entrer un montant";
-                    }
-                    if (isActiveMinimum &&
-                        int.parse(value) < minimumThresholdAmount) {
-                      return minimumThresholdViloationMessage;
-                    }
-
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(width: 50.0),
-            const Text(
-              "DT",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.w400,
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Form(
+            key: context.watch<DonProvider>().formKey,
+            child: TextFormField(
+              textAlign: TextAlign.center,
+              readOnly: !context
+                  .watch<DonProvider>()
+                  .donSettings
+                  .isFreeInputAmountActivated,
+              controller: context.watch<DonProvider>().amountController,
+              cursorColor: MyColors.blue3,
+              style: const TextStyle(
+                fontSize: 40.0,
+                fontWeight: FontWeight.w600,
                 decoration: TextDecoration.none,
               ),
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                errorMaxLines: 2,
+                suffix: Text(
+                  "DT",
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Veuillez entrer un montant";
+                }
+                if (isActiveMinimum &&
+                    int.parse(value) < minimumThresholdAmount) {
+                  return "Votre solde est insuffisant pour le don souhaité, veuillez recharger votre Wallet";
+                  // return minimumThresholdViloationMessage;
+                }
+
+                return null;
+              },
             ),
-          ],
+          ),
         ),
         const SizedBox(height: 10.0),
         donUI.divider(0.0),

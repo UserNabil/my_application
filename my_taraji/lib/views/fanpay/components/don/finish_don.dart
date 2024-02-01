@@ -1,14 +1,22 @@
+import 'package:intl/intl.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
-class FinishDon extends StatefulWidget {
-  const FinishDon({super.key});
+class FinishDon extends StatelessWidget {
+  const FinishDon({super.key, required this.user});
+  final User? user;
 
-  @override
-  FinishDonState createState() => FinishDonState();
-}
+  static DonUI donUI = DonUI();
 
-class FinishDonState extends State<FinishDon> {
-  DonUI donUI = DonUI();
+  String formatDate(DateTime date) {
+    String formattedDate = DateFormat('• HH:mm').format(date);
+
+    return formattedDate;
+  }
+
+  String formatPhoneNumber(String phoneNumber) {
+    if (phoneNumber.length < 8) return phoneNumber;
+    return '(+216) ${phoneNumber.substring(0, 2)} ${phoneNumber.substring(2, 5)} XXX';
+  }
 
   Container destinationCard() {
     String? imagePath = "images/pngs/taraji.png";
@@ -46,7 +54,10 @@ class FinishDonState extends State<FinishDon> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               donUI.textType2('Taraji'),
-              donUI.textType1('(+216) 90 443 XXX • 7:55', false, true),
+              donUI.textType1(
+                  '${formatPhoneNumber(user?.phone ?? "")} ${formatDate(DateTime.now())}',
+                  false,
+                  true),
             ],
           )
         ],
@@ -54,7 +65,7 @@ class FinishDonState extends State<FinishDon> {
     );
   }
 
-  Widget finishDon() {
+  Widget finishDon(BuildContext context) {
     return Column(
       children: [
         Padding(
@@ -112,7 +123,6 @@ class FinishDonState extends State<FinishDon> {
           onPressed: () {
             context.read<DonProvider>().initAllData();
             context.read<FanPayProvider>().openModal();
-            // context.read<InitProvider>().initCurrentIndex();
             Navigator.pop(context);
           },
           child: const Text(
@@ -130,6 +140,6 @@ class FinishDonState extends State<FinishDon> {
 
   @override
   Widget build(BuildContext context) {
-    return finishDon();
+    return finishDon(context);
   }
 }

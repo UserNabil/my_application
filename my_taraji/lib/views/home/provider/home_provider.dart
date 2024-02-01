@@ -21,11 +21,11 @@ class HomeProvider with ChangeNotifier {
     const key = 'user';
 
     final value = prefs.getString(key);
-    if (value == null) {
-      return null;
-    }
+    // if (value == null) {
+    //   return null;
+    // }
 
-    Map<String, dynamic> userDataMap = jsonDecode(value) ?? {};
+    Map<String, dynamic> userDataMap = jsonDecode(value ?? '') ?? {};
 
     User userData = User.fromJson(userDataMap);
     return userData;
@@ -33,10 +33,20 @@ class HomeProvider with ChangeNotifier {
 
   Future<void> setUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isIzi', prefs.getBool('isIzi') ?? true);
+    const key = 'user';
     await userService.getUserData().then((value) {
-      const key = 'user';
-      prefs.setString(key, jsonEncode(value.data?.toMap()));
+      if (value.isSuccess == false) {
+        debugPrint('Failed to load user data');
+        getUserData().then((value) {
+          if (value == null) {
+            debugPrint('Failed to load local user data');
+            return;
+          }
+          prefs.setString(key, jsonEncode(value.toMap()));
+        });
+      } else {
+        prefs.setString(key, jsonEncode(value.data?.toMap()));
+      }
     });
   }
 

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
+import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 
 class IziProvider with ChangeNotifier {
   final TextEditingController _lastNameController = TextEditingController();
@@ -155,7 +156,6 @@ class IziProvider with ChangeNotifier {
       FocusScope.of(context).unfocus();
       setConnectProcissing(true);
       setConnected().then((value) {
-        debugPrint(value.isIZIAuthenticated.toString());
         if (value.isIZIAuthenticated == true &&
             value.isIZIAuthorized == false) {
           _connectionStep = "pinCode";
@@ -187,6 +187,7 @@ class IziProvider with ChangeNotifier {
           _formKey.currentState?.reset();
           init();
           Navigator.pop(context);
+          context.read<InitProvider>().setCurrentIndex(2);
           notifyListeners();
         } else {
           setWrongVerif(!value);

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_taraji/core/models/api_response_model.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
-import 'package:my_taraji/views/init/models/user.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
 class UserService {
@@ -19,7 +18,6 @@ class UserService {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-
         return APIResponseModel<User>.fromJson(
           jsonData,
           (data) => User.fromJson(data),
@@ -99,7 +97,7 @@ class UserService {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        debugPrint("getAuthDetails: $jsonData");
+
         return TransactionResponse.fromJson(jsonData);
       } else {
         throw Exception('Failed API call: ${response.reasonPhrase}');

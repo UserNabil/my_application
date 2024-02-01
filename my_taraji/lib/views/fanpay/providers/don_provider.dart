@@ -20,7 +20,7 @@ class DonProvider with ChangeNotifier {
     transactionType: 0,
   );
   final TextEditingController _amountController = TextEditingController();
-  bool _isTypeCash = false;
+  bool _isTypeCoins = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _convertedAmount = "";
   bool _isValidForm = false;
@@ -28,6 +28,24 @@ class DonProvider with ChangeNotifier {
   UserService userService = UserService();
   bool _isLoading = false;
   bool _isValid = false;
+  bool _userHaveCoins = false;
+  double _userCoins = 0;
+  String _error = "";
+
+  void calculateCoins(User? user) {
+    if (user?.myRewards?.coins != null) {
+      _userCoins =
+          (user?.myRewards?.coins ?? 0) - double.parse(_convertedAmount);
+      if (_userCoins >= 0) {
+        _userHaveCoins = true;
+      } else {
+        _userHaveCoins = false;
+      }
+    } else {
+      _userHaveCoins = false;
+    }
+    notifyListeners();
+  }
 
   void setIsValid(bool isValid) {
     _isValid = isValid;
@@ -59,34 +77,32 @@ class DonProvider with ChangeNotifier {
           setDonTitle("Confirmer don");
           convertAmount();
         }
-        // notifyListeners();
         break;
       case "finishDon":
         _step = newStep;
         setDonTitle("");
-        // notifyListeners();
         break;
       case "don":
         _step = "don";
+        initAllData();
         setDonTitle("Don");
-        // notifyListeners();
         break;
       case "pinCode":
         _step = newStep;
         setDonTitle("Code PIN");
-        // notifyListeners();
         break;
       case "connect":
         _step = newStep;
         setDonTitle("Connexion");
-        // notifyListeners();
         break;
     }
     notifyListeners();
   }
 
-  void setTypeCash(bool newType) {
-    _isTypeCash = newType;
+  void setTypeCash(bool newType, User? user) {
+    _isTypeCoins = newType;
+    _error = "";
+    calculateCoins(user);
     notifyListeners();
   }
 
@@ -100,13 +116,16 @@ class DonProvider with ChangeNotifier {
     _signinId.value = TextEditingValue.empty;
     _signinPwd.text = "";
     _signinPwd.value = TextEditingValue.empty;
-    _isTypeCash = false;
+    _isTypeCoins = false;
     _title = "Don";
     _isValidForm = false;
     _formKey.currentState?.reset();
     _convertedAmount = "";
     _isLoading = false;
     _isValid = false;
+    _userHaveCoins = false;
+    _userCoins = 0;
+    _error = "";
 
     manageAmountController();
     notifyListeners();
@@ -143,16 +162,23 @@ class DonProvider with ChangeNotifier {
   void createDonation(User? user) async {
     setIsLoading(true);
     TransactionModel donModel = TransactionModel(
-      contributionMethod: _isTypeCash ? 2 : 1,
+      contributionMethod: _isTypeCoins ? 2 : 1,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
     );
-    await transactionService.createTransaction(donModel).then((value) {
-      setIsLoading(false);
-      debugPrint("value: ${value.data?.isIZIAuthenticated.toString()}");
-      if (_isTypeCash == true) {
-        setStep("finishDon");
+
+    if (_isTypeCoins == true) {
+      if (_userHaveCoins == true) {
+        await transactionService.createTransaction(donModel).then((value) {
+          setIsLoading(false);
+          setStep("finishDon");
+        });
       } else {
+        setIsLoading(false);
+        _error = "Votre solde est insuffisant pour le don souhaité en coins.";
+      }
+    } else {
+      await transactionService.createTransaction(donModel).then((value) {
         if (value.data?.isIZIAuthenticated == true &&
             value.data?.isIZIAuthorized == true) {
           setStep("finishDon");
@@ -163,8 +189,8 @@ class DonProvider with ChangeNotifier {
             value.data?.isIZIAuthorized == false) {
           setStep("connect");
         }
-      }
-    });
+      });
+    }
   }
 
   void validateConnectionForm(BuildContext context) async {
@@ -216,7 +242,7 @@ class DonProvider with ChangeNotifier {
   String get step => _step;
   String get title => _title;
   TextEditingController get amountController => _amountController;
-  bool get isTypeCash => _isTypeCash;
+  bool get isTypeCash => _isTypeCoins;
   TransactionSettings get donSettings => _donSettings;
   GlobalKey<FormState> get formKey => _formKey;
   String get convertedAmount => _convertedAmount;
@@ -226,4 +252,7 @@ class DonProvider with ChangeNotifier {
   TextEditingController get signinPwd => _signinPwd;
   TextEditingController get pinCode => _pinCode;
   bool get isValid => _isValid;
+  bool get userHaveCoins => _userHaveCoins;
+  double get userCoins => _userCoins;
+  String get error => _error;
 }

@@ -10,6 +10,7 @@ class ConfirmDon extends StatelessWidget {
     bool isLoading = context.watch<DonProvider>().isLoading;
     DonUI donUI = DonUI();
     DateTime now = DateTime.now();
+    bool userHaveCoins = context.watch<DonProvider>().userHaveCoins;
     Widget confirmDon() {
       return Column(
         children: [
@@ -42,7 +43,7 @@ class ConfirmDon extends StatelessWidget {
                     MaterialStateProperty.all(Colors.transparent),
                 value: context.watch<DonProvider>().isTypeCash,
                 onChanged: (value) {
-                  context.read<DonProvider>().setTypeCash(value);
+                  context.read<DonProvider>().setTypeCash(value, user);
                 },
               ),
               donUI.textType2("Coins"),
@@ -56,8 +57,15 @@ class ConfirmDon extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         donUI.textType1("Nombre des coins", false, false),
-                        donUI.textType2(
-                            "${context.watch<DonProvider>().convertedAmount} Coins"),
+                        Text(
+                            style: TextStyle(
+                              color: userHaveCoins ? null : MyColors.red,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.0,
+                            ),
+                            userHaveCoins
+                                ? "${context.watch<DonProvider>().convertedAmount} Coins"
+                                : "${context.watch<DonProvider>().userCoins} Coins"),
                       ],
                     ),
                   ],
@@ -79,7 +87,15 @@ class ConfirmDon extends StatelessWidget {
               donUI.textType2(donUI.formatDate(now)),
             ],
           ),
-          const SizedBox(height: 50),
+          userHaveCoins
+              ? const SizedBox(height: 50)
+              : SizedBox(
+                  height: 50,
+                  child: Text(
+                    context.watch<DonProvider>().error,
+                    style: const TextStyle(color: MyColors.red),
+                  ),
+                ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               fixedSize: const Size(300.0, 50.0),

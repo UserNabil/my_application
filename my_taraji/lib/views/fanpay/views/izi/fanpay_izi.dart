@@ -28,6 +28,8 @@ class FanPayIzi extends StatelessWidget {
 }
 
 Widget buildBody(BuildContext context, User? user) {
+  /*user?.mytarajiUser?.isSubscribedIZI ==*/
+  bool haveWallet = context.watch<IziProvider>().wallet;
   return Stack(
     children: [
       const RiveAnimation.asset('images/rives/shapes6.riv'),
@@ -51,7 +53,7 @@ Widget buildBody(BuildContext context, User? user) {
                   width: 300,
                   child: Column(children: [
                     Text(
-                      "Pas de compte Izi ?",
+                      haveWallet ? "Bienvenue sur IZI" : "Pas de compte IZI ?",
                       style: TextStyle(
                         color: MyColors.white,
                         fontSize: 60,
@@ -68,9 +70,11 @@ Widget buildBody(BuildContext context, User? user) {
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      "Veuillez créer votre wallet afin d'acceder à cette page.",
-                      style: TextStyle(
+                    Text(
+                      haveWallet
+                          ? "Vous pouvez maintenant effectuer vos transactions en toute sécurité."
+                          : "Veuillez créer votre wallet afin d'acceder à cette page.",
+                      style: const TextStyle(
                         color: MyColors.blue,
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
@@ -80,14 +84,13 @@ Widget buildBody(BuildContext context, User? user) {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: user?.mytarajiUser?.isSubscribedIZI == true
+                  onPressed: haveWallet
                       ? () => goToSignUpIzi(context)
                       : () => goToSignInIzi(context),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: MyColors.white,
-                    backgroundColor: user?.mytarajiUser?.isSubscribedIZI == true
-                        ? MyColors.blue3
-                        : MyColors.yellow,
+                    backgroundColor:
+                        haveWallet ? MyColors.blue3 : MyColors.yellow,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -98,9 +101,7 @@ Widget buildBody(BuildContext context, User? user) {
                   ),
                   child: Center(
                     child: Text(
-                      user?.mytarajiUser?.isSubscribedIZI == true
-                          ? 'Me connecter'
-                          : 'Cr�er mon compte',
+                      haveWallet ? 'Me connecter' : 'Créer mon compte',
                       style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,

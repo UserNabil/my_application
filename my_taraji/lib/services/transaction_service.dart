@@ -61,7 +61,6 @@ class TransactionService {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = json.decode(response.body);
-
       return APIResponseModel<TransactionResponse>.fromJson(
         jsonData,
         (data) => TransactionResponse.fromJson(data),

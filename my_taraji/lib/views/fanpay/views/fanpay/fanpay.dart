@@ -1,3 +1,4 @@
+import 'package:gif_view/gif_view.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
 
@@ -131,7 +132,6 @@ class MyFanPay extends StatelessWidget {
         }
 
         User? userData = userSnapshot.data;
-        // return Text('Error: ${userData?.mytarajiUser?.isSubscribedIZI}');
 
         return FutureBuilder<TransactionResponse>(
           future: userService.getAuthDetails(),
@@ -139,9 +139,11 @@ class MyFanPay extends StatelessWidget {
               AsyncSnapshot<TransactionResponse> authDetailsSnapshot) {
             if (authDetailsSnapshot.connectionState ==
                 ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: MyColors.blue,
+              return Center(
+                child: GifView.asset(
+                  alignment: Alignment.center,
+                  'images/gifs/loader_paiement.gif',
+                  frameRate: 30,
                 ),
               );
             }
@@ -150,23 +152,23 @@ class MyFanPay extends StatelessWidget {
               return Text('Error: ${authDetailsSnapshot.error}');
             }
             if (authDetailsSnapshot.hasData) {
-              // TransactionResponse? authDetails = authDetailsSnapshot.data;
-              // if (userData?.mytarajiUser?.isSubscribedIZI == true &&
-              //     authDetails?.isIZIAuthenticated == true &&
-              //     authDetails?.isIZIAuthorized == true) {
-              return buildPage(userData, context);
-              // } else {
-              //   return Stack(
-              //     alignment: Alignment.topCenter,
-              //     children: [
-              //       buildPage(userData, context),
-              //       FanPayIzi(
-              //         authDetails: authDetails,
-              //         user: userData,
-              //       ),
-              //     ],
-              //   );
-              // }
+              TransactionResponse? authDetails = authDetailsSnapshot.data;
+              if (/*userData?.mytarajiUser?.isSubscribedIZI == true &&*/
+                  authDetails?.isIZIAuthenticated == true &&
+                      authDetails?.isIZIAuthorized == true) {
+                return buildPage(userData, context);
+              } else {
+                return Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    buildPage(userData, context),
+                    FanPayIzi(
+                      authDetails: authDetails,
+                      user: userData,
+                    ),
+                  ],
+                );
+              }
             } else {
               return Container();
             }

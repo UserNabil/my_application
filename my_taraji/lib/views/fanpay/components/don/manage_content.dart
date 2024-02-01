@@ -53,7 +53,7 @@ class ManageDonPage extends StatelessWidget {
       case "confirmDon":
         return ConfirmDon(user: user);
       case "finishDon":
-        return const FinishDon();
+        return FinishDon(user: user);
       case "pinCode":
         return context.watch<DonProvider>().isLoading == true
             ? Stack(
@@ -162,6 +162,12 @@ class ManageDonPage extends StatelessWidget {
 
     switch (step) {
       case "don":
+        context.read<DonProvider>().initAllData();
+        fanPayProvider.openModal();
+        Navigator.pop(context);
+        break;
+      case "finishDon":
+        context.read<DonProvider>().initAllData();
         fanPayProvider.openModal();
         Navigator.pop(context);
         break;

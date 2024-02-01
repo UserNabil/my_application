@@ -126,7 +126,6 @@ class TransfertProvider with ChangeNotifier {
     try {
       double amoutConverted =
           await transactionService.getCoinsConvertor(_amountController.text);
-      // debugPrint(amoutConverted.toString());
       _convertedAmount = amoutConverted.toStringAsFixed(0);
     } catch (e) {
       throw ('Error converting amount: $e');
