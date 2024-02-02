@@ -89,6 +89,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               ListCarouselCompagnes(campagnes: allDataContent.campagnes),
               ListCarouselChallenges(challenges: allDataContent.challenges),
+              ListCarouselCompagnes(campagnes: allDataContent.campagnes),
             ],
           );
         }
