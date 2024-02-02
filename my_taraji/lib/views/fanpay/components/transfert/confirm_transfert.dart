@@ -11,6 +11,8 @@ class ConfirmTransfert extends StatelessWidget {
     bool isLoading = context.watch<TransfertProvider>().isLoading;
     DonUI transfertUI = DonUI();
     DateTime now = DateTime.now();
+    String contactName =
+        context.watch<TransfertProvider>().contactSelected.displayName;
     Widget confirmTransfert() {
       return Column(
         children: [
@@ -28,48 +30,14 @@ class ConfirmTransfert extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10.0),
-          transfertUI.textType1("Votre transfert pour Taraji", false, false),
-          const SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              transfertUI.textType1("Payer par", false, false),
-              transfertUI.textType2("Solde wallet"),
-              Switch(
-                thumbColor: MaterialStateProperty.all(MyColors.white),
-                trackColor: MaterialStateProperty.all(MyColors.orange),
-                trackOutlineWidth: MaterialStateProperty.all(0),
-                trackOutlineColor:
-                    MaterialStateProperty.all(Colors.transparent),
-                value: context.watch<TransfertProvider>().isTypeCash,
-                onChanged: (value) {
-                  context.read<TransfertProvider>().setTypeCash(value);
-                },
-              ),
-              transfertUI.textType2("Coins"),
-            ],
-          ),
-          context.watch<TransfertProvider>().isTypeCash
-              ? Column(
-                  children: [
-                    transfertUI.divider(40.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        transfertUI.textType1("Nombre des coins", false, false),
-                        transfertUI.textType2(
-                            "${context.watch<TransfertProvider>().convertedAmount} Coins"),
-                      ],
-                    ),
-                  ],
-                )
-              : const SizedBox(),
-          transfertUI.divider(40.0),
+          transfertUI.textType1(
+              "Votre transfert pour $contactName", false, false),
+          const SizedBox(height: 60.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               transfertUI.textType1("Transfert destination", false, false),
-              transfertUI.textType2("Taraji"),
+              transfertUI.textType2(contactName),
             ],
           ),
           transfertUI.divider(40.0),

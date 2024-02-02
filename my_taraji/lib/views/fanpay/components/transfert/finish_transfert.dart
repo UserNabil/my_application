@@ -1,3 +1,5 @@
+import 'package:flutter_contacts/contact.dart';
+import 'package:intl/intl.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/providers/transfert_provider.dart';
 
@@ -11,8 +13,19 @@ class FinishTransfert extends StatefulWidget {
 class FinishTransfertState extends State<FinishTransfert> {
   DonUI transfertUI = DonUI();
 
+  String formatDate(DateTime date) {
+    String formattedDate = DateFormat('• HH:mm').format(date);
+
+    return formattedDate;
+  }
+
+  String formatPhoneNumber(String phoneNumber) {
+    if (phoneNumber.length < 8) return phoneNumber;
+    return '(+216) ${phoneNumber.substring(0, 2)} ${phoneNumber.substring(2, 5)} XXX';
+  }
+
   Container destinationCard() {
-    String? imagePath = "images/pngs/taraji.png";
+    Contact contact = context.watch<TransfertProvider>().contactSelected;
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
@@ -22,32 +35,28 @@ class FinishTransfertState extends State<FinishTransfert> {
       child: Row(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: MyColors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
+              decoration: const BoxDecoration(
+                color: MyColors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
+                ),
               ),
-            ),
-            // ignore: unnecessary_null_comparison
-            child: imagePath != null
-                ? Image.asset(
-                    'images/pngs/taraji.png',
-                    fit: BoxFit.cover,
-                    width: 50,
-                    height: 50,
-                  )
-                : const SizedBox(
-                    width: 50.0,
-                    height: 50,
-                  ),
-          ),
+              child: Image.asset(
+                "images/pngs/contact.png",
+                fit: BoxFit.cover,
+                width: 50,
+                height: 50,
+              )),
           const SizedBox(width: 20.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              transfertUI.textType2('Taraji'),
-              transfertUI.textType1('(+216) 90 443 XXX • 7:55', false, true),
+              transfertUI.textType2(contact.displayName),
+              transfertUI.textType1(
+                  '${formatPhoneNumber(context.watch<TransfertProvider>().phoneController.text)} ${formatDate(DateTime.now())}',
+                  false,
+                  true),
             ],
           )
         ],

@@ -15,7 +15,7 @@ class DonProvider with ChangeNotifier {
     isMinimumThresholdAmountActive: false,
     minimumThresholdAmount: 0,
     minimumThresholdViloationMessage: "",
-    organizationAgentCode: 0,
+    // organizationAgentCode: 0,
     isAnonymosContributionActivated: false,
     transactionType: 0,
   );
@@ -68,7 +68,6 @@ class DonProvider with ChangeNotifier {
   }
 
   void setStep(String newStep) {
-    print("test $newStep");
     switch (newStep) {
       case "confirmDon":
         if (_formKey.currentState?.validate() == true || _isValidForm) {
@@ -108,7 +107,7 @@ class DonProvider with ChangeNotifier {
 
   void initAllData() {
     _step = "don";
-    _amountController.text = "";
+    _amountController.text = "0";
     _amountController.value = TextEditingValue.empty;
     _pinCode.text = "";
     _pinCode.value = TextEditingValue.empty;
@@ -142,7 +141,7 @@ class DonProvider with ChangeNotifier {
 
   void manageAmountController() {
     if (_donSettings.isMinimumThresholdAmountActive) {
-      _amountController.text = _donSettings.minimumThresholdAmount.toString();
+      // _amountController.text = _donSettings.minimumThresholdAmount.toString();
     }
     notifyListeners();
   }
@@ -182,12 +181,15 @@ class DonProvider with ChangeNotifier {
         if (value.data?.isIZIAuthenticated == true &&
             value.data?.isIZIAuthorized == true) {
           setStep("finishDon");
+          setIsLoading(false);
         } else if (value.data?.isIZIAuthenticated == true &&
             value.data?.isIZIAuthorized == false) {
           setStep("pinCode");
+          setIsLoading(false);
         } else if (value.data?.isIZIAuthenticated == false &&
             value.data?.isIZIAuthorized == false) {
           setStep("connect");
+          setIsLoading(false);
         }
       });
     }
@@ -207,12 +209,15 @@ class DonProvider with ChangeNotifier {
         setIsLoading(false);
         if (value.isIZIAuthenticated == true && value.isIZIAuthorized == true) {
           setStep("finishDon");
+          setIsLoading(false);
         } else if (value.isIZIAuthenticated == true &&
             value.isIZIAuthorized == false) {
           setStep("pinCode");
+          setIsLoading(false);
         } else if (value.isIZIAuthenticated == false &&
             value.isIZIAuthorized == false) {
           setStep("connect");
+          setIsLoading(false);
         }
       });
     } else {

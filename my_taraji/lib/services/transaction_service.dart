@@ -9,11 +9,10 @@ class TransactionService {
   late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
 
   TransactionService();
-// récupération des settings de transaction
   Future<TransactionSettings> getTransactionSettings(
       TransactionType type) async {
     const path = "api/v1/settings-mobile";
-    final url = Uri.parse('$baseUrl/$path/?settingsType=${type.index}');
+    final url = Uri.parse('$baseUrl/$path?settingsType=${type.index}');
 
     try {
       final response = await http.get(url);

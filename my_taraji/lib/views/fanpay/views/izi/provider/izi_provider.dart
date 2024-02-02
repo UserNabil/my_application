@@ -187,7 +187,7 @@ class IziProvider with ChangeNotifier {
           _formKey.currentState?.reset();
           init();
           Navigator.pop(context);
-          context.read<InitProvider>().setCurrentIndex(2);
+          context.read<InitProvider>().setCurrentIndex(0);
           notifyListeners();
         } else {
           setWrongVerif(!value);

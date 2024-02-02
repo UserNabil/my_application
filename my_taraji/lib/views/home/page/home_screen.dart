@@ -76,7 +76,11 @@ class HomeScreen extends StatelessWidget {
           );
         }
 
-        AllDataContent allDataContent = snapshot.data!;
+        AllDataContent allDataContent = snapshot.data ??
+            AllDataContent(
+              campagnes: [],
+              challenges: [],
+            );
         if (allDataContent.campagnes.isNotEmpty &&
             allDataContent.challenges.isNotEmpty) {
           return AllContent(allContent: allDataContent);

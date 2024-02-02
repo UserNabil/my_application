@@ -30,7 +30,7 @@ class TransactionSettings {
   final bool isMinimumThresholdAmountActive;
   final int minimumThresholdAmount;
   final String minimumThresholdViloationMessage;
-  final int organizationAgentCode;
+  // final int organizationAgentCode;
   final bool isAnonymosContributionActivated;
   final int transactionType;
 
@@ -40,7 +40,7 @@ class TransactionSettings {
     required this.isMinimumThresholdAmountActive,
     required this.minimumThresholdAmount,
     required this.minimumThresholdViloationMessage,
-    required this.organizationAgentCode,
+    // required this.organizationAgentCode,
     required this.isAnonymosContributionActivated,
     required this.transactionType,
   });
@@ -53,7 +53,7 @@ class TransactionSettings {
       minimumThresholdAmount: json['minimumThresholdAmount'],
       minimumThresholdViloationMessage:
           json['minimumThresholdViloationMessage'],
-      organizationAgentCode: json['organizationAgentCode'],
+      // organizationAgentCode: json['organizationAgentCode'],
       isAnonymosContributionActivated: json['isAnonymosContributionActivated'],
       transactionType: json['transactionType'],
     );
@@ -65,7 +65,7 @@ class TransactionSettings {
         'isMinimumThresholdAmountActive': isMinimumThresholdAmountActive,
         'minimumThresholdAmount': minimumThresholdAmount,
         'minimumThresholdViloationMessage': minimumThresholdViloationMessage,
-        'organizationAgentCode': organizationAgentCode,
+        // 'organizationAgentCode': organizationAgentCode,
         'isAnonymosContributionActivated': isAnonymosContributionActivated,
         'transactionType': transactionType,
       };

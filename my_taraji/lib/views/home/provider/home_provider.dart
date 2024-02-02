@@ -36,10 +36,8 @@ class HomeProvider with ChangeNotifier {
     const key = 'user';
     await userService.getUserData().then((value) {
       if (value.isSuccess == false) {
-        debugPrint('Failed to load user data');
         getUserData().then((value) {
           if (value == null) {
-            debugPrint('Failed to load local user data');
             return;
           }
           prefs.setString(key, jsonEncode(value.toMap()));

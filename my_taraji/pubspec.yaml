@@ -68,9 +68,11 @@ flutter:
     - images/icons/
     - images/pngs/
     - images/pngs/campaigns/
+    - images/pngs/challenge/
     - images/pngs/news/
     - images/svgs/
     - images/svgs/fanpay/
+    - images/svgs/challenge/
     - images/gifs/
 
   fonts:

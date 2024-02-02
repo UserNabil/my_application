@@ -1,4 +1,6 @@
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:my_taraji/services/enums/financial_transaction_type.dart';
+import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_model.dart';
 
 import '../imports.dart';
@@ -9,26 +11,84 @@ class TransfertProvider with ChangeNotifier {
   final TextEditingController _signinPwd = TextEditingController();
   String _step = "transfert";
   String _title = "Transfert";
-  TransactionSettings _transactionSettings = TransactionSettings(
+  TransactionSettings _transfertSettings = TransactionSettings(
     authorizedAmounts: [],
     isFreeInputAmountActivated: false,
     isMinimumThresholdAmountActive: false,
     minimumThresholdAmount: 0,
     minimumThresholdViloationMessage: "",
-    organizationAgentCode: 0,
+    // organizationAgentCode: 0,
     isAnonymosContributionActivated: false,
     transactionType: 0,
   );
+  UserService userService = UserService();
   final TextEditingController _amountController = TextEditingController();
-  bool _isTypeCash = false;
+  final TextEditingController _phoneController = TextEditingController();
+  bool _isTypeCoins = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _convertedAmount = "";
   bool _isValidForm = false;
   TransactionService transactionService = TransactionService();
   bool _isLoading = false;
   bool _showContact = false;
+  bool _permissionDenied = false;
+  List<Contact> _contacts = [];
+  Contact _contactSelected = Contact();
+  List<Contact> _filtredContacts = [];
+  String _suffix = "";
+  bool _isValid = false;
 
-  bool get showContact => _showContact;
+  void setIsValid(bool isValid) {
+    _isValid = isValid;
+    notifyListeners();
+  }
+
+  void searchContacts(String query) {
+    final normalizedQuery = query.toLowerCase();
+    debugPrint("query : $query");
+    _filtredContacts = _contacts.where((contact) {
+      final displayName = contact.displayName.toLowerCase();
+      final phoneNumbers = contact.phones
+          .map((phone) => phone.normalizedNumber.toLowerCase())
+          .toList();
+
+      return displayName.contains(normalizedQuery) ||
+          phoneNumbers.any((number) => number.contains(normalizedQuery));
+    }).toList();
+    debugPrint("filteredContacts : ${_filtredContacts.length.toString()}");
+
+    notifyListeners();
+  }
+
+  void setListContact(List<Contact> listContact) {
+    _contacts = listContact;
+    // notifyListeners();
+  }
+
+  void setFiltredContacts(List<Contact> listContact) {
+    _filtredContacts = listContact;
+  }
+
+  Future<List<Contact>> fetchContacts() async {
+    if (!await FlutterContacts.requestPermission(readonly: true)) {
+      _permissionDenied = true;
+      return _contacts;
+    } else {
+      await FlutterContacts.getContacts(
+        withProperties: true,
+        withPhoto: true,
+        sorted: true,
+      ).then((value) => _contacts = value);
+      return _contacts;
+    }
+  }
+
+  void setNumberPhone(Contact? contact) {
+    _contactSelected = contact!;
+    _suffix = contact.phones[0].normalizedNumber.substring(0, 3);
+    _phoneController.text = contact.phones[0].normalizedNumber.substring(3);
+    notifyListeners();
+  }
 
   void toggleShowContact() {
     _showContact = !_showContact;
@@ -69,6 +129,7 @@ class TransfertProvider with ChangeNotifier {
         break;
       case "pinCode":
         _step = newStep;
+        initAllData();
         setTransfertTitle("Code PIN");
         break;
       case "connect":
@@ -81,7 +142,7 @@ class TransfertProvider with ChangeNotifier {
   }
 
   void setTypeCash(bool newType) {
-    _isTypeCash = newType;
+    _isTypeCoins = newType;
     notifyListeners();
   }
 
@@ -89,19 +150,25 @@ class TransfertProvider with ChangeNotifier {
     _step = "transfert";
     _amountController.text = "";
     _amountController.value = TextEditingValue.empty;
+    _phoneController.text = "";
+    _phoneController.value = TextEditingValue.empty;
     _pinCode.text = "";
     _pinCode.value = TextEditingValue.empty;
     _signinId.text = "";
     _signinId.value = TextEditingValue.empty;
     _signinPwd.text = "";
     _signinPwd.value = TextEditingValue.empty;
-    _isTypeCash = false;
+    _isTypeCoins = false;
     _title = "Transfert";
     _isValidForm = false;
     _formKey.currentState?.reset();
     _convertedAmount = "";
     _isLoading = false;
-    manageAmountController();
+    _showContact = false;
+    _permissionDenied = false;
+    _filtredContacts = [];
+    _isValid = false;
+
     notifyListeners();
   }
 
@@ -111,14 +178,7 @@ class TransfertProvider with ChangeNotifier {
         await transactionService.getTransactionSettings(type);
     transactionSettings.authorizedAmounts
         .sort((a, b) => a.amount.compareTo(b.amount));
-    _transactionSettings = transactionSettings;
-  }
-
-  void manageAmountController() {
-    if (_transactionSettings.isMinimumThresholdAmountActive) {
-      _amountController.text =
-          _transactionSettings.minimumThresholdAmount.toString();
-    }
+    _transfertSettings = transactionSettings;
     notifyListeners();
   }
 
@@ -136,58 +196,82 @@ class TransfertProvider with ChangeNotifier {
   void createTransfert(User? user) async {
     setIsLoading(true);
     TransactionModel transfertModel = TransactionModel(
-      contributionMethod: _isTypeCash ? 2 : 1,
+      contributionMethod: _isTypeCoins ? 2 : 1,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
     );
+
     await transactionService.createTransaction(transfertModel).then((value) {
-      setIsLoading(false);
-      // review here
-      // if ((user?.mytarajiUser?.isSubscribedIZI ?? false) && value) {
-      //   setStep("finishTransfert");
-      // } else {
-      //   setStep("connect");
-      // }
+      if (value.data?.isIZIAuthenticated == true &&
+          value.data?.isIZIAuthorized == true) {
+        setStep("finishTransfert");
+        setIsLoading(false);
+      } else if (value.data?.isIZIAuthenticated == true &&
+          value.data?.isIZIAuthorized == false) {
+        setStep("pinCode");
+        setIsLoading(false);
+      } else if (value.data?.isIZIAuthenticated == false &&
+          value.data?.isIZIAuthorized == false) {
+        setStep("connect");
+        setIsLoading(false);
+      }
     });
   }
 
   void validateConnectionForm(BuildContext context) async {
-    _isLoading = true;
-    notifyListeners();
+    setIsLoading(true);
     if (_formKey.currentState?.validate() ?? false) {
-      Future.delayed(const Duration(seconds: 3), () {
-        FocusScope.of(context).unfocus();
-        setStep("pinCode");
-        _isLoading = false;
-        notifyListeners();
+      FocusScope.of(context).unfocus();
+      AuthenticationModel authModel = AuthenticationModel(
+        username: _signinId.text,
+        password: _signinPwd.text,
+      );
+      await userService
+          .authUserIzi(authModel.username, authModel.password)
+          .then((value) {
+        setIsLoading(false);
+        if (value.isIZIAuthenticated == true && value.isIZIAuthorized == true) {
+          setStep("finishTransfert");
+          setIsLoading(false);
+        } else if (value.isIZIAuthenticated == true &&
+            value.isIZIAuthorized == false) {
+          setStep("pinCode");
+          setIsLoading(false);
+        } else if (value.isIZIAuthenticated == false &&
+            value.isIZIAuthorized == false) {
+          setStep("connect");
+          setIsLoading(false);
+        }
       });
     } else {
-      _isLoading = false;
-      notifyListeners();
+      setIsLoading(false);
     }
   }
 
   void validateVerifForm(BuildContext context) async {
-    _isLoading = true;
-    notifyListeners();
+    setIsLoading(true);
+    setIsValid(true);
     if (_formKey.currentState?.validate() ?? false) {
-      Future.delayed(const Duration(seconds: 3), () {
-        FocusScope.of(context).unfocus();
-        setStep("finishTransfert");
-        _isLoading = false;
-        notifyListeners();
+      FocusScope.of(context).unfocus();
+      await userService.confirmAuthIzi(_pinCode.text).then((value) {
+        setIsLoading(false);
+        if (value) {
+          setStep("finishTransfert");
+        } else {
+          setIsValid(false);
+          setStep("pinCode");
+        }
       });
     } else {
-      _isLoading = false;
-      notifyListeners();
+      setIsLoading(false);
     }
   }
 
   String get step => _step;
   String get title => _title;
   TextEditingController get amountController => _amountController;
-  bool get isTypeCash => _isTypeCash;
-  TransactionSettings get transfertSettings => _transactionSettings;
+  bool get isTypeCash => _isTypeCoins;
+  TransactionSettings get transfertSettings => _transfertSettings;
   GlobalKey<FormState> get formKey => _formKey;
   String get convertedAmount => _convertedAmount;
   bool get isValidForm => _isValidForm;
@@ -195,4 +279,12 @@ class TransfertProvider with ChangeNotifier {
   TextEditingController get signinId => _signinId;
   TextEditingController get signinPwd => _signinPwd;
   TextEditingController get pinCode => _pinCode;
+  bool get showContact => _showContact;
+  bool get permissionDenied => _permissionDenied;
+  List<Contact> get contacts => _contacts;
+  TextEditingController get phoneController => _phoneController;
+  String get suffix => _suffix;
+  List<Contact> get filtredContacts => _filtredContacts;
+  bool get isValid => _isValid;
+  Contact get contactSelected => _contactSelected;
 }

@@ -23,7 +23,7 @@ class RechargeProvider with ChangeNotifier {
     isMinimumThresholdAmountActive: false,
     minimumThresholdAmount: 0,
     minimumThresholdViloationMessage: "",
-    organizationAgentCode: 0,
+    // organizationAgentCode: 0,
     isAnonymosContributionActivated: false,
     transactionType: 3,
   );
@@ -120,9 +120,7 @@ class RechargeProvider with ChangeNotifier {
       ..setBackgroundColor(const Color(0xffffffff))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
-            // print("test");
-          },
+          onProgress: (int progress) {},
           onPageStarted: (String url) {},
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},

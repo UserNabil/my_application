@@ -1,9 +1,4 @@
-import 'package:my_taraji/core/models/leader_bord_result.dart';
-import 'package:my_taraji/services/challenge_service.dart';
-import 'package:my_taraji/views/challenge/components/step_one_coin_challenge_screen.dart';
-import 'package:my_taraji/views/fanpay/imports.dart';
-import 'package:my_taraji/views/init/page/init_screen.dart';
-import 'package:my_taraji/core/models/challenge_by_id_model.dart';
+import '../import.dart';
 
 class LeaderBord extends StatefulWidget {
   final String challengeId;
@@ -206,78 +201,103 @@ class LeaderBordState extends State<LeaderBord> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initBuilder(),
-      builder: (context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox(
-            height: 100,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: MyColors.yellow,
+    return FutureBuilder<User?>(
+        future: context.read<HomeProvider>().getUserData(),
+        builder: (context, AsyncSnapshot<User?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox(
+              height: 100,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: MyColors.yellow,
+                ),
               ),
-            ),
-          );
-        }
-        if (snapshot.hasError) {
-          return SizedBox(
-            height: 100,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MyColors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    child: const Icon(
-                      TablerIcons.refresh,
-                      color: MyColors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-        bool res = snapshot.data!;
-        if (!res) {
-          return SizedBox(
-            height: 100,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MyColors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    child: const Icon(
-                      TablerIcons.refresh,
-                      color: MyColors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          return buildContent(context);
-        }
-      },
-    );
+            );
+          }
+          if (snapshot.hasError) {
+            return const SizedBox(
+              height: 100,
+              child: Center(),
+            );
+          }
+          User? user = snapshot.data;
+          return LeaderBoardChallenge(
+              user: user, challengeId: widget.challengeId);
+        });
+    // return const LeaderBoardChallenge();
+    // return FutureBuilder(
+    //   future: initBuilder(),
+    //   builder: (context, AsyncSnapshot<bool> snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return const SizedBox(
+    //         height: 100,
+    //         child: Center(
+    //           child: CircularProgressIndicator(
+    //             color: MyColors.yellow,
+    //           ),
+    //         ),
+    //       );
+    //     }
+    //     if (snapshot.hasError) {
+    //       return SizedBox(
+    //         height: 100,
+    //         child: Center(
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               ElevatedButton(
+    //                 style: ElevatedButton.styleFrom(
+    //                   backgroundColor: MyColors.white,
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(50),
+    //                   ),
+    //                 ),
+    //                 onPressed: () {
+    //                   setState(() {});
+    //                 },
+    //                 child: const Icon(
+    //                   TablerIcons.refresh,
+    //                   color: MyColors.red,
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       );
+    //     }
+    //     bool res = snapshot.data!;
+    //     if (!res) {
+    //       return SizedBox(
+    //         height: 100,
+    //         child: Center(
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               ElevatedButton(
+    //                 style: ElevatedButton.styleFrom(
+    //                   backgroundColor: MyColors.white,
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(50),
+    //                   ),
+    //                 ),
+    //                 onPressed: () {
+    //                   setState(() {});
+    //                 },
+    //                 child: const Icon(
+    //                   TablerIcons.refresh,
+    //                   color: MyColors.red,
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       );
+    //     } else {
+    //       return const LeaderBoardChallenge();
+    //       // return buildContent(context);
+    //     }
+    //   },
+    // );
   }
 
   Widget buildContent(BuildContext context) {
@@ -443,7 +463,7 @@ class LeaderBordState extends State<LeaderBord> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => StepOneCoinChallenge(
+                                    builder: (context) => ChallengeHome(
                                         challengeId: widget.challengeId),
                                   ),
                                 );

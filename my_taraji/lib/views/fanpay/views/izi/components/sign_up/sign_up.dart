@@ -38,7 +38,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Céation de compte Izi',
+                    'Création de compte Izi',
                     style: TextStyle(
                       color: MyColors.black,
                       fontSize: 27,

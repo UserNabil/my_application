@@ -29,6 +29,7 @@ class FanPayIzi extends StatelessWidget {
 
 Widget buildBody(BuildContext context, User? user) {
   /*user?.mytarajiUser?.isSubscribedIZI ==*/
+  // bool haveWallet = false;
   bool haveWallet = context.watch<IziProvider>().wallet;
   return Stack(
     children: [
@@ -73,7 +74,7 @@ Widget buildBody(BuildContext context, User? user) {
                     Text(
                       haveWallet
                           ? "Vous pouvez maintenant effectuer vos transactions en toute sécurité."
-                          : "Veuillez créer votre wallet afin d'acceder à cette page.",
+                          : "Veuillez créer votre wallet afin d'accéder à cette page.",
                       style: const TextStyle(
                         color: MyColors.blue,
                         fontSize: 17,

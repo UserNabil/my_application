@@ -166,6 +166,12 @@ class ManageTransfertPage extends StatelessWidget {
 
     switch (step) {
       case "transfert":
+        context.read<TransfertProvider>().initAllData();
+        fanPayProvider.openModal();
+        Navigator.pop(context);
+        break;
+      case "finishTransfert":
+        context.read<TransfertProvider>().initAllData();
         fanPayProvider.openModal();
         Navigator.pop(context);
         break;

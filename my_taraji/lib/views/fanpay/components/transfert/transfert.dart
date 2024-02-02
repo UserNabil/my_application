@@ -3,74 +3,205 @@ import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/providers/transfert_provider.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 
-class FlutterContactsExample extends StatefulWidget {
-  const FlutterContactsExample({super.key});
+class ListContacts extends StatelessWidget {
+  const ListContacts({super.key});
 
-  @override
-  FlutterContactsExampleState createState() => FlutterContactsExampleState();
-}
+  static DonUI transfertUI = DonUI();
 
-class FlutterContactsExampleState extends State<FlutterContactsExample> {
-  List<Contact>? _contacts;
-  bool _permissionDenied = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchContacts();
-  }
-
-  Future _fetchContacts() async {
-    if (!await FlutterContacts.requestPermission(readonly: true)) {
-      setState(() => _permissionDenied = true);
-    } else {
-      final contacts = await FlutterContacts.getContacts();
-      setState(() => _contacts = contacts);
-    }
+  void setContacts(List<Contact> contacts, BuildContext context) {
+    context.read<TransfertProvider>().setListContact(contacts);
+    context.read<TransfertProvider>().setFiltredContacts(List.from(contacts));
   }
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(title: const Text('flutter_contacts_example')),
-          body: _body()));
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: context.read<TransfertProvider>().fetchContacts(),
+      builder: (context, AsyncSnapshot<List<Contact>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: MyColors.blue3,
+            ),
+          );
+        }
 
-  Widget _body() {
-    if (_permissionDenied) {
-      return const Center(child: Text('Permission denied'));
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text("Erreur lors du chargement des contacts"),
+          );
+        }
+
+        if (snapshot.hasData) {
+          setContacts(snapshot.data!, context);
+          return Consumer<TransfertProvider>(
+            builder: (context, provider, child) {
+              return Column(
+                children: [
+                  buildSearch(context),
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: buildListContact(
+                      context,
+                      provider.filtredContacts,
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+
+        return const Center(
+          child: Text("Aucun contact trouvé"),
+        );
+      },
+    );
+  }
+
+  Widget buildSearch(BuildContext context) {
+    return Container(
+      height: 50,
+      width: 300,
+      decoration: BoxDecoration(
+        color: MyColors.transparent,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: TextFormField(
+        onChanged: (value) =>
+            context.read<TransfertProvider>().searchContacts(value),
+        decoration: InputDecoration(
+          hintText: "Rechercher un contact",
+          hintStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff9CA3AF),
+          ),
+          // bordure fine
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
+            borderSide: BorderSide(
+              color: const Color(0xff9CA3AF).withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 10.0,
+          ),
+          prefixIcon: const Icon(
+            TablerIcons.search,
+            color: Color(0xff9CA3AF),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildAlphabetColumn() {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        ...List.generate(26, (index) {
+          return Text(
+            String.fromCharCode(index + 65),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Color(0xff9CA3AF),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget buildContactRow(Contact? contact) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              decoration: const BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50),
+                ),
+              ),
+              child: Image.asset("images/pngs/contact.png"),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 200,
+                  child: Text(
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    contact?.displayName ?? "Nom inconnu",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff111827),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  contact?.phones.isNotEmpty == true
+                      ? contact?.phones[0].normalizedNumber ?? "Numéro inconnu"
+                      : "Numéro inconnu",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff9CA3AF),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        transfertUI.divider(30.0),
+      ],
+    );
+  }
+
+  Widget buildListContact(BuildContext context, List<Contact> contacts) {
+    if (contacts.isEmpty) {
+      return const Text(
+        "Aucun contact trouvé",
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey,
+        ),
+      );
     }
-    if (_contacts == null) {
-      return const Center(child: CircularProgressIndicator());
+
+    setPhone(Contact? contact) {
+      context.read<TransfertProvider>().setNumberPhone(contact);
     }
+
     return ListView.builder(
-        itemCount: _contacts!.length,
-        itemBuilder: (context, i) => ListTile(
-            title: Text(_contacts![i].displayName),
-            onTap: () async {
-              final fullContact =
-                  await FlutterContacts.getContact(_contacts![i].id);
-              // ignore: use_build_context_synchronously
-              await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => ContactPage(fullContact!)));
-            }));
+      padding: const EdgeInsets.all(0),
+      itemCount: contacts.length,
+      prototypeItem: buildContactRow(contacts[0]),
+      itemBuilder: (context, i) => ListTile(
+        contentPadding: const EdgeInsets.all(0),
+        title: buildContactRow(contacts[i]),
+        onTap: () => setPhone(contacts[i]),
+      ),
+    );
   }
-}
-
-class ContactPage extends StatelessWidget {
-  final Contact contact;
-  const ContactPage(this.contact, {super.key});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(title: Text(contact.displayName)),
-      body: Column(children: [
-        Text('First name: ${contact.name.first}'),
-        Text('Last name: ${contact.name.last}'),
-        Text(
-            'Phone number: ${contact.phones.isNotEmpty ? contact.phones.first.number : '(none)'}'),
-        Text(
-            'Email address: ${contact.emails.isNotEmpty ? contact.emails.first.address : '(none)'}'),
-      ]));
 }
 
 class MyTransfert extends StatelessWidget {
@@ -130,6 +261,7 @@ class MyTransfert extends StatelessWidget {
               height: 50,
               width: 220,
               child: TextFormField(
+                controller: context.watch<TransfertProvider>().phoneController,
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -175,10 +307,6 @@ class MyTransfert extends StatelessWidget {
     );
   }
 
-  Widget buildContactList(contact) {
-    return FlutterContactsExample();
-  }
-
   Widget buildSelectPrice(BuildContext context) {
     return Column(
       children: [
@@ -187,31 +315,27 @@ class MyTransfert extends StatelessWidget {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
-              child: Form(
-                key: context.watch<RechargeProvider>().formKey,
-                child: TextFormField(
-                  textAlign: TextAlign.center,
-                  controller:
-                      context.watch<RechargeProvider>().numberController,
-                  cursorColor: MyColors.blue3,
-                  style: const TextStyle(
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.none,
-                  ),
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Veuillez entrer un montant";
-                    }
-
-                    return null;
-                  },
+              child: TextFormField(
+                textAlign: TextAlign.center,
+                controller: context.watch<TransfertProvider>().amountController,
+                cursorColor: MyColors.blue3,
+                style: const TextStyle(
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.w600,
+                  decoration: TextDecoration.none,
                 ),
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Veuillez entrer un montant";
+                  }
+
+                  return null;
+                },
               ),
             ),
             const SizedBox(width: 50.0),
@@ -235,14 +359,14 @@ class MyTransfert extends StatelessWidget {
             spacing: 10.0,
             runSpacing: 20.0,
             children: context
-                .watch<RechargeProvider>()
-                .rechargeSettings
+                .watch<TransfertProvider>()
+                .transfertSettings
                 .authorizedAmounts
                 .map((authorizedAmount) {
               return ElevatedButton(
                 onPressed: () {
                   context
-                      .read<RechargeProvider>()
+                      .read<TransfertProvider>()
                       .setAmount(authorizedAmount.amount);
                 },
                 style: ElevatedButton.styleFrom(
@@ -331,15 +455,22 @@ class MyTransfert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        buildTop(context),
-        transfertUI.divider(40.0),
-        context.watch<TransfertProvider>().showContact
-            ? buildContactList(context)
-            : buildSelectPrice(context),
-      ],
+    return Form(
+      key: context.watch<TransfertProvider>().formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          buildTop(context),
+          transfertUI.divider(40.0),
+          context.watch<TransfertProvider>().showContact
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: const ListContacts(),
+                )
+              : buildSelectPrice(context),
+        ],
+      ),
     );
   }
 }
