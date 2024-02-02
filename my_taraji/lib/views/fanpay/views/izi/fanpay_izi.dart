@@ -1,13 +1,13 @@
 import 'dart:ui';
 import 'package:my_taraji/views/fanpay/imports.dart';
-import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
+import 'package:my_taraji/views/fanpay/models/account_card.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_up/sign_up.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 import 'package:rive/rive.dart';
 
 class FanPayIzi extends StatelessWidget {
   const FanPayIzi({super.key, required this.authDetails, required this.user});
-  final TransactionResponse? authDetails;
+  final AccountCard? authDetails;
   final User? user;
 
   @override

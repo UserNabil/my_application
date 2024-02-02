@@ -1,6 +1,6 @@
 import 'package:gif_view/gif_view.dart';
 import 'package:my_taraji/services/user_service.dart';
-import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
+import 'package:my_taraji/views/fanpay/models/account_card.dart';
 
 import '../../imports.dart';
 
@@ -133,10 +133,9 @@ class MyFanPay extends StatelessWidget {
 
         User? userData = userSnapshot.data;
 
-        return FutureBuilder<TransactionResponse>(
-          future: userService.getAuthDetails(),
-          builder: (context,
-              AsyncSnapshot<TransactionResponse> authDetailsSnapshot) {
+        return FutureBuilder<AccountCard>(
+          future: context.read<FanPayProvider>().getAccountCard(),
+          builder: (context, AsyncSnapshot<AccountCard> authDetailsSnapshot) {
             if (authDetailsSnapshot.connectionState ==
                 ConnectionState.waiting) {
               return Center(
@@ -152,7 +151,7 @@ class MyFanPay extends StatelessWidget {
               return Text('Error: ${authDetailsSnapshot.error}');
             }
             if (authDetailsSnapshot.hasData) {
-              TransactionResponse? authDetails = authDetailsSnapshot.data;
+              AccountCard? authDetails = authDetailsSnapshot.data;
               if (/*userData?.mytarajiUser?.isSubscribedIZI == true &&*/
                   authDetails?.isIZIAuthenticated == true &&
                       authDetails?.isIZIAuthorized == true) {

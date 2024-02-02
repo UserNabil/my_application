@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_taraji/core/models/api_response_model.dart';
 import 'package:my_taraji/services/enums/financial_transaction_type.dart';
+import 'package:my_taraji/views/fanpay/models/account_card.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_model.dart';
 
@@ -66,6 +67,24 @@ class TransactionService {
       );
     } else {
       throw Exception('Failed to create donation - ${response.reasonPhrase}');
+    }
+  }
+
+  Future<APIResponseModel<AccountCard>> getWalletDetails() async {
+    const path = "api/v1/wallet/wallet-details";
+    final url = Uri.parse('$baseUrl/$path');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      return APIResponseModel<AccountCard>.fromJson(
+        jsonData,
+        (data) => AccountCard.fromJson(data),
+      );
+    } else {
+      throw Exception(
+          'Failed to get wallet details - ${response.reasonPhrase}');
     }
   }
 }

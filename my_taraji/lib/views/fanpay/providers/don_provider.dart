@@ -64,7 +64,7 @@ class DonProvider with ChangeNotifier {
 
   void setAmount(int amount) {
     _amountController.text = amount.toString();
-    notifyListeners();
+    // notifyListeners();
   }
 
   void setStep(String newStep) {
@@ -130,13 +130,13 @@ class DonProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void getDonSettings() async {
+  Future<TransactionSettings> getDonSettings() async {
     TransactionType type = getTransactionType(1);
     TransactionSettings donSettings =
         await transactionService.getTransactionSettings(type);
     donSettings.authorizedAmounts.sort((a, b) => a.amount.compareTo(b.amount));
     _donSettings = donSettings;
-    notifyListeners();
+    return donSettings;
   }
 
   void manageAmountController() {

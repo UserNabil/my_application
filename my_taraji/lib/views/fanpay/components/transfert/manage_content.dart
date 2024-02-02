@@ -50,7 +50,6 @@ class ManageTransfertPage extends StatelessWidget {
       context.read<TransfertProvider>().validateVerifForm(context);
     }
 
-    context.read<TransfertProvider>().getTransfertSettings();
     switch (step) {
       case "transfert":
         return MyTransfert(user: user);

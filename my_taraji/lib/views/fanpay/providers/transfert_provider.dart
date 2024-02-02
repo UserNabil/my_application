@@ -106,7 +106,7 @@ class TransfertProvider with ChangeNotifier {
 
   void setAmount(int amount) {
     _amountController.text = amount.toString();
-    notifyListeners();
+    // notifyListeners();
   }
 
   void setStep(String newStep) {
@@ -172,14 +172,14 @@ class TransfertProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void getTransfertSettings() async {
+  Future<TransactionSettings> getTransfertSettings() async {
     TransactionType type = getTransactionType(2);
     TransactionSettings transactionSettings =
         await transactionService.getTransactionSettings(type);
     transactionSettings.authorizedAmounts
         .sort((a, b) => a.amount.compareTo(b.amount));
     _transfertSettings = transactionSettings;
-    notifyListeners();
+    return transactionSettings;
   }
 
   void convertAmount() async {

@@ -1,3 +1,5 @@
+import 'package:my_taraji/views/fanpay/providers/transfert_provider.dart';
+
 import '../../imports.dart';
 
 class FanPayMiddleContent extends StatelessWidget {
@@ -12,6 +14,14 @@ class FanPayMiddleContent extends StatelessWidget {
 
     setIconWithTitle(FanPayMenuItem type, BuildContext context,
         {Function? onTap}) {
+      // ignore: unrelated_type_equality_checks
+      if (type.value.title == FanPayMenuItem.don.value.title) {
+        type.value.action?.onTap =
+            () => context.read<DonProvider>().getDonSettings();
+      } else if (type.value.title == FanPayMenuItem.transfer.value.title) {
+        type.value.action?.onTap =
+            () => context.read<TransfertProvider>().getTransfertSettings();
+      }
       return GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {

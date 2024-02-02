@@ -12,7 +12,6 @@ class UserService {
   Future<APIResponseModel<User>> getUserData() async {
     const path = "api/v1/users";
     final url = Uri.parse('$baseUrl/$path');
-    // prefs
 
     try {
       final response = await http.get(url);
