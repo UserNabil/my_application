@@ -37,7 +37,6 @@ class ManageDonPage extends StatelessWidget {
   }
 
   Widget _manageStep(User? user, BuildContext context) {
-    debugPrint("test");
     final step = context.watch<DonProvider>().step;
     onPressedToConnect() {
       context.read<DonProvider>().validateConnectionForm(context);

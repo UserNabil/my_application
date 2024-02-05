@@ -29,8 +29,8 @@ class FanPayIzi extends StatelessWidget {
 
 Widget buildBody(BuildContext context, User? user) {
   /*user?.mytarajiUser?.isSubscribedIZI ==*/
-  // bool haveWallet = false;
-  bool haveWallet = context.watch<IziProvider>().wallet;
+  bool haveWallet = true;
+  // bool haveWallet = context.watch<IziProvider>().wallet;
   return Stack(
     children: [
       const RiveAnimation.asset('images/rives/shapes6.riv'),

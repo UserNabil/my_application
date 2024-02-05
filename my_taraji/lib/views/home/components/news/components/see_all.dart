@@ -47,7 +47,52 @@ Widget itemWidgetNews(News news, BuildContext context) {
     return formattedDate.toString();
   }
 
-  Widget buildContent(news) {
+  Widget buildContentV2(News news) {
+    return SizedBox(
+      height: 100,
+      width: MediaQuery.of(context).size.width / 1.2,
+      child: Row(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(left: 10.0),
+            width: 140.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image: DecorationImage(
+                image: NetworkImage(news.imagePath ?? ''),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                news.title,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: const TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w600,
+                  color: MyColors.red,
+                ),
+              ),
+              const SizedBox(height: 6.0),
+              Text(
+                [formatDate(news.date)].join(""),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 12.0, color: MyColors.grey),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildContent(News news) {
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [

@@ -29,7 +29,7 @@ class IziProvider with ChangeNotifier {
   Color _selfiColorInput = Colors.black54;
   Color _cinRectoColorInput = Colors.black54;
   Color _cinVersoColorInput = Colors.black54;
-  bool _wallet = true;
+  bool _wallet = false;
   bool _showPassword = false;
   String _connectionStep = "connection";
   bool _isConnectProcissing = false;
@@ -248,8 +248,8 @@ class IziProvider with ChangeNotifier {
   }
 
   void prefillForm(User? userData) {
-    _lastNameController.text = userData?.pseudo ?? 'Doe';
-    _firstNameController.text = userData?.pseudo ?? 'John';
+    // _lastNameController.text = userData?.pseudo ?? 'Doe';
+    // _firstNameController.text = userData?.pseudo ?? 'John';
     _emailController.text = 'test@test.com';
     _phoneController.text = userData?.phone ?? '';
     _sexeController.text = '0';

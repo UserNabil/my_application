@@ -175,24 +175,24 @@ class LeaderBoardChallenge extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          margin: const EdgeInsets.only(top: 20, left: 10),
-          child: const Text(
-            "Ma position",
-            style: TextStyle(
-              color: MyColors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        MyPosition(
-          position: 30,
-          mine: true,
-          pseudo: user?.pseudo ?? "",
-          points: user?.myRewards?.coins ?? 0,
-          image: userImg,
-        ),
+        // Container(
+        //   margin: const EdgeInsets.only(top: 20, left: 10),
+        //   child: const Text(
+        //     "Ma position",
+        //     style: TextStyle(
+        //       color: MyColors.white,
+        //       fontSize: 20,
+        //       fontWeight: FontWeight.w600,
+        //     ),
+        //   ),
+        // ),
+        // MyPosition(
+        //   position: 30,
+        //   mine: true,
+        //   pseudo: user?.pseudo ?? "",
+        //   points: user?.myRewards?.coins ?? 0,
+        //   image: userImg,
+        // ),
         const SizedBox(height: 20),
         Container(
           margin: const EdgeInsets.only(top: 20, left: 10),

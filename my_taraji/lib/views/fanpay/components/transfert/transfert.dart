@@ -231,9 +231,18 @@ class MyTransfert extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: SvgPicture.asset(
-              "images/svgs/user_icon.svg",
-            ),
+            child: context
+                    .watch<TransfertProvider>()
+                    .phoneController
+                    .text
+                    .isNotEmpty
+                ? Image.asset(
+                    "images/pngs/contact.png",
+                    fit: BoxFit.cover,
+                    width: 50,
+                    height: 50,
+                  )
+                : SizedBox(),
           ),
         ),
         const SizedBox(width: 10),

@@ -1,6 +1,7 @@
 import 'package:gif_view/gif_view.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/models/account_card.dart';
+// import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 
 import '../../imports.dart';
 
@@ -152,7 +153,9 @@ class MyFanPay extends StatelessWidget {
             }
             if (authDetailsSnapshot.hasData) {
               AccountCard? authDetails = authDetailsSnapshot.data;
-              if (/*userData?.mytarajiUser?.isSubscribedIZI == true &&*/
+              if (
+                  // context.watch<IziProvider>().wallet == true &&
+                  // userData?.mytarajiUser?.isSubscribedIZI == true &&
                   authDetails?.isIZIAuthenticated == true &&
                       authDetails?.isIZIAuthorized == true) {
                 return buildPage(userData, context);

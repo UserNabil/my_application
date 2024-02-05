@@ -13,10 +13,6 @@ class MyDon extends StatelessWidget {
         context.watch<DonProvider>().donSettings.isMinimumThresholdAmountActive;
     int minimumThresholdAmount =
         context.watch<DonProvider>().donSettings.minimumThresholdAmount;
-    // String minimumThresholdViloationMessage = context
-    //     .watch<DonProvider>()
-    //     .donSettings
-    //     .minimumThresholdViloationMessage;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -24,8 +20,8 @@ class MyDon extends StatelessWidget {
         Row(
           children: [
             ClipOval(
-              child: Image.asset(
-                'images/pngs/taraji.png',
+              child: Image.network(
+                'https://e-s-tunis.com/images/news/2023/03/03/1677831592_img.jpg',
                 fit: BoxFit.cover,
                 width: 70,
                 height: 70,

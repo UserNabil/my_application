@@ -136,6 +136,7 @@ class DonProvider with ChangeNotifier {
         await transactionService.getTransactionSettings(type);
     donSettings.authorizedAmounts.sort((a, b) => a.amount.compareTo(b.amount));
     _donSettings = donSettings;
+    notifyListeners();
     return donSettings;
   }
 
@@ -178,6 +179,16 @@ class DonProvider with ChangeNotifier {
       }
     } else {
       await transactionService.createTransaction(donModel).then((value) {
+        // setStep("connect");
+        // setIsLoading(false);
+        if (value.data?.isIZIAuthenticated == true &&
+            value.data?.isIZIAuthorized == true) {
+          setStep("finishDon");
+          setIsLoading(false);
+        } else {
+          setStep("connect");
+          setIsLoading(false);
+        }
         if (value.data?.isIZIAuthenticated == true &&
             value.data?.isIZIAuthorized == true) {
           setStep("finishDon");

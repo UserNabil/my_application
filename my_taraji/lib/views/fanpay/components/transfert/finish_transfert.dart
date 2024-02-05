@@ -64,7 +64,7 @@ class FinishTransfertState extends State<FinishTransfert> {
     );
   }
 
-  Widget finishTransfert() {
+  Widget finishTransfert(Contact contact) {
     return Column(
       children: [
         Padding(
@@ -85,7 +85,7 @@ class FinishTransfertState extends State<FinishTransfert> {
               ),
               const SizedBox(height: 10),
               transfertUI.textType1(
-                  "Votre transfert à été réalisé pour le compte de Taraji",
+                  "Votre transfert à été réalisé pour ${contact.displayName}",
                   true,
                   false),
               const SizedBox(height: 10),
@@ -110,6 +110,14 @@ class FinishTransfertState extends State<FinishTransfert> {
                   fontSize: 32.0,
                 ),
               ),
+              // const Text(
+              //   "20 Experience Points",
+              //   style: TextStyle(
+              //     color: Color(0xff08849D),
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.w400,
+              //   ),
+              // ),
               const SizedBox(height: 30),
             ],
           ),
@@ -140,6 +148,6 @@ class FinishTransfertState extends State<FinishTransfert> {
 
   @override
   Widget build(BuildContext context) {
-    return finishTransfert();
+    return finishTransfert(context.watch<TransfertProvider>().contactSelected);
   }
 }

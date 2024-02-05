@@ -11,7 +11,7 @@ class FanPayProvider with ChangeNotifier {
 
   String formatCardNumber(String cardNumber) {
     String cleanedCardNumber = cardNumber.replaceAll(RegExp(r'\D'), '');
-    print(cardNumber);
+
     if (cleanedCardNumber.length < 4) {
       return "";
     }

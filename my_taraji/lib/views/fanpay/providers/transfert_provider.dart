@@ -45,7 +45,7 @@ class TransfertProvider with ChangeNotifier {
 
   void searchContacts(String query) {
     final normalizedQuery = query.toLowerCase();
-    debugPrint("query : $query");
+
     _filtredContacts = _contacts.where((contact) {
       final displayName = contact.displayName.toLowerCase();
       final phoneNumbers = contact.phones
@@ -55,7 +55,6 @@ class TransfertProvider with ChangeNotifier {
       return displayName.contains(normalizedQuery) ||
           phoneNumbers.any((number) => number.contains(normalizedQuery));
     }).toList();
-    debugPrint("filteredContacts : ${_filtredContacts.length.toString()}");
 
     notifyListeners();
   }
@@ -179,6 +178,7 @@ class TransfertProvider with ChangeNotifier {
     transactionSettings.authorizedAmounts
         .sort((a, b) => a.amount.compareTo(b.amount));
     _transfertSettings = transactionSettings;
+    notifyListeners();
     return transactionSettings;
   }
 

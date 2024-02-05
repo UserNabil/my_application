@@ -111,6 +111,16 @@ class FinishDon extends StatelessWidget {
                   fontSize: 32.0,
                 ),
               ),
+              Text(
+                context.watch<DonProvider>().isTypeCash
+                    ? "${context.watch<DonProvider>().convertedAmount} Experience Points"
+                    : "${context.watch<DonProvider>().amountController.text} Experience Points",
+                style: const TextStyle(
+                  color: Color(0xff08849D),
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               const SizedBox(height: 30),
             ],
           ),

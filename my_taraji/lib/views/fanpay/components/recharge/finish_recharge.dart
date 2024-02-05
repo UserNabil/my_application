@@ -89,7 +89,7 @@ class FinishRecharge extends StatelessWidget {
                   ),
                 ),
                 const Text(
-                  "10 Experience Points",
+                  "40 Experience Points",
                   style: TextStyle(
                     color: Color(0xff08849D),
                     fontSize: 16.0,

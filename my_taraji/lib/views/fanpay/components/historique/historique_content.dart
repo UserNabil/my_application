@@ -85,7 +85,8 @@ class FanPayHistorique extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              "Category Chart",
+                              // "Category Chart",
+                              "Statistiques des transactions",
                               style: TextStyle(
                                 color: MyColors.black,
                                 fontSize: 18,
