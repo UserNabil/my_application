@@ -35,8 +35,9 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final contributionRatio = widget.crowdfunding!.totalAmountContributed! /
-        widget.crowdfunding!.targetAmount!;
+    final contributionRatio = 0.6;
+    // widget.crowdfunding!.totalAmountContributed! /
+    //     widget.crowdfunding!.targetAmount!;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -154,24 +155,26 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                                 "${contributionRatio * 100}%",
                                 style: stylePrimary.copyWith(
                                   fontSize: 20,
-                                  color: Colors.white,
+                                  color: contributionRatio > 0.59
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                             )
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             const Icon(
-                              Icons.people_outlined,
+                              TablerIcons.users,
                               size: 30,
                               color: Colors.red,
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              '236 donateurs',
+                              '${widget.crowdfunding!.audienceSize} donateurs',
                               style: stylePrimary.copyWith(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w400,
@@ -183,7 +186,6 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                         const SizedBox(height: 20),
                         Text(
                           widget.crowdfunding!.description ?? '',
-                          // 'Au cœur de la passion débordante pour le football, une générosité transcendante s\'épanouit. Un bienfaiteur anonyme, touché par l\'esprit indomptable du club El Taraji, offre une donation éclatante pour la rénovation de leur stade vénéré. Un geste empreint d\'amour pour le jeu, sculptant l\'avenir de la communauté sportive locale.',
                           style: stylePrimary.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
@@ -232,9 +234,9 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                                 ),
                               ),
                               child: const Icon(
-                                Icons.send_outlined,
+                                TablerIcons.send,
                                 color: Colors.red,
-                                size: 26,
+                                size: 32,
                               ),
                             )
                           ],

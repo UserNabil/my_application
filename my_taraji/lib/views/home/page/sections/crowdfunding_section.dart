@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_taraji/views/challenge/import.dart';
 
 import 'package:my_taraji/views/home/models/crowdfunding_output.dart';
-import 'package:my_taraji/views/home/page/crowdfunding_card.dart';
+import 'package:my_taraji/views/home/components/crowdfunding/crowdfunding_card.dart';
 import 'package:my_taraji/views/home/services/home_services.dart';
 
 Widget crowdfundingSection(BuildContext context) {
