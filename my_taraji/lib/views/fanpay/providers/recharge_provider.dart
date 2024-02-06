@@ -66,7 +66,7 @@ class RechargeProvider with ChangeNotifier {
     }
     _step = newStep;
 
-    notifyListeners();
+    //notifyListeners();
   }
 
   void setTypeCash(bool newType) {

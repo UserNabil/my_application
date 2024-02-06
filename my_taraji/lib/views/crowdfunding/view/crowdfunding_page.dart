@@ -35,9 +35,8 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final contributionRatio = 0.6;
-    // widget.crowdfunding!.totalAmountContributed! /
-    //     widget.crowdfunding!.targetAmount!;
+    final contributionRatio = widget.crowdfunding!.totalAmountContributed! /
+        widget.crowdfunding!.targetAmount!;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
