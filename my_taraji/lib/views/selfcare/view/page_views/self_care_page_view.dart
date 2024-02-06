@@ -3,6 +3,7 @@ import 'package:my_taraji/core/assets/images_svg.dart';
 
 import 'package:my_taraji/views/selfcare/helpers/data.dart';
 import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
+import 'package:my_taraji/views/selfcare/view/widgets/button_cgu.dart';
 import 'package:my_taraji/views/selfcare/view/widgets/button_disconnection.dart';
 import 'package:my_taraji/views/selfcare/view/widgets/row_item_widget.dart';
 import 'package:my_taraji/views/selfcare/view/widgets/user_info_widget.dart';
@@ -29,8 +30,9 @@ class SelfCarPageView extends StatelessWidget {
         },
       ));
     }
+    listRowsWidget.add(const Center(child: ButtonCGU()));
     listRowsWidget.add(const Center(child: ButtonDisconnection()));
-    listRowsWidget.add(const SizedBox(height: 120));
+    listRowsWidget.add(const SizedBox(height: 100));
     return Column(
       children: [
         const SizedBox(height: 20),

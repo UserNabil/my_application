@@ -15,6 +15,17 @@ class RowItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> onglets = [
+      'Notifications',
+      'Parraiange',
+      'Désactiver mon compte',
+      'Mon compte',
+      'Adresse',
+      'Paramètres',
+      "Centre d'aide",
+      'Contact',
+    ];
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: InkWell(
@@ -36,7 +47,10 @@ class RowItemWidget extends StatelessWidget {
             const SizedBox(width: 20),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
+                color: onglets.contains(title.toString())
+                    ? MyColors.grey
+                    : MyColors.black,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),

@@ -25,13 +25,13 @@ final List<RowItem> rowsSelfCare = [
     title: 'Notifications',
     location: 'alerts',
     icon: TablerIcons.bell,
-    pageName: PageViewEnum.notifications,
+    // pageName: PageViewEnum.notifications,
   ),
   RowItem(
     title: 'Parraiange',
     location: 'sponsorship',
     icon: TablerIcons.discount_check,
-    pageName: PageViewEnum.sponsorship,
+    // pageName: PageViewEnum.sponsorship,
   ),
   RowItem(
     title: 'Mes commandes',
@@ -45,12 +45,12 @@ final List<RowItem> rowsSelfCare = [
     icon: TablerIcons.user_x,
     // pageName: PageViewEnum.myAccount,
   ),
-  RowItem(
-    title: 'CGU',
-    location: 'cgu',
-    icon: TablerIcons.file_text,
-    pageName: PageViewEnum.cgu,
-  ),
+  // RowItem(
+  //   title: 'CGU',
+  //   location: 'cgu',
+  //   icon: TablerIcons.file_text,
+  //   pageName: PageViewEnum.cgu,
+  // ),
 ];
 final List<RowItem> rowsAccount = [
   RowItem(
