@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_taraji/views/crowdfunding/crowdfunding_page.dart';
+import 'package:my_taraji/views/crowdfunding/view/crowdfunding_page.dart';
 import 'package:my_taraji/views/selfcare/view/self_care_page.dart';
 import '../../views/fanpay/views/fanpay/fanpay.dart';
 import '../../views/fanzone/page/fanzone_screen.dart';

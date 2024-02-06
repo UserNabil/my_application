@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_taraji/core/theme/style.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/home/models/crowdfunding.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
 class CrowdfundingPage extends StatefulWidget {
-  const CrowdfundingPage({super.key});
+  final Crowdfunding? crowdfunding;
+  const CrowdfundingPage({super.key, this.crowdfunding});
   static String routeName = "/crowdfunding";
 
   @override
@@ -21,7 +23,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
   List<Widget> indicators(imagesLength, currentIndex) {
     return List<Widget>.generate(imagesLength, (index) {
       return Container(
-        margin: EdgeInsets.all(3),
+        margin: const EdgeInsets.all(3),
         width: 10,
         height: 10,
         decoration: BoxDecoration(
@@ -33,6 +35,8 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final contributionRatio = widget.crowdfunding!.totalAmountContributed! /
+        widget.crowdfunding!.targetAmount!;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -64,8 +68,8 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                   },
                   itemBuilder: (context, pagePosition) {
                     return FittedBox(
-                      child: Image.network(images[pagePosition]),
                       fit: BoxFit.cover,
+                      child: Image.network(images[pagePosition]),
                     );
                   }),
             ),
@@ -99,13 +103,14 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Soutient pour le stade",
+                          widget.crowdfunding!.title,
                           style: stylePrimary.copyWith(fontSize: 23),
                         ),
                         const SizedBox(height: 5),
                         Text.rich(
                           TextSpan(
-                            text: '2900.34 TND ',
+                            text:
+                                '${widget.crowdfunding!.totalAmountContributed} TND ',
                             style: stylePrimary.copyWith(
                               fontSize: 25,
                               color: Colors.red,
@@ -113,7 +118,8 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                             ),
                             children: <InlineSpan>[
                               TextSpan(
-                                text: '/ 3000 TND',
+                                text:
+                                    '/ ${widget.crowdfunding!.targetAmount} TND',
                                 style: stylePrimary.copyWith(
                                   fontSize: 20,
                                   color: Colors.red,
@@ -131,7 +137,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                               width: MediaQuery.of(context).size.width - 20,
                               backgroundColor: Colors.white,
                               foregrondColor: Colors.red,
-                              ratio: 0.7,
+                              ratio: contributionRatio,
                               direction: Axis.horizontal,
                               curve: Curves.fastLinearToSlowEaseIn,
                               duration: const Duration(seconds: 3),
@@ -145,7 +151,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                               left: MediaQuery.of(context).size.width / 2.75,
                               top: 8.5,
                               child: Text(
-                                "70%",
+                                "${contributionRatio * 100}%",
                                 style: stylePrimary.copyWith(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -176,7 +182,8 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Au cœur de la passion débordante pour le football, une générosité transcendante s\'épanouit. Un bienfaiteur anonyme, touché par l\'esprit indomptable du club El Taraji, offre une donation éclatante pour la rénovation de leur stade vénéré. Un geste empreint d\'amour pour le jeu, sculptant l\'avenir de la communauté sportive locale.',
+                          widget.crowdfunding!.description ?? '',
+                          // 'Au cœur de la passion débordante pour le football, une générosité transcendante s\'épanouit. Un bienfaiteur anonyme, touché par l\'esprit indomptable du club El Taraji, offre une donation éclatante pour la rénovation de leur stade vénéré. Un geste empreint d\'amour pour le jeu, sculptant l\'avenir de la communauté sportive locale.',
                           style: stylePrimary.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
