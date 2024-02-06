@@ -41,22 +41,22 @@ class MyMatch extends StatelessWidget {
         ),
         ClipRect(
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+            blendMode: BlendMode.screen,
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(50),
+                color: Colors.white.withOpacity(0.7),
               ),
               child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.83, height: 180),
+                  width: MediaQuery.of(context).size.width * 0.83, height: 185),
             ),
           ),
         ),
         const Text(
           "Coming soon...",
           style: TextStyle(
-            color: MyColors.white,
-            fontSize: 20,
+            color: MyColors.yellow,
+            fontSize: 30,
             fontWeight: FontWeight.w500,
             shadows: [
               Shadow(

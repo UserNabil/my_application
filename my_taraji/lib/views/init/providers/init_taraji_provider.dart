@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_taraji/views/fanpay/views/fanpay/fanpay.dart';
 import 'package:my_taraji/views/selfcare/view/self_care_page.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../fanzone/page/fanzone_screen.dart';
+import '../../fanzone/views/fanzone.dart';
 import '../../home/page/home_screen.dart';
 import '../../shop/page/shop_screen.dart';
 

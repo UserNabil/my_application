@@ -138,15 +138,15 @@ class MyShop extends StatelessWidget {
           ),
         ),
         BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: const SizedBox(),
         ),
         const Center(
           child: Text(
             "Coming soon...",
             style: TextStyle(
-              color: MyColors.white,
-              fontSize: 20,
+              color: MyColors.yellow,
+              fontSize: 30,
               fontWeight: FontWeight.w500,
               shadows: [
                 Shadow(
