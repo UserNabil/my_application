@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import '../../import.dart';
 
 class MyMatch extends StatelessWidget {
@@ -36,6 +38,34 @@ class MyMatch extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.83, height: 180),
+            ),
+          ),
+        ),
+        const Text(
+          "Coming soon...",
+          style: TextStyle(
+            color: MyColors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            shadows: [
+              Shadow(
+                blurRadius: 20.0,
+                color: MyColors.black,
+                offset: Offset(0, 0),
+              ),
+            ],
+          ),
         )
       ],
     );

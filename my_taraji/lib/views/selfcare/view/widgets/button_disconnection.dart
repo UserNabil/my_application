@@ -23,6 +23,7 @@ class ButtonDisconnection extends StatelessWidget {
         );
         log("endSessionRes ${endSessionRes?.state}");
         await prefs.remove('token');
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/');
       },
       child: const Text(

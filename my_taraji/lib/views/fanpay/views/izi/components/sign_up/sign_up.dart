@@ -15,6 +15,7 @@ class SignUpScreen extends StatefulWidget {
 class SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
+    bool isProcessing = context.watch<IziProvider>().isProcessing;
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: MyColors.white,
@@ -56,9 +57,11 @@ class SignUpScreenState extends State<SignUpScreen> {
                   const IziSignUpForm(),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        context.read<IziProvider>().validateSignUpForm(context);
-                      },
+                      onPressed: isProcessing
+                          ? null
+                          : () => context
+                              .read<IziProvider>()
+                              .validateSignUpForm(context),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           vertical: 15,
@@ -66,7 +69,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                         ),
                         backgroundColor: MyColors.iziBlue,
                       ),
-                      child: context.watch<IziProvider>().isValid
+                      child: isProcessing
                           ? const CupertinoActivityIndicator(
                               color: Colors.white,
                             )

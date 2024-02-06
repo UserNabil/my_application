@@ -104,7 +104,7 @@ class ConfirmDon extends StatelessWidget {
             onPressed: () {
               isLoading
                   ? null
-                  : context.read<DonProvider>().createDonation(user);
+                  : context.read<DonProvider>().createDonation(user, context);
             },
             child: isLoading
                 ? const CupertinoActivityIndicator(

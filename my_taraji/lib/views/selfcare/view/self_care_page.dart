@@ -10,15 +10,10 @@ import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
 import 'package:my_taraji/views/selfcare/view/widget_builder.dart';
 import 'package:provider/provider.dart';
 
-class SelfCarePage extends StatefulWidget {
+class SelfCarePage extends StatelessWidget {
   const SelfCarePage({super.key});
   static const routeName = '/selfcare';
 
-  @override
-  State<SelfCarePage> createState() => _SelfCarePageState();
-}
-
-class _SelfCarePageState extends State<SelfCarePage> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -64,18 +59,20 @@ class _SelfCarePageState extends State<SelfCarePage> {
           ),
           const Padding(
             padding: EdgeInsets.all(20),
-            child: Column(children: [
-              SizedBox(height: 70),
-              Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: CustomCard(
-                  svgUrl: '',
-                  color: MyColors.yellow,
-                  width: 347,
-                  height: 237,
+            child: Column(
+              children: [
+                SizedBox(height: 70),
+                Padding(
+                  padding: EdgeInsets.only(top: 15),
+                  child: CustomCard(
+                    svgUrl: '',
+                    color: MyColors.yellow,
+                    width: 347,
+                    height: 237,
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           ),
           Column(
             children: [
@@ -97,7 +94,6 @@ class _SelfCarePageState extends State<SelfCarePage> {
           ),
         ],
       ),
-      //
     );
   }
 }

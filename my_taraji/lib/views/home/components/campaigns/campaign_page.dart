@@ -60,59 +60,26 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
 
   @override
   Widget build(BuildContext context) {
-    // return CampaignPaginationForm(campaign: campaignFromApi);
+    Campaign campaign = widget.campaign;
 
-    return buildContent(campaignFromApi);
-    // return FutureBuilder(
-    //   future: display(),
-    //   builder: (context, AsyncSnapshot<Campaign> snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return const Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: [
-    //           SizedBox(
-    //             height: 100,
-    //             child: Center(
-    //               child: CircularProgressIndicator(
-    //                 color: MyColors.yellow,
-    //               ),
-    //             ),
-    //           )
-    //         ],
-    //       );
-    //     }
-
-    //     if (snapshot.hasError) {
-    //       return Center(
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //             ElevatedButton(
-    //               style: ElevatedButton.styleFrom(
-    //                 foregroundColor: MyColors.transparent,
-    //                 backgroundColor: MyColors.transparent,
-    //                 shape: RoundedRectangleBorder(
-    //                   borderRadius: BorderRadius.circular(50),
-    //                 ),
-    //               ),
-    //               onPressed: () {
-    //                 setState(() {});
-    //               },
-    //               child: const Icon(
-    //                 TablerIcons.refresh,
-    //                 color: MyColors.red,
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       );
-    //     }
-
-    //     Campaign campaign = snapshot.data!;
-    //     return buildContent(campaign);
-    //   },
-    // );
+    return SizedBox(
+      // height: MediaQuery.of(context).size.height * 0.2,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 300.0,
+              child: Image.asset(
+                campaign.imageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+            buildContent(campaign),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildContent(Campaign campaign) {
@@ -120,18 +87,18 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          height: 300,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(campaign.imageUrl),
-              alignment: Alignment.topCenter,
-              opacity: 1,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
+        // Container(
+        //   height: 300,
+        //   width: double.infinity,
+        //   decoration: BoxDecoration(
+        //     image: DecorationImage(
+        //       image: AssetImage(campaign.imageUrl),
+        //       alignment: Alignment.topCenter,
+        //       opacity: 1,
+        //       fit: BoxFit.cover,
+        //     ),
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
@@ -151,27 +118,29 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Container(
-            decoration: BoxDecoration(
-              color: MyColors.red,
-              borderRadius: BorderRadius.circular(50),
-            ),
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
-            child: Text(
-              campaign.tag,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+        campaign.tag.isNotEmpty && campaign.tag != "null"
+            ? Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: MyColors.red,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 5, bottom: 5),
+                  child: Text(
+                    campaign.tag,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Text(

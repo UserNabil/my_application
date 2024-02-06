@@ -242,7 +242,7 @@ class MyTransfert extends StatelessWidget {
                     width: 50,
                     height: 50,
                   )
-                : SizedBox(),
+                : const SizedBox(),
           ),
         ),
         const SizedBox(width: 10),
@@ -267,8 +267,8 @@ class MyTransfert extends StatelessWidget {
                   Radius.circular(15),
                 ),
               ),
-              height: 50,
-              width: 220,
+              // height: 50,
+              width: MediaQuery.of(context).size.width * 0.55,
               child: TextFormField(
                 controller: context.watch<TransfertProvider>().phoneController,
                 keyboardType: TextInputType.phone,
@@ -319,44 +319,39 @@ class MyTransfert extends StatelessWidget {
   Widget buildSelectPrice(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: TextFormField(
-                textAlign: TextAlign.center,
-                controller: context.watch<TransfertProvider>().amountController,
-                cursorColor: MyColors.blue3,
-                style: const TextStyle(
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.w600,
+        SizedBox(
+          // width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            textAlign: TextAlign.center,
+            controller: context.watch<TransfertProvider>().amountController,
+            cursorColor: MyColors.blue3,
+            style: const TextStyle(
+              fontSize: 40.0,
+              fontWeight: FontWeight.w600,
+              decoration: TextDecoration.none,
+            ),
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              errorMaxLines: 2,
+              suffix: Text(
+                "DT",
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w400,
                   decoration: TextDecoration.none,
                 ),
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Veuillez entrer un montant";
-                  }
+              ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.zero,
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Veuillez entrer un montant";
+              }
 
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(width: 50.0),
-            const Text(
-              "DT",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.w400,
-                decoration: TextDecoration.none,
-              ),
-            ),
-          ],
+              return null;
+            },
+          ),
         ),
         const SizedBox(height: 10.0),
         transfertUI.divider(0.0),

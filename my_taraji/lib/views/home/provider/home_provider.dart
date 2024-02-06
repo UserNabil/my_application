@@ -11,7 +11,7 @@ class HomeProvider with ChangeNotifier {
   int get currentCardIndex => _currentCardIndex;
 
   void setCurrentCardIndex(int value) {
-    // _currentCardIndex = value;
+    _currentCardIndex = value;
     notifyListeners();
   }
 
@@ -66,21 +66,23 @@ class HomeProvider with ChangeNotifier {
   }
 
   Future<AllDataContent> loadCampaigns() async {
-    var challengeService = ChallengeService();
+    // var challengeService = ChallengeService();
     var campaignService = CampaignService();
     List<Campaign> loadedCampaigns = await campaignService
         .getAllCampaigns()
         .then((value) => value.data ?? []);
-    List<Challenge> loadedChallenges = await challengeService
-        .getAllChallenges()
-        .then((value) => value.data ?? []);
+    // List<Challenge> loadedChallenges = await challengeService
+    //     .getAllChallenges()
+    //     .then((value) => value.data ?? []);
+
+    List<Challenge> loadedChallenges = [];
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     for (var campaign in loadedCampaigns) {
       prefs.setBool(campaign.id, true);
     }
     saveCampaigns(loadedCampaigns);
-    saveChallenges(loadedChallenges);
+    // saveChallenges(loadedChallenges);
 
     AllDataContent allContent = AllDataContent(
       campagnes: loadedCampaigns,

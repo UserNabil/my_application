@@ -52,15 +52,13 @@ class PaginationFormState extends State<PaginationForm> {
         children: [
           Padding(
             padding: const EdgeInsets.all(20),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: PageView(
-                controller: pageController,
-                children: pages,
-              ),
+            child: Column(
+              children: [
+                for (var page in pages) page,
+                bottomBar(context),
+              ],
             ),
           ),
-          bottomBar(context)
         ],
       ),
     );

@@ -57,8 +57,8 @@ class RechargeFistPage extends StatelessWidget {
                       Radius.circular(12),
                     ),
                   ),
-                  width: 220,
                   height: 50,
+                  width: MediaQuery.of(context).size.width * 0.55,
                   child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
@@ -73,119 +73,6 @@ class RechargeFistPage extends StatelessWidget {
           ],
         ),
         rechargeUI.divider(30.0),
-        // Row(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     Padding(
-        //       padding: const EdgeInsets.only(top: 15),
-        //       child: rechargeUI.textType1("Payer par", false, true),
-        //     ),
-        //     Column(
-        //       mainAxisAlignment: MainAxisAlignment.start,
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Row(
-        //           children: [
-        //             Radio(
-        //               fillColor: MaterialStateProperty.all(MyColors.orange),
-        //               value: 1,
-        //               groupValue:
-        //                   context.watch<RechargeProvider>().selectedRadio,
-        //               onChanged: (int? value) {
-        //                 context.read<RechargeProvider>().setSelectRadio(value!);
-        //               },
-        //             ),
-        //             const Text(
-        //               "Carte bancaire",
-        //               style: TextStyle(fontWeight: FontWeight.w500),
-        //             ),
-        //           ],
-        //         ),
-        //         Row(
-        //           children: [
-        //             Radio(
-        //               fillColor: MaterialStateProperty.all(MyColors.orange),
-        //               value: 2,
-        //               groupValue:
-        //                   context.watch<RechargeProvider>().selectedRadio,
-        //               onChanged: (int? value) {
-        //                 context.read<RechargeProvider>().setSelectRadio(value!);
-        //               },
-        //             ),
-        //             const Text(
-        //               "Carte de recharge",
-        //               style: TextStyle(fontWeight: FontWeight.w500),
-        //             ),
-        //           ],
-        //         ),
-        //       ],
-        //     )
-        //   ],
-        // ),
-        // const SizedBox(height: 20),
-        // Column(
-        //   children: [
-        //     Container(
-        //       alignment: Alignment.centerLeft,
-        //       child: rechargeUI.textType1(
-        //           "Numéro de carte de recharge", false, true),
-        //     ),
-        //     const SizedBox(height: 10),
-        //     TextFormField(
-        //       inputFormatters: [
-        //         GenericMask(
-        //           mask: [context.watch<RechargeProvider>().mask],
-        //           hashtag: Hashtag.numbers,
-        //         )
-        //       ],
-        //       decoration: InputDecoration(
-        //         hintText: context.watch<RechargeProvider>().maskHint,
-        //         fillColor: const Color(0xffF1F1FA),
-        //         filled: true,
-        //         border: OutlineInputBorder(
-        //           borderRadius: BorderRadius.circular(10),
-        //           borderSide: const BorderSide(
-        //             width: 0,
-        //             style: BorderStyle.none,
-        //           ),
-        //         ),
-        //         suffixIcon: IconButton(
-        //           icon: context.watch<RechargeProvider>().icon,
-        //           onPressed: () {
-        //             // context.read<RechargeProvider>().buildQrView(context);
-        //           },
-        //         ),
-        //       ),
-        //     ),
-        //     const SizedBox(height: 10),
-        //     const Text(
-        //       "Entrez le numéro de la carte de recharge ou scannez votre QR code ici",
-        //       textAlign: TextAlign.center,
-        //       style: TextStyle(
-        //         fontSize: 11,
-        //         color: Color(0xff333333),
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        // const SizedBox(height: 40),
-        // ElevatedButton(
-        //   style: ElevatedButton.styleFrom(
-        //     fixedSize: const Size(300.0, 50.0),
-        //     backgroundColor: MyColors.orange,
-        //   ),
-        //   onPressed: () {
-        //     context.read<RechargeProvider>().setStep("finishRecharge");
-        //   },
-        //   child: const Text(
-        //     "Recharger",
-        //     style: TextStyle(
-        //       color: MyColors.white,
-        //       fontSize: 16.0,
-        //       fontWeight: FontWeight.w400,
-        //     ),
-        //   ),
-        // ),
         const Text(
           'Définir montant',
           style: TextStyle(
@@ -194,54 +81,58 @@ class RechargeFistPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Form(
-                key: context.watch<RechargeProvider>().formKey,
-                child: TextFormField(
-                  textAlign: TextAlign.center,
-                  controller:
-                      context.watch<RechargeProvider>().numberController,
-                  cursorColor: MyColors.blue3,
-                  style: const TextStyle(
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.none,
-                  ),
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Veuillez entrer un montant";
-                    }
-
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(width: 50.0),
-            const Text(
-              "DT",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.w400,
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Form(
+            key: context.watch<RechargeProvider>().formKey,
+            child: TextFormField(
+              textAlign: TextAlign.center,
+              readOnly: !context
+                  .watch<DonProvider>()
+                  .donSettings
+                  .isFreeInputAmountActivated,
+              controller: context.watch<RechargeProvider>().numberController,
+              cursorColor: MyColors.blue3,
+              style: const TextStyle(
+                fontSize: 40.0,
+                fontWeight: FontWeight.w600,
                 decoration: TextDecoration.none,
               ),
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                errorMaxLines: 2,
+                suffix: Text(
+                  "DT",
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Veuillez entrer un montant";
+                }
+
+                return null;
+              },
             ),
-          ],
+          ),
         ),
         const SizedBox(height: 10.0),
         rechargeUI.divider(0.0),
         const SizedBox(height: 20.0),
         Container(
-          height: 200,
+          height: context
+                  .watch<RechargeProvider>()
+                  .rechargeSettings
+                  .authorizedAmounts
+                  .isEmpty
+              ? 200
+              : null,
           alignment: Alignment.topCenter,
           child: Wrap(
             spacing: 10.0,
@@ -281,6 +172,7 @@ class RechargeFistPage extends StatelessWidget {
             }).toList(),
           ),
         ),
+        const SizedBox(height: 10.0),
         SlideAction(
           thumbWidth: 70,
           stretchThumb: true,

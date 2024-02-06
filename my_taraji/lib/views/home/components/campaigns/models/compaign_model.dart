@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:my_taraji/views/home/components/campaigns/models/campaign_type_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,22 +24,18 @@ class Campaign {
     this.questionCampaign,
   });
 
+  String generateRandomImageNumber() {
+    Random random = Random();
+    int randomNumber = random.nextInt(11) + 1;
+    return randomNumber.toString();
+  }
+
   factory Campaign.fromJson(Map<String, dynamic> json) {
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
-    Map<String, String> titleToImageNumber = {
-      "Email": "2",
-      "Téléphone": "3",
-      "Social Media": "4",
-      "Date picker": "5",
-      "Digital Number 4": "6",
-      "Champs de text": "7",
-      "Radio": "8",
-      "Select": "9",
-      "Rating": "10",
-      "Lead Generation": "11",
-    };
+    Random random = Random();
+    int randomNumber = random.nextInt(11) + 1;
 
-    String imgNumber = titleToImageNumber[json['Title']] ?? '1';
+    String imgNumber = randomNumber.toString();
     String desc = json['Description'].toString().replaceAll(exp, '');
 
     return Campaign(

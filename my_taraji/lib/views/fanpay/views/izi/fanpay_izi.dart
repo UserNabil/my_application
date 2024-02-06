@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'dart:ui';
 import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/models/account_card.dart';

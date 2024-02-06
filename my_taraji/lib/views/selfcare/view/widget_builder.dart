@@ -7,6 +7,7 @@ import 'package:my_taraji/views/selfcare/models/pages_enum.dart';
 import 'package:my_taraji/views/selfcare/view/page_views/profile_page_view.dart';
 import 'package:my_taraji/views/selfcare/view/page_views/self_care_page_view.dart';
 import 'package:my_taraji/views/selfcare/view/page_views/transactions_page_view.dart';
+import 'package:my_taraji/views/selfcare/view/widgets/cgu_page.dart';
 
 Widget selfCareBody(PageViewEnum pageName) {
   switch (pageName) {
@@ -59,6 +60,11 @@ Widget selfCareBody(PageViewEnum pageName) {
           child: Center(child: Text('myAccount')),
         ),
       );
+    case PageViewEnum.cgu:
+      return const AnimationSelfCareMenu(
+        animationDirection: 1,
+        child: CGUContent(),
+      );
   }
 }
 
@@ -80,5 +86,7 @@ String appBarTitle(PageViewEnum pageName) {
       return 'Mes commandes';
     case PageViewEnum.myAccount:
       return 'Désactiver mon compte';
+    case PageViewEnum.cgu:
+      return "Conditions Générales d'Utilisation";
   }
 }

@@ -159,51 +159,70 @@ class DonProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void createDonation(User? user) async {
+  void showMySnackBar(String message, Color color, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        showCloseIcon: true,
+        content: Text(message),
+        backgroundColor: color,
+        duration: const Duration(seconds: 5),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(20),
+      ),
+    );
+  }
+
+  void createDonation(User? user, BuildContext context) async {
     setIsLoading(true);
+
     TransactionModel donModel = TransactionModel(
       contributionMethod: _isTypeCoins ? 2 : 1,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
     );
 
-    if (_isTypeCoins == true) {
-      if (_userHaveCoins == true) {
-        await transactionService.createTransaction(donModel).then((value) {
-          setIsLoading(false);
-          setStep("finishDon");
-        });
-      } else {
-        setIsLoading(false);
-        _error = "Votre solde est insuffisant pour le don souhaité en coins.";
-      }
-    } else {
+    if (_isTypeCoins && _userHaveCoins) {
       await transactionService.createTransaction(donModel).then((value) {
-        // setStep("connect");
-        // setIsLoading(false);
-        if (value.data?.isIZIAuthenticated == true &&
-            value.data?.isIZIAuthorized == true) {
+        setIsLoading(false);
+        if (value.data?.isSuccess == true) {
           setStep("finishDon");
-          setIsLoading(false);
         } else {
-          setStep("connect");
-          setIsLoading(false);
-        }
-        if (value.data?.isIZIAuthenticated == true &&
-            value.data?.isIZIAuthorized == true) {
-          setStep("finishDon");
-          setIsLoading(false);
-        } else if (value.data?.isIZIAuthenticated == true &&
-            value.data?.isIZIAuthorized == false) {
-          setStep("pinCode");
-          setIsLoading(false);
-        } else if (value.data?.isIZIAuthenticated == false &&
-            value.data?.isIZIAuthorized == false) {
-          setStep("connect");
-          setIsLoading(false);
+          handleError(context);
         }
       });
+    } else if (!_isTypeCoins) {
+      await transactionService.createTransaction(donModel).then((value) {
+        setIsLoading(false);
+        if (value.data?.isSuccess == true) {
+          if (value.data?.isIZIAuthenticated == true &&
+              value.data?.isIZIAuthorized == true) {
+            setStep("finishDon");
+          } else {
+            setStep(
+                value.data?.isIZIAuthorized == false ? "pinCode" : "connect");
+          }
+        } else {
+          handleError(context);
+        }
+      });
+    } else {
+      setIsLoading(false);
+      _error = "Votre solde est insuffisant pour le don souhaité en coins.";
     }
+  }
+
+  void handleError(BuildContext context) {
+    final fanPayProvider = context.read<FanPayProvider>();
+    Navigator.pop(context);
+    fanPayProvider.openModal();
+    initAllData();
+    showMySnackBar(
+      _isTypeCoins
+          ? "Une erreur s'est produite lors du don par coins."
+          : "Une erreur s'est produite lors du don.",
+      MyColors.red,
+      context,
+    );
   }
 
   void validateConnectionForm(BuildContext context) async {

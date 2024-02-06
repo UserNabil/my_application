@@ -45,6 +45,12 @@ final List<RowItem> rowsSelfCare = [
     icon: TablerIcons.user_x,
     // pageName: PageViewEnum.myAccount,
   ),
+  RowItem(
+    title: 'CGU',
+    location: 'cgu',
+    icon: TablerIcons.file_text,
+    pageName: PageViewEnum.cgu,
+  ),
 ];
 final List<RowItem> rowsAccount = [
   RowItem(

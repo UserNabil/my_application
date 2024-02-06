@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/fanpay/models/register_izi_model.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
 import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 
@@ -34,8 +35,15 @@ class IziProvider with ChangeNotifier {
   String _connectionStep = "connection";
   bool _isConnectProcissing = false;
   bool _isVerifProcissing = false;
+  bool _isProcessing = false;
   int _countVerif = 0;
   bool _wrongVerif = false;
+  final UserService userService = UserService();
+
+  void setIsProcessing(bool value) {
+    _isProcessing = value;
+    notifyListeners();
+  }
 
   void setWrongVerif(bool value) {
     _wrongVerif = value;
@@ -174,7 +182,6 @@ class IziProvider with ChangeNotifier {
     }
   }
 
-  // review here
   void setVerif(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserService userService = UserService();
@@ -187,7 +194,7 @@ class IziProvider with ChangeNotifier {
           _formKey.currentState?.reset();
           init();
           Navigator.pop(context);
-          context.read<InitProvider>().setCurrentIndex(0);
+          context.read<InitProvider>().setCurrentIndex(2);
           notifyListeners();
         } else {
           setWrongVerif(!value);
@@ -204,19 +211,48 @@ class IziProvider with ChangeNotifier {
     });
   }
 
+  String formatDate(String date) {
+    List<String> dateList = date.split('/');
+    String day = dateList[0];
+    String month = dateList[1];
+    String year = dateList[2];
+    return '$year-$month-$day';
+  }
+
   void validateSignUpForm(BuildContext context) async {
+    setIsProcessing(true);
     setSubmitted();
     checkSelfie();
     checkCinRecto();
     checkCinVerso();
+
     if (_formKey.currentState?.validate() ?? false) {
       setValid();
       if (_isValid) {
-        Future.delayed(const Duration(seconds: 2), () {
-          _formKey.currentState?.reset();
-          init();
-          _wallet = true;
-          Navigator.pop(context);
+        RegisterModel register = RegisterModel(
+          lastName: _lastNameController.text,
+          firstName: _firstNameController.text,
+          email: _emailController.text,
+          phone: _phoneController.text,
+          legalId: _cinController.text,
+          gender: int.parse(_sexeController.text),
+          birthDate: formatDate(_birthDateController.text),
+          address: _addressController.text,
+          selfie: _selfie,
+          legalIdFront: _cinRectoFile,
+          legalIdBack: _cinVersoFile,
+        );
+        userService.registerIzi(register).then((value) {
+          setIsProcessing(false);
+          if (value) {
+            _wallet = true;
+            _formKey.currentState?.reset();
+            init();
+            Navigator.popAndPushNamed(context, '/');
+          } else {
+            _wallet = true;
+            Navigator.pop(context);
+          }
         });
       }
     }
@@ -284,6 +320,7 @@ class IziProvider with ChangeNotifier {
     _showPassword = false;
     _countVerif = 0;
     _wrongVerif = false;
+    _isProcessing = false;
 
     _selfiColorInput = Colors.black54;
     _cinRectoColorInput = Colors.black54;
@@ -321,4 +358,5 @@ class IziProvider with ChangeNotifier {
   bool get isVerifProcissing => _isVerifProcissing;
   int get countVerif => _countVerif;
   bool get verifIsWrong => _wrongVerif;
+  bool get isProcessing => _isProcessing;
 }

@@ -39,6 +39,23 @@ class MyBottomBar extends StatelessWidget {
   final MenuItem active;
   final Function(MenuItem) onTap;
 
+  double getActiveX(int index) {
+    switch (index) {
+      case 0:
+        return 330 * 0.41;
+      case 1:
+        return 330 * 0.36;
+      case 2:
+        return 330 * 0.37;
+      case 3:
+        return 330 * 0.40;
+      case 4:
+        return 330 * 0.41;
+      default:
+        return 0.0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,9 +75,7 @@ class MyBottomBar extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 0),
                 height: 50,
-                width: active.index != 0 && active.index != 4
-                    ? 330 * 0.38
-                    : 330 * 0.41,
+                width: getActiveX(active.index),
                 color: MyColors.transparent,
                 child: Slider(currentIndex: active.index),
               ),
