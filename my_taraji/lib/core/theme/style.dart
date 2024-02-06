@@ -5,3 +5,8 @@ TextStyle styleAppBarTitle = const TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w500,
 );
+
+TextStyle stylePrimary = const TextStyle(
+  color: MyColors.black,
+  fontWeight: FontWeight.w700,
+);
