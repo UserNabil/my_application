@@ -1,4 +1,6 @@
+import 'package:my_taraji/views/home/page/sections/crowdfunding_section.dart';
 import 'package:my_taraji/views/home/provider/home_provider.dart';
+import 'package:my_taraji/views/home/services/home_services.dart';
 import 'package:my_taraji/views/init/components/my_profile.dart';
 import '../../init/components/my_taraji_logo.dart';
 import '../import.dart';
@@ -13,6 +15,7 @@ class HomeScreen extends StatelessWidget {
       selectContent(context),
       const ListNews(),
       // const ListPartenaire(),
+      crowdfundingSection(context),
       const SizedBox(height: 150),
     ];
     return Scaffold(
