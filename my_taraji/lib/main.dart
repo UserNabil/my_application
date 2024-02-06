@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/views/challenge/components/provider/challenge_provider.dart';
+import 'package:my_taraji/views/crowdfunding/view/crowdfunding_page.dart';
 import 'package:my_taraji/views/fanpay/providers/don_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/fanpay_historique_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/fanpay_provider.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
       ),
       initialRoute: InitScreen.routeName,
+      // CrowdfundingPage.routeName, //
       routes: routes,
     );
   }

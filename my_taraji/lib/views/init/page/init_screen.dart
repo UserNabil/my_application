@@ -56,6 +56,7 @@ class _InitScreenState extends State<InitScreen> {
     prefs = await SharedPreferences.getInstance();
     prefs.setString('token', result?.idToken ?? '');
     var accessToken = result?.accessToken;
+    log('result =====> $result');
     log('accessToken $accessToken');
   }
 
