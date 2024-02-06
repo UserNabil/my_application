@@ -27,8 +27,8 @@ class CrowdfundingCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           image: DecorationImage(
             image: AssetImage(
-              crowdfunding.imageUrl ??
-                  'https://wallpaperaccess.com/full/2637581.jpg',
+              // crowdfunding.imageUrl ??
+              'images/pngs/campaigns/campaigns7.jpg',
             ),
             fit: BoxFit.cover,
           ),
