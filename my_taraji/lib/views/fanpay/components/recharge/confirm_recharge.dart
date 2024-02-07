@@ -47,33 +47,16 @@ class ConfirmRecharge extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasData) {
               if (snapshot.data!.isSuccess == false) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    showCloseIcon: true,
-                    content: Text(
-                      'Une erreur interne s\'est produite, veuillez contacter le support  par mail Apps@trendit.fr',
-                    ),
-                    backgroundColor: Colors.black,
-                    duration: const Duration(seconds: 5),
-                    behavior: SnackBarBehavior.floating,
-                    margin: const EdgeInsets.all(20),
-                  ),
-                );
                 context.read<RechargeProvider>().setStep('finishRecharge');
-                return Container();
+                return const Center(
+                  child: Text(
+                      'Une erreur interne s\'est produite, veuillez contacter le support  par mail Apps@trendit.fr'),
+                );
               } else if (snapshot.data!.data.isSuccess == false) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    showCloseIcon: true,
-                    content: Text('Une erreur avec la banque s\'est produite'),
-                    backgroundColor: Colors.black,
-                    duration: Duration(seconds: 5),
-                    behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.all(20),
-                  ),
+                // context.read<RechargeProvider>().setStep('finishRecharge');
+                return const Center(
+                  child: Text('Une erreur avec la banque s\'est produite'),
                 );
-                context.read<RechargeProvider>().setStep('finishRecharge');
-                return Container();
               } else if (snapshot.data!.data.isIziAuthenticated == false) {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.6,
@@ -102,10 +85,6 @@ class ConfirmRecharge extends StatelessWidget {
                   child: RechargeWebView(
                     url: snapshot.data!.data.data!.paymentUrl,
                   ),
-                  // website(
-                  //   context,
-                  //   snapshot.data!.data.data.paymentUrl,
-                  // ),
                 );
               }
             } else {
