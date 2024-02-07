@@ -103,15 +103,23 @@ class ManageRechargePage extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Colors.transparent,
                 ),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(30),
-                    child: Column(children: [
-                      context.watch<RechargeProvider>().step != "finishRecharge"
-                          ? Container()
-                          : const SizedBox(height: 50),
-                      manageStep(user, context),
-                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    right: 20.0,
+                    top: 20.0,
+                    bottom: 1,
+                  ),
+                  child: Scaffold(
+                    body: SingleChildScrollView(
+                      child: Column(children: [
+                        context.watch<RechargeProvider>().step !=
+                                "finishRecharge"
+                            ? Container()
+                            : const SizedBox(height: 50),
+                        manageStep(user, context),
+                      ]),
+                    ),
                   ),
                 ),
               ),
@@ -135,7 +143,7 @@ class ManageRechargePage extends StatelessWidget {
   Widget build(BuildContext context) {
     User? user;
     context.read<HomeProvider>().getUserData().then((value) => user = value!);
-
+// here is the issue
     return FutureBuilder(
         future: context.read<HomeProvider>().getUserData(),
         builder: (context, snapshot) {

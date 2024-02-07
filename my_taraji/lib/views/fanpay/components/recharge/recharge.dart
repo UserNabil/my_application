@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:my_taraji/services/recharge_service.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
 class RechargeFistPage extends StatelessWidget {
@@ -223,7 +224,7 @@ class RechargeFistPage extends StatelessWidget {
           action: () async {
             await Future.delayed(
               const Duration(seconds: 1),
-              () {
+              () async {
                 context.read<RechargeProvider>().setStep("confirmRecharge");
               },
             );
