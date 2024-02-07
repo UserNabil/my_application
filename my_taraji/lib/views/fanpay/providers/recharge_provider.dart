@@ -41,7 +41,7 @@ class RechargeProvider with ChangeNotifier {
 
   void setRechargeTitle(String newTitle) {
     _title = newTitle;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void setAmount(int amount) {
@@ -66,7 +66,7 @@ class RechargeProvider with ChangeNotifier {
     }
     _step = newStep;
 
-    //notifyListeners();
+    notifyListeners();
   }
 
   void setTypeCash(bool newType) {
@@ -111,28 +111,6 @@ class RechargeProvider with ChangeNotifier {
 
   void setShowWebView(bool value) {
     _showWebView = value;
-    notifyListeners();
-  }
-
-  void initWebViewController() {
-    _webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0xffffffff))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {},
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            // if (request.url.startsWith('https://www.youtube.com/')) {
-            //   return NavigationDecision.prevent;
-            // }
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse('https://forms.office.com/e/Cpe2t2rdJ7'));
     notifyListeners();
   }
 

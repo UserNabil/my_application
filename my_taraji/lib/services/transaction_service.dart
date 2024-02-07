@@ -70,6 +70,7 @@ class TransactionService {
     }
   }
 
+// return bank account details
   Future<APIResponseModel<AccountCard>> getWalletDetails() async {
     const path = "api/v1/wallet/wallet-details";
     final url = Uri.parse('$baseUrl/$path');
