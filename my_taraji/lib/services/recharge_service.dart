@@ -19,11 +19,7 @@ class RechareService {
     final response = await http.post(uriWithParams);
     log('response : ${response.body}');
     final data = json.decode(response.body);
-
-    if (response.statusCode == 200) {
-      return PaymentOutput.fromJson(data);
-    } else {
-      throw Exception('Failed to load payment information');
-    }
+    log('${PaymentOutput.fromJson(data).data}');
+    return PaymentOutput.fromJson(data);
   }
 }

@@ -10,7 +10,7 @@ class RechargeWebView extends StatelessWidget {
     return Scaffold(
         body: WebViewWidget(
           controller: WebViewController()
-            //  ..setJavaScriptMode(JavaScriptMode.unrestricted)
+            ..setJavaScriptMode(JavaScriptMode.unrestricted)
             ..setBackgroundColor(const Color(0x00000000))
             ..setNavigationDelegate(
               NavigationDelegate(
@@ -21,9 +21,6 @@ class RechargeWebView extends StatelessWidget {
                 onPageFinished: (String url) {},
                 onWebResourceError: (WebResourceError error) {},
                 onNavigationRequest: (NavigationRequest request) {
-                  if (request.url.startsWith('https://www.youtube.com/')) {
-                    return NavigationDecision.prevent;
-                  }
                   return NavigationDecision.navigate;
                 },
               ),

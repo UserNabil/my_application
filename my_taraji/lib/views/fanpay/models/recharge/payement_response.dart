@@ -1,7 +1,7 @@
 import 'package:my_taraji/views/fanpay/models/recharge/payement_provider.dart';
 
 class PaymentResponse {
-  final PaymentProvider data;
+  final PaymentProvider? data;
   final String message;
   final bool isSuccess;
   final bool isIziAuthenticated;
@@ -27,7 +27,7 @@ class PaymentResponse {
 
   Map<String, dynamic> toJson() {
     return {
-      'Data': data.toJson(),
+      'Data': data?.toJson(),
       'Message': message,
       'IsSuccess': isSuccess,
       'IsIZIAuthenticated': isIziAuthenticated,

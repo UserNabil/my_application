@@ -32,26 +32,6 @@ class ConfirmRecharge extends StatelessWidget {
     );
   }
 
-  Widget website(BuildContext context, String url) {
-    return WebViewWidget(
-      controller: WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setBackgroundColor(const Color(0xffffffff))
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onProgress: (int progress) {},
-            onPageStarted: (String url) {},
-            onPageFinished: (String url) {},
-            onWebResourceError: (WebResourceError error) {},
-            onNavigationRequest: (NavigationRequest request) {
-              return NavigationDecision.navigate;
-            },
-          ),
-        )
-        ..loadRequest(Uri.parse(url)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     RechareService rechareService = RechareService();
@@ -87,25 +67,40 @@ class ConfirmRecharge extends StatelessWidget {
                     showCloseIcon: true,
                     content: Text('Une erreur avec la banque s\'est produite'),
                     backgroundColor: Colors.black,
-                    duration: const Duration(seconds: 5),
+                    duration: Duration(seconds: 5),
                     behavior: SnackBarBehavior.floating,
-                    margin: const EdgeInsets.all(20),
+                    margin: EdgeInsets.all(20),
                   ),
                 );
                 context.read<RechargeProvider>().setStep('finishRecharge');
                 return Container();
               } else if (snapshot.data!.data.isIziAuthenticated == false) {
-                return Container();
-                //  FanPayIzi(
-                //   authDetails: authDetails,
-                //   user: userData,
-                // );
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: FutureBuilder(
+                      future: context.read<FanPayProvider>().getAccountCard(),
+                      builder: (context, snapshotAccountCard) {
+                        return FutureBuilder(
+                            future: context.watch<HomeProvider>().getUserData(),
+                            builder: (context, snapshotUserData) {
+                              return Stack(
+                                alignment: Alignment.topCenter,
+                                children: [
+                                  FanPayIzi(
+                                    authDetails: snapshotAccountCard.data,
+                                    user: snapshotUserData.data,
+                                  ),
+                                ],
+                              );
+                            });
+                      }),
+                );
               } else {
                 return SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * .7,
                   child: RechargeWebView(
-                    url: snapshot.data!.data.data.paymentUrl,
+                    url: snapshot.data!.data.data!.paymentUrl,
                   ),
                   // website(
                   //   context,

@@ -156,10 +156,8 @@ class MyFanPay extends StatelessWidget {
               if (
                   // userData?.mytarajiUser?.isSubscribedIZI == true &&
                   // context.watch<IziProvider>().wallet == true &&
-                  authDetails?.isIZIAuthenticated ==
-                      true /* &&
-                      authDetails?.isIZIAuthorized == true*/
-                  ) {
+                  authDetails?.isIZIAuthenticated == true &&
+                      authDetails?.isIZIAuthorized == true) {
                 return buildPage(userData, context);
               } else {
                 return Stack(
