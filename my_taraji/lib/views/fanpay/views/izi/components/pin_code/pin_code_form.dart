@@ -40,17 +40,22 @@ class PinCodeForm extends StatelessWidget {
               },
               decoration: const InputDecoration(
                 labelText: 'Pin code',
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 hintText: 'XXXX',
-                prefixIcon: Icon(TablerIcons.barcode),
+                prefixIcon: Icon(TablerIcons.barcode, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),
-            // Text(
-            //   valid == false
-            //       ? ""
-            //       : "Votre code PIN est incorrecte, il vous reste ${4 - context.watch<IziProvider>().countVerif} essais",
-            //   style: const TextStyle(color: Colors.red, fontSize: 12),
-            // ),
+
             const SizedBox(height: 20),
           ],
         ),

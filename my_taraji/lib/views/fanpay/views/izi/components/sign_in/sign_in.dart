@@ -4,14 +4,9 @@ import 'package:my_taraji/views/fanpay/views/izi/components/overlay_loader.dart'
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_in/sign_in_form.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
 
-  @override
-  State<SignInScreen> createState() => SignInScreenState();
-}
-
-class SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     onPressedToConnect() {
@@ -26,54 +21,77 @@ class SignInScreenState extends State<SignInScreen> {
       extendBodyBehindAppBar: true,
       backgroundColor: MyColors.white,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: MyColors.white,
+          ),
+        ),
         backgroundColor: MyColors.transparent,
       ),
-      body: context.watch<IziProvider>().connectionStep == "pinCode"
-          ? context.watch<IziProvider>().isVerifProcissing == true
-              ? Stack(
-                  children: [
-                    PinCode(
-                      onPressed: onPressedToVerif,
-                      paddingTop: 150,
-                      formKey: context.watch<IziProvider>().formKey,
-                      pinCode: context.watch<IziProvider>().pinCode,
-                      isLoading: context.watch<IziProvider>().isVerifProcissing,
-                      valid: context.watch<IziProvider>().verifIsWrong,
-                    ),
-                    const OverlayLoader(),
-                  ],
-                )
-              : PinCode(
-                  onPressed: onPressedToVerif,
-                  paddingTop: 150,
-                  formKey: context.watch<IziProvider>().formKey,
-                  pinCode: context.watch<IziProvider>().pinCode,
-                  isLoading: context.watch<IziProvider>().isVerifProcissing,
-                  valid: context.watch<IziProvider>().verifIsWrong,
-                )
-          : context.watch<IziProvider>().isConnectProcissing == true
-              ? Stack(
-                  children: [
-                    SignIn(
-                      onPressed: onPressedToConnect,
-                      paddingTop: 150,
-                      formKey: context.watch<IziProvider>().formKey,
-                      signinId: context.watch<IziProvider>().signinId,
-                      signinPwd: context.watch<IziProvider>().signinPwd,
-                      isLoading:
-                          context.watch<IziProvider>().isConnectProcissing,
-                    ),
-                    const OverlayLoader(),
-                  ],
-                )
-              : SignIn(
-                  onPressed: onPressedToConnect,
-                  paddingTop: 150,
-                  formKey: context.watch<IziProvider>().formKey,
-                  signinId: context.watch<IziProvider>().signinId,
-                  signinPwd: context.watch<IziProvider>().signinPwd,
-                  isLoading: context.watch<IziProvider>().isConnectProcissing,
-                ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              MyColors.blue2,
+              MyColors.blue,
+            ],
+          ),
+        ),
+        child: context.watch<IziProvider>().connectionStep == "pinCode"
+            ? context.watch<IziProvider>().isVerifProcissing == true
+                ? Stack(
+                    children: [
+                      PinCode(
+                        onPressed: onPressedToVerif,
+                        paddingTop: 150,
+                        formKey: context.watch<IziProvider>().formKey,
+                        pinCode: context.watch<IziProvider>().pinCode,
+                        isLoading:
+                            context.watch<IziProvider>().isVerifProcissing,
+                        valid: context.watch<IziProvider>().verifIsWrong,
+                      ),
+                      const OverlayLoader(),
+                    ],
+                  )
+                : PinCode(
+                    onPressed: onPressedToVerif,
+                    paddingTop: 150,
+                    formKey: context.watch<IziProvider>().formKey,
+                    pinCode: context.watch<IziProvider>().pinCode,
+                    isLoading: context.watch<IziProvider>().isVerifProcissing,
+                    valid: context.watch<IziProvider>().verifIsWrong,
+                  )
+            : context.watch<IziProvider>().isConnectProcissing == true
+                ? Stack(
+                    children: [
+                      SignIn(
+                        onPressed: onPressedToConnect,
+                        paddingTop: 150,
+                        formKey: context.watch<IziProvider>().formKey,
+                        signinId: context.watch<IziProvider>().signinId,
+                        signinPwd: context.watch<IziProvider>().signinPwd,
+                        isLoading:
+                            context.watch<IziProvider>().isConnectProcissing,
+                      ),
+                      const OverlayLoader(),
+                    ],
+                  )
+                : SignIn(
+                    onPressed: onPressedToConnect,
+                    paddingTop: 150,
+                    formKey: context.watch<IziProvider>().formKey,
+                    signinId: context.watch<IziProvider>().signinId,
+                    signinPwd: context.watch<IziProvider>().signinPwd,
+                    isLoading: context.watch<IziProvider>().isConnectProcissing,
+                  ),
+      ),
     );
   }
 }
@@ -103,7 +121,7 @@ class SignIn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Image.asset("images/pngs/izi.jpg", width: 150),
+            child: Image.asset("images/pngs/taraji.png", width: 100),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -114,7 +132,7 @@ class SignIn extends StatelessWidget {
                 const Text(
                   'Connexion à Izi',
                   style: TextStyle(
-                    color: MyColors.black,
+                    color: MyColors.white,
                     fontSize: 27,
                     fontWeight: FontWeight.w500,
                   ),
@@ -122,7 +140,7 @@ class SignIn extends StatelessWidget {
                 const Text(
                   'Veuillez vous connecter afin d\'acceder à votre wallet.',
                   style: TextStyle(
-                    color: MyColors.grey,
+                    color: MyColors.yellow,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -142,7 +160,7 @@ class SignIn extends StatelessWidget {
                         vertical: 15,
                         horizontal: 50,
                       ),
-                      backgroundColor: MyColors.iziBlue,
+                      backgroundColor: MyColors.yellow,
                     ),
                     child: isLoading
                         ? const CupertinoActivityIndicator(

@@ -1,11 +1,7 @@
-// ignore_for_file: dead_code
-
-import 'dart:ui';
 import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/models/account_card.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/sign_up/sign_up.dart';
 import 'package:my_taraji/views/fanpay/views/izi/provider/izi_provider.dart';
-import 'package:rive/rive.dart';
 
 class FanPayIzi extends StatelessWidget {
   const FanPayIzi({super.key, required this.authDetails, required this.user});
@@ -19,7 +15,19 @@ class FanPayIzi extends StatelessWidget {
         builder: (context, snapshot) {
           final value = snapshot.data;
           if (snapshot.hasData) {
-            return buildBody(context, value);
+            return Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    MyColors.blue,
+                    MyColors.blue3,
+                  ],
+                ),
+              ),
+              child: buildBody(context, value),
+            );
           } else {
             return const Center(
               child: CircularProgressIndicator(),
@@ -35,12 +43,6 @@ Widget buildBody(BuildContext context, User? user) {
   // bool haveWallet = context.watch<IziProvider>().wallet;
   return Stack(
     children: [
-      const RiveAnimation.asset('images/rives/shapes6.riv'),
-      Positioned.fill(
-          child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-        child: const SizedBox(),
-      )),
       AnimatedPositioned(
         duration: const Duration(milliseconds: 200),
         height: MediaQuery.of(context).size.height,
@@ -59,7 +61,7 @@ Widget buildBody(BuildContext context, User? user) {
                       haveWallet ? "Bienvenue sur IZI" : "Pas de compte IZI ?",
                       style: TextStyle(
                         color: MyColors.white,
-                        fontSize: 60,
+                        fontSize: 50,
                         height: 1.2,
                         shadows: [
                           Shadow(
@@ -78,7 +80,7 @@ Widget buildBody(BuildContext context, User? user) {
                           ? "Vous pouvez maintenant effectuer vos transactions en toute sécurité."
                           : "Veuillez créer votre wallet afin d'accéder à cette page.",
                       style: const TextStyle(
-                        color: MyColors.blue,
+                        color: MyColors.yellow,
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                       ),
@@ -88,8 +90,8 @@ Widget buildBody(BuildContext context, User? user) {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: haveWallet
-                      ? () => goToSignUpIzi(context)
-                      : () => goToSignInIzi(context),
+                      ? () => goToSignInIzi(context)
+                      : () => goToSignUpIzi(context),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: MyColors.white,
                     backgroundColor:
@@ -124,7 +126,7 @@ Widget buildBody(BuildContext context, User? user) {
   );
 }
 
-void goToSignInIzi(BuildContext context) {
+void goToSignUpIzi(BuildContext context) {
   context.read<IziProvider>().init();
   context
       .read<HomeProvider>()
@@ -140,7 +142,7 @@ void goToSignInIzi(BuildContext context) {
   );
 }
 
-void goToSignUpIzi(BuildContext context) {
+void goToSignInIzi(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(

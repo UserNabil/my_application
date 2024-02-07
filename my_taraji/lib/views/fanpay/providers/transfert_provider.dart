@@ -196,9 +196,12 @@ class TransfertProvider with ChangeNotifier {
   void createTransfert(User? user) async {
     setIsLoading(true);
     TransactionModel transfertModel = TransactionModel(
-      contributionMethod: _isTypeCoins ? 2 : 1,
+      contributionMethod: _isTypeCoins ? 1 : 2,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
+      isAnonymosContributionActivated: false,
+      crowdFundingQueneyId: user?.level?.currentLevel.id ?? "",
+      queneyLevelId: user?.level?.currentLevel.id ?? "",
     );
 
     await transactionService.createTransaction(transfertModel).then((value) {

@@ -25,9 +25,19 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyColors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyColors.yellow),
+                ),
+                fillColor: MyColors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Nom',
                 hintText: 'DOE',
-                prefixIcon: Icon(TablerIcons.user_edit),
+                prefixIcon: Icon(TablerIcons.user_edit, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -43,9 +53,19 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Prénom',
                 hintText: 'John',
-                prefixIcon: Icon(TablerIcons.user_edit),
+                prefixIcon: Icon(TablerIcons.user_edit, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -68,9 +88,19 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Numero de CIN',
                 hintText: 'XXXX XXXX',
-                prefixIcon: Icon(TablerIcons.cards),
+                prefixIcon: Icon(TablerIcons.cards, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -94,9 +124,19 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Email',
                 hintText: 'john.doe@mail.org',
-                prefixIcon: Icon(TablerIcons.mail),
+                prefixIcon: Icon(TablerIcons.mail, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -118,9 +158,19 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Téléphone',
                 hintText: '+33 6 12 34 56 78',
-                prefixIcon: Icon(TablerIcons.phone),
+                prefixIcon: Icon(TablerIcons.phone, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -136,8 +186,19 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Sexe',
-                prefixIcon: Icon(TablerIcons.user_check),
+                prefixIcon:
+                    Icon(TablerIcons.user_check, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
               items: [
@@ -176,8 +237,18 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Date de naissance',
-                prefixIcon: Icon(Icons.calendar_today),
+                prefixIcon: Icon(Icons.calendar_today, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
               onTap: () async {
@@ -196,9 +267,19 @@ class IziSignUpForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Adresse',
                 hintText: '19 rue de la paix, Paris 75009',
-                prefixIcon: Icon(TablerIcons.map_2),
+                prefixIcon: Icon(TablerIcons.map_2, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),

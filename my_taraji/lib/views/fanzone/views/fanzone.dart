@@ -3,7 +3,8 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/components/background_top.dart';
 import 'package:my_taraji/core/components/custom_card.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
-import 'package:my_taraji/views/fanzone/components/fanzone_carousel.dart';
+// import 'package:my_taraji/views/fanzone/components/fanzone_carousel.dart';
+import 'package:my_taraji/views/fanzone/components/fanzone_map.dart';
 import 'package:my_taraji/views/fanzone/components/fanzone_search.dart';
 
 class MyFanZone extends StatelessWidget {
@@ -70,7 +71,6 @@ class MyFanZone extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.82,
-                    padding: const EdgeInsets.only(left: 10, right: 10),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
@@ -81,22 +81,23 @@ class MyFanZone extends StatelessWidget {
                         ],
                       ),
                       color: MyColors.white,
-                      image: DecorationImage(
-                        image: AssetImage('images/pngs/map.png'),
-                        fit: BoxFit.cover,
-                      ),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50),
                       ),
                     ),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                    child: const Stack(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 120),
-                          child: FanzoneCarousel(),
-                        ),
+                        FanzoneMap(),
+                        // Column(
+                        //   mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: [
+                        //     Padding(
+                        //       padding: EdgeInsets.only(bottom: 120),
+                        //       child: FanzoneCarousel(),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

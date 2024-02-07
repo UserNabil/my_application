@@ -176,10 +176,15 @@ class DonProvider with ChangeNotifier {
     setIsLoading(true);
 
     TransactionModel donModel = TransactionModel(
-      contributionMethod: _isTypeCoins ? 2 : 1,
+      contributionMethod: _isTypeCoins ? 1 : 2,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
+      isAnonymosContributionActivated: false,
+      crowdFundingQueneyId: "",
+      queneyLevelId: user?.level?.currentLevel.id ?? "",
     );
+
+    debugPrint("donModel: ${donModel.toJson().toString()}");
 
     if (_isTypeCoins && _userHaveCoins) {
       await transactionService.createTransaction(donModel).then((value) {

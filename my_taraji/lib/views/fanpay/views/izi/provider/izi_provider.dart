@@ -6,7 +6,6 @@ import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/models/register_izi_model.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_response.dart';
-import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
 
 class IziProvider with ChangeNotifier {
   final TextEditingController _lastNameController = TextEditingController();
@@ -27,9 +26,9 @@ class IziProvider with ChangeNotifier {
   final _formKey = GlobalKey<FormState>();
   bool _isSubmitted = false;
   bool _isValid = false;
-  Color _selfiColorInput = Colors.black54;
-  Color _cinRectoColorInput = Colors.black54;
-  Color _cinVersoColorInput = Colors.black54;
+  Color _selfiColorInput = MyColors.yellow;
+  Color _cinRectoColorInput = MyColors.yellow;
+  Color _cinVersoColorInput = MyColors.yellow;
   bool _wallet = false;
   bool _showPassword = false;
   String _connectionStep = "connection";
@@ -73,9 +72,9 @@ class IziProvider with ChangeNotifier {
   void checkSelfie() {
     if (_isSubmitted) {
       if (_selfie != null) {
-        _selfiColorInput = MyColors.iziBlue;
+        _selfiColorInput = MyColors.yellow;
       } else {
-        _selfiColorInput = MyColors.iziOrange;
+        _selfiColorInput = MyColors.redLight;
       }
     } else {
       _selfiColorInput = Colors.black54;
@@ -86,9 +85,9 @@ class IziProvider with ChangeNotifier {
   void checkCinRecto() {
     if (_isSubmitted) {
       if (_cinRectoFile != null) {
-        _cinRectoColorInput = MyColors.iziBlue;
+        _cinRectoColorInput = MyColors.yellow;
       } else {
-        _cinRectoColorInput = MyColors.iziOrange;
+        _cinRectoColorInput = MyColors.redLight;
       }
     } else {
       _cinRectoColorInput = Colors.black54;
@@ -99,9 +98,9 @@ class IziProvider with ChangeNotifier {
   void checkCinVerso() {
     if (_isSubmitted) {
       if (_cinVersoFile != null) {
-        _cinVersoColorInput = MyColors.iziBlue;
+        _cinVersoColorInput = MyColors.yellow;
       } else {
-        _cinVersoColorInput = MyColors.iziOrange;
+        _cinVersoColorInput = MyColors.redLight;
       }
     } else {
       _cinVersoColorInput = Colors.black54;
@@ -155,7 +154,6 @@ class IziProvider with ChangeNotifier {
   }
 
   Future<TransactionResponse> setConnected() async {
-    UserService userService = UserService();
     return userService.authUserIzi(_signinId.text, _signinPwd.text);
   }
 
@@ -184,7 +182,7 @@ class IziProvider with ChangeNotifier {
 
   void setVerif(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserService userService = UserService();
+
     userService.confirmAuthIzi(_pinCode.text).then((value) {
       if (_countVerif < 3) {
         incrementCountVerif();
@@ -193,9 +191,11 @@ class IziProvider with ChangeNotifier {
           setVerifProcissing(false);
           _formKey.currentState?.reset();
           init();
-          Navigator.pop(context);
-          context.read<InitProvider>().setCurrentIndex(2);
-          notifyListeners();
+
+          context.read<FanPayProvider>().notifyListeners();
+          // Navigator.pop(context);
+          Future.delayed(
+              const Duration(seconds: 1), () => Navigator.pop(context));
         } else {
           setWrongVerif(!value);
           setVerifProcissing(false);
@@ -208,6 +208,13 @@ class IziProvider with ChangeNotifier {
         init();
         Navigator.pop(context);
       }
+    });
+  }
+
+  void resendCode() {
+    setVerifProcissing(true);
+    setConnected().then((value) {
+      setVerifProcissing(false);
     });
   }
 
@@ -255,6 +262,8 @@ class IziProvider with ChangeNotifier {
           }
         });
       }
+    } else {
+      setIsProcessing(false);
     }
     notifyListeners();
   }

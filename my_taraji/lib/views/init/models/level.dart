@@ -31,11 +31,13 @@ class Level {
 }
 
 class MyLevelStat {
+  final String id;
   final String? nameFR;
   final int? pointsMax;
   final String? imageUrl;
 
   MyLevelStat({
+    required this.id,
     required this.nameFR,
     required this.pointsMax,
     required this.imageUrl,
@@ -43,6 +45,7 @@ class MyLevelStat {
 
   factory MyLevelStat.fromJson(Map<String, dynamic>? json) {
     return MyLevelStat(
+      id: json?['_id'],
       nameFR: json?['nameFR'],
       pointsMax: json?['pointsMax'],
       imageUrl: json?['imageUrl'],
@@ -51,6 +54,7 @@ class MyLevelStat {
 
   Map<String, dynamic> toMap() {
     return {
+      '_id': id,
       'nameFR': nameFR,
       'pointsMax': pointsMax,
       'imageUrl': imageUrl,

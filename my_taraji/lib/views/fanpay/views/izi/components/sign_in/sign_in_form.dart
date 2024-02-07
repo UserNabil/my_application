@@ -39,9 +39,19 @@ class IziSignInForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
+                errorStyle: TextStyle(color: MyColors.redLight),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                labelStyle: TextStyle(color: MyColors.yellow),
                 labelText: 'Téléphone',
                 hintText: '+33 6 12 34 56 78',
-                prefixIcon: Icon(TablerIcons.phone),
+                prefixIcon: Icon(TablerIcons.phone, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -61,14 +71,27 @@ class IziSignInForm extends StatelessWidget {
               },
               obscureText: !context.watch<IziProvider>().showPassword,
               decoration: InputDecoration(
+                  errorStyle: const TextStyle(color: MyColors.redLight),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.yellow),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  labelStyle: const TextStyle(color: MyColors.yellow),
                   labelText: 'Mot de passe',
                   hintText: '*********',
-                  prefixIcon: const Icon(TablerIcons.lock),
+                  prefixIcon:
+                      const Icon(TablerIcons.lock, color: MyColors.yellow),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: Icon(context.watch<IziProvider>().showPassword
-                        ? TablerIcons.eye_off
-                        : TablerIcons.eye),
+                    icon: Icon(
+                        context.watch<IziProvider>().showPassword
+                            ? TablerIcons.eye_off
+                            : TablerIcons.eye,
+                        color: MyColors.yellow),
                     onPressed: () {
                       context.read<IziProvider>().togglePassword();
                     },

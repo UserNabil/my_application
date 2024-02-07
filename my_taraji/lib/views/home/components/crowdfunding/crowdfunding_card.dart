@@ -25,7 +25,7 @@ class CrowdfundingCard extends StatelessWidget {
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage(
               // crowdfunding.imageUrl ??
               'images/pngs/campaigns/campaigns7.jpg',
@@ -56,7 +56,7 @@ class CrowdfundingCard extends StatelessWidget {
                   SizedBox(
                     width: 150,
                     child: Text(
-                      crowdfunding.title ?? '',
+                      crowdfunding.title,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
                       style: const TextStyle(

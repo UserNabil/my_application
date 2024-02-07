@@ -2,11 +2,17 @@ class TransactionModel {
   final int contributionMethod;
   final int amountContributed;
   final int coinsCountContributed;
+  final bool isAnonymosContributionActivated;
+  final String crowdFundingQueneyId;
+  final String queneyLevelId;
 
   TransactionModel({
     required this.contributionMethod,
     required this.amountContributed,
     required this.coinsCountContributed,
+    required this.isAnonymosContributionActivated,
+    required this.crowdFundingQueneyId,
+    required this.queneyLevelId,
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic>? json) {
@@ -14,6 +20,10 @@ class TransactionModel {
       contributionMethod: json?['contributionMethod'] ?? 0,
       amountContributed: json?['amountContributed'] ?? 0,
       coinsCountContributed: json?['coinsCountContributed'] ?? 0,
+      isAnonymosContributionActivated:
+          json?['isAnonymosContributionActivated'] ?? false,
+      crowdFundingQueneyId: json?['crowdFundingQueneyId'] ?? '',
+      queneyLevelId: json?['queneyLevelId'] ?? '',
     );
   }
 
@@ -21,6 +31,9 @@ class TransactionModel {
         'contributionMethod': contributionMethod,
         'amountContributed': amountContributed,
         'coinsCountContributed': coinsCountContributed,
+        'isAnonymosContributionActivated': isAnonymosContributionActivated,
+        'crowdFundingQueneyId': crowdFundingQueneyId,
+        'queneyLevelId': queneyLevelId,
       };
 }
 

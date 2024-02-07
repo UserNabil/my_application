@@ -24,6 +24,15 @@ class PinCodeScreenState extends State<PinCodeScreen> {
       backgroundColor: MyColors.white,
       appBar: AppBar(
         backgroundColor: MyColors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: MyColors.white,
+          ),
+        ),
       ),
       body: PinCode(
         onPressed: onPressed,
@@ -62,7 +71,7 @@ class PinCode extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Image.asset("images/pngs/izi.jpg", width: 150),
+            child: Image.asset("images/pngs/taraji.png", width: 100),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -73,7 +82,7 @@ class PinCode extends StatelessWidget {
                 const Text(
                   'Vérifier votre identité',
                   style: TextStyle(
-                    color: MyColors.black,
+                    color: MyColors.white,
                     fontSize: 27,
                     fontWeight: FontWeight.w500,
                   ),
@@ -81,7 +90,7 @@ class PinCode extends StatelessWidget {
                 const Text(
                   'Veuillez saisir votre code PIN',
                   style: TextStyle(
-                    color: MyColors.grey,
+                    color: MyColors.yellow,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -91,6 +100,7 @@ class PinCode extends StatelessWidget {
                   pinCode: pinCode,
                   valid: valid,
                 ),
+                const SizedBox(height: 15),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -101,7 +111,7 @@ class PinCode extends StatelessWidget {
                         vertical: 15,
                         horizontal: 50,
                       ),
-                      backgroundColor: MyColors.iziBlue,
+                      backgroundColor: MyColors.yellow,
                     ),
                     child: isLoading
                         ? const CupertinoActivityIndicator(
@@ -119,6 +129,21 @@ class PinCode extends StatelessWidget {
                 ),
                 const SizedBox(
                   height: 15,
+                ),
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      context.read<IziProvider>().resendCode();
+                    },
+                    child: const Text(
+                      'Renvoyer un code PIN',
+                      style: TextStyle(
+                        color: MyColors.yellow,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

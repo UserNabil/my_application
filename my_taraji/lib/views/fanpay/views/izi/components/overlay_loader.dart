@@ -16,7 +16,7 @@ class OverlayLoader extends StatelessWidget {
           children: [
             GifView.asset(
               alignment: Alignment.center,
-              'images/gifs/loader_paiement_izi.gif',
+              'images/gifs/loader_paiement.gif',
               frameRate: 30,
             ),
           ],

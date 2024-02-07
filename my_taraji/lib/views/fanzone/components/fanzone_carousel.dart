@@ -1,15 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:my_taraji/views/fanzone/provider/fanzone_provider.dart';
+import 'package:provider/provider.dart';
 
-class FanZoneElement {
+class FanZoneModel {
   final String imageUrl;
   final String location;
   final String price;
+  final LatLng position;
 
-  FanZoneElement({
+  FanZoneModel({
     required this.imageUrl,
     required this.location,
     required this.price,
+    required this.position,
   });
 }
 
@@ -18,33 +23,20 @@ class FanzoneCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<FanZoneElement> mapData = [
-      FanZoneElement(
-        imageUrl: 'https://picsum.photos/200',
-        location: 'Marseille',
-        price: '100 DT',
-      ),
-      FanZoneElement(
-        imageUrl: 'https://picsum.photos/200',
-        location: 'Paris',
-        price: '1000 DT',
-      ),
-      FanZoneElement(
-        imageUrl: 'https://picsum.photos/200',
-        location: 'Cannes',
-        price: '2000 DT',
-      ),
-    ];
     CarouselController carouselController = CarouselController();
     return CarouselSlider(
       carouselController: carouselController,
       options: CarouselOptions(
+        onPageChanged: (index, reason) {
+          final provider = context.read<FanzoneProvider>();
+          provider.setPosition(provider.mapData[index].position);
+        },
         height: 110,
         enlargeCenterPage: false,
         enableInfiniteScroll: true,
         viewportFraction: .9,
       ),
-      items: mapData.map((element) {
+      items: context.watch<FanzoneProvider>().mapData.map((element) {
         return Builder(
           builder: (BuildContext context) {
             return carouselElement(element);
@@ -54,7 +46,7 @@ class FanzoneCarousel extends StatelessWidget {
     );
   }
 
-  Widget carouselElement(FanZoneElement element) {
+  Widget carouselElement(FanZoneModel element) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(

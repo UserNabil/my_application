@@ -154,6 +154,7 @@ class MyFanPay extends StatelessWidget {
             if (authDetailsSnapshot.hasData) {
               AccountCard? authDetails = authDetailsSnapshot.data;
               if (
+                  // test
                   // userData?.mytarajiUser?.isSubscribedIZI == true &&
                   // context.watch<IziProvider>().wallet == true &&
                   authDetails?.isIZIAuthenticated == true &&

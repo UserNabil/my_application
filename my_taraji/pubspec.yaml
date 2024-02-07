@@ -46,11 +46,12 @@ dependencies:
   file_picker: ^6.1.1
   mask: ^1.0.5
   gif_view: ^0.3.1
-  # qr_flutter: ^4.1.0
-  # ai_barcode_scanner: ^3.4.1
   aad_oauth: ^0.4.4
   flutter_appauth: ^6.0.4
   flutter_contacts: ^1.1.7+1
+  flutter_map: ^4.0.0
+  latlong2: ^0.8.2
+  google_maps_flutter: ^2.5.3
 
 
 dev_dependencies:
