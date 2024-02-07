@@ -51,7 +51,6 @@ class _CrowdFundingWidgetState extends State<CrowdFundingWidget> {
   }
 
   Widget buildContainer(BuildContext context) {
-    print('leeeeeeenght ${widget.crowdfundingOutput.data?.length}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

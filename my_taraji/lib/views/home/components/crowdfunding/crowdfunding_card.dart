@@ -25,11 +25,8 @@ class CrowdfundingCard extends StatelessWidget {
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          image: const DecorationImage(
-            image: AssetImage(
-              // crowdfunding.imageUrl ??
-              'images/pngs/campaigns/campaigns7.jpg',
-            ),
+          image: DecorationImage(
+            image: NetworkImage(crowdfunding.imageUrl ?? ''),
             fit: BoxFit.cover,
           ),
         ),

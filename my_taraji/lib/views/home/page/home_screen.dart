@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetsToDisplay = [
-      selectContent(context),
+      // selectContent(context),
       const ListNews(),
       // const ListPartenaire(),
       crowdfundingSection(context),

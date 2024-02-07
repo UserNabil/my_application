@@ -37,7 +37,7 @@ class CompaignCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           image: DecorationImage(
-            image: AssetImage(campaign.imageUrl),
+            image: NetworkImage(campaign.imageUrl),
             fit: BoxFit.cover,
           ),
         ),

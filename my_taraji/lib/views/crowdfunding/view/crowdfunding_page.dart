@@ -27,7 +27,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
         width: 10,
         height: 10,
         decoration: BoxDecoration(
-            color: currentIndex == index ? Colors.white : Colors.grey,
+            color: currentIndex == index ? MyColors.white : MyColors.grey,
             shape: BoxShape.circle),
       );
     });
@@ -35,17 +35,17 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final contributionRatio = 0.6;
+    final contributionRatio = 0;
     // widget.crowdfunding!.totalAmountContributed! /
     //     widget.crowdfunding!.targetAmount!;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: MyColors.transparent,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.white,
+            color: MyColors.white,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -91,7 +91,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                 margin: const EdgeInsets.only(top: 250),
                 padding: const EdgeInsets.all(10),
                 decoration: const BoxDecoration(
-                  color: Colors.yellow,
+                  color: MyColors.yellow,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
@@ -114,7 +114,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                                 '${widget.crowdfunding!.totalAmountContributed} TND ',
                             style: stylePrimary.copyWith(
                               fontSize: 25,
-                              color: Colors.red,
+                              color: MyColors.red,
                               fontWeight: FontWeight.w500,
                             ),
                             children: <InlineSpan>[
@@ -123,7 +123,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                                     '/ ${widget.crowdfunding!.targetAmount} TND',
                                 style: stylePrimary.copyWith(
                                   fontSize: 20,
-                                  color: Colors.red,
+                                  color: MyColors.red,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -133,19 +133,22 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                         const SizedBox(height: 10),
                         Stack(
                           children: [
-                            SimpleAnimationProgressBar(
-                              height: 44,
-                              width: MediaQuery.of(context).size.width - 20,
-                              backgroundColor: Colors.white,
-                              foregrondColor: Colors.red,
-                              ratio: contributionRatio,
-                              direction: Axis.horizontal,
-                              curve: Curves.fastLinearToSlowEaseIn,
-                              duration: const Duration(seconds: 3),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Colors.red,
-                                width: 2,
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: SimpleAnimationProgressBar(
+                                height: 44,
+                                width: MediaQuery.of(context).size.width - 20,
+                                backgroundColor: MyColors.white,
+                                foregrondColor: MyColors.red,
+                                ratio: 0.0,
+                                direction: Axis.horizontal,
+                                curve: Curves.fastLinearToSlowEaseIn,
+                                duration: const Duration(seconds: 3),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: MyColors.red,
+                                  width: 2,
+                                ),
                               ),
                             ),
                             Positioned(
@@ -156,8 +159,8 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                                 style: stylePrimary.copyWith(
                                   fontSize: 20,
                                   color: contributionRatio > 0.59
-                                      ? Colors.white
-                                      : Colors.black,
+                                      ? MyColors.white
+                                      : MyColors.black,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -170,7 +173,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                             const Icon(
                               TablerIcons.users,
                               size: 30,
-                              color: Colors.red,
+                              color: MyColors.red,
                             ),
                             const SizedBox(width: 10),
                             Text(
@@ -178,7 +181,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                               style: stylePrimary.copyWith(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w400,
-                                color: Colors.red,
+                                color: MyColors.red,
                               ),
                             ),
                           ],
@@ -196,10 +199,10 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              height: 63,
-                              width: 220,
+                              height: 50,
+                              width: 180,
                               decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: MyColors.red,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
@@ -207,7 +210,7 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                                 children: [
                                   const Icon(
                                     CupertinoIcons.heart_solid,
-                                    color: Colors.yellow,
+                                    color: MyColors.yellow,
                                     size: 26,
                                   ),
                                   const SizedBox(width: 10),
@@ -216,26 +219,26 @@ class _CrowdfundingPageState extends State<CrowdfundingPage> {
                                     style: stylePrimary.copyWith(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.yellow,
+                                      color: MyColors.yellow,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
                             Container(
-                              height: 63,
+                              height: 50,
                               width: 90,
                               decoration: BoxDecoration(
-                                color: Colors.yellow,
+                                color: MyColors.yellow,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: Colors.red,
+                                  color: MyColors.red,
                                   width: 2,
                                 ),
                               ),
                               child: const Icon(
                                 TablerIcons.send,
-                                color: Colors.red,
+                                color: MyColors.red,
                                 size: 32,
                               ),
                             )

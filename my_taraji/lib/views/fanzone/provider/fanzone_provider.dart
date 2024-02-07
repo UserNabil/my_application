@@ -120,6 +120,7 @@ class FanzoneProvider with ChangeNotifier {
       return await bitmapIcon.future;
     }
 
+    // ignore: avoid_function_literals_in_foreach_calls
     _contacts.forEach((contact) async {
       marker = Marker(
         markerId: MarkerId(contact.price),

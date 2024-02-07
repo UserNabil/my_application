@@ -32,15 +32,11 @@ class Campaign {
 
   factory Campaign.fromJson(Map<String, dynamic> json) {
     RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
-    Random random = Random();
-    int randomNumber = random.nextInt(11) + 1;
-
-    String imgNumber = randomNumber.toString();
     String desc = json['Description'].toString().replaceAll(exp, '');
 
     return Campaign(
       id: json['Id'] ?? '',
-      imageUrl: "images/pngs/campaigns/campaigns$imgNumber.jpg",
+      imageUrl: json['ImageUrl'] ?? '',
       title: json['Title'] ?? '',
       description: desc,
       rewardCoins: json['RewardCoins'] ?? '',
@@ -57,7 +53,7 @@ class Campaign {
   factory Campaign.fromMap(Map<String, dynamic> map) {
     return Campaign(
       id: map['id'] ?? '',
-      imageUrl: map['imageUri'] ?? '',
+      imageUrl: map['ImageUrl'] ?? '',
       title: map['title'] ?? '',
       description: map['description'] ?? '',
       rewardCoins: map['rewardCoins'] ?? '',

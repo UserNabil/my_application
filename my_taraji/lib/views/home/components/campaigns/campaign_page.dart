@@ -70,7 +70,7 @@ class CompaignPageDetailsState extends State<CompaignPageDetails> {
             SizedBox(
               width: double.infinity,
               height: 300.0,
-              child: Image.asset(
+              child: Image.network(
                 campaign.imageUrl,
                 fit: BoxFit.cover,
               ),

@@ -106,13 +106,14 @@
 //   }
 // }
 
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:my_taraji/views/fanzone/components/fanzone_carousel.dart';
 
 class FanzoneMap extends StatefulWidget {
   const FanzoneMap({Key? key}) : super(key: key);

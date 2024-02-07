@@ -24,8 +24,8 @@ class InitProvider with ChangeNotifier {
   void setCurrentIndex(int index) {
     if (index != _currentIndex) {
       _currentIndex = index;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void initCurrentIndex() {
