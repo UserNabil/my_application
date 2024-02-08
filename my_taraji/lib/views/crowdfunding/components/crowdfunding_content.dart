@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
 import 'package:my_taraji/core/theme/style.dart';
-import 'package:my_taraji/views/fanpay/components/don/manage_content.dart';
+import 'package:my_taraji/views/challenge/import.dart';
+import 'package:my_taraji/views/crowdfunding/components/crowdfunding/manage_content.dart';
+import 'package:my_taraji/views/crowdfunding/provider/crowdfunding_provider.dart';
 import 'package:my_taraji/views/home/models/crowdfunding.dart';
 import 'package:simple_animation_progress_bar/simple_animation_progress_bar.dart';
 
@@ -37,15 +39,24 @@ class CrowdFundContent extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            TablerIcons.arrow_back,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-              "images/pngs/crowdfunding_background2.jpg",
-            ),
+            image: NetworkImage(crowdfunding?.imageUrl ?? ""),
             fit: BoxFit.cover,
           ),
         ),
@@ -95,9 +106,10 @@ class CrowdFundContent extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () {
+              context.read<CrowdFundingProvider>().getCrowdFundingSettings();
               show(
                 context,
-                const ManageDonPage(),
+                const ManageCrowdFundingPage(),
               );
             },
             child: Row(
@@ -140,7 +152,7 @@ class CrowdFundContent extends StatelessWidget {
             onTap: () {
               show(
                 context,
-                const ManageDonPage(),
+                const ManageCrowdFundingPage(),
               );
             },
             child: const Row(
@@ -160,10 +172,12 @@ class CrowdFundContent extends StatelessWidget {
   }
 
   Widget buildContent(BuildContext context) {
+    double percentage = (crowdfunding?.totalAmountContributed ?? 0) /
+        (crowdfunding!.targetAmount ?? 1);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.4),
+        color: Colors.black.withOpacity(0.7),
         borderRadius: BorderRadius.circular(20),
       ),
       child: SingleChildScrollView(
@@ -171,7 +185,8 @@ class CrowdFundContent extends StatelessWidget {
           children: [
             const SizedBox(height: 60),
             Text(
-              "Ensemble, nous pouvons faire la différence",
+              textAlign: TextAlign.center,
+              crowdfunding?.title ?? "Titre",
               style: stylePrimary.copyWith(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
@@ -189,9 +204,8 @@ class CrowdFundContent extends StatelessWidget {
                     height: 200,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage(
-                            "images/pngs/crowdfunding_background2.jpg"),
+                      image: DecorationImage(
+                        image: NetworkImage(crowdfunding?.imageUrl ?? ""),
                         fit: BoxFit.cover,
                       ),
                       border: Border.all(color: Colors.white, width: 2),
@@ -208,11 +222,11 @@ class CrowdFundContent extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: 0,
-                  right: 0,
+                  top: 10,
+                  right: 10,
                   child: Container(
-                    width: 100,
-                    height: 100,
+                    width: 50,
+                    height: 50,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       image: const DecorationImage(
@@ -235,7 +249,7 @@ class CrowdFundContent extends StatelessWidget {
                 Positioned(
                   bottom: 0,
                   child: SizedBox(
-                    width: 300,
+                    width: 250,
                     child: buildParticipateButtons(context),
                   ),
                 ),
@@ -255,9 +269,12 @@ class CrowdFundContent extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildProgressElement(TablerIcons.heart_handshake, "30"),
-                      buildProgressElement(TablerIcons.report_money, "300 DT"),
-                      buildProgressElement(TablerIcons.target_arrow, "1000 DT"),
+                      buildProgressElement(TablerIcons.heart_handshake,
+                          crowdfunding?.audienceSize.toString() ?? "0"),
+                      buildProgressElement(TablerIcons.report_money,
+                          "${crowdfunding?.totalAmountContributed} DT"),
+                      buildProgressElement(TablerIcons.target_arrow,
+                          "${crowdfunding?.targetAmount} DT"),
                     ],
                   ),
                   Padding(
@@ -267,7 +284,7 @@ class CrowdFundContent extends StatelessWidget {
                       height: 15,
                       backgroundColor: const Color.fromARGB(255, 220, 220, 220),
                       foregrondColor: MyColors.yellow,
-                      ratio: 0.3,
+                      ratio: percentage,
                       direction: Axis.horizontal,
                       curve: Curves.fastLinearToSlowEaseIn,
                       duration: const Duration(seconds: 3),

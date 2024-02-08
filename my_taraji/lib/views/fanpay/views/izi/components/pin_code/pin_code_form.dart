@@ -39,7 +39,6 @@ class PinCodeForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(
-                labelText: 'Pin code',
                 errorStyle: TextStyle(color: MyColors.redLight),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
@@ -49,8 +48,7 @@ class PinCodeForm extends StatelessWidget {
                 ),
                 fillColor: Colors.white,
                 filled: true,
-                labelStyle: TextStyle(color: MyColors.yellow),
-                hintText: 'XXXX',
+                hintText: 'Pin code',
                 prefixIcon: Icon(TablerIcons.barcode, color: MyColors.yellow),
                 border: OutlineInputBorder(),
               ),

@@ -1,4 +1,7 @@
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
+import 'package:my_taraji/views/selfcare/models/pages_enum.dart';
+import 'package:my_taraji/views/selfcare/provider/self_care_provider.dart';
 
 import '../../import.dart';
 
@@ -23,7 +26,13 @@ class MyCardLevel extends StatelessWidget {
           return Container();
         }
         final userData = snapshot.data;
-        return buildGamification(userData);
+        return InkWell(
+          child: buildGamification(userData),
+          onTap: () {
+            context.read<InitProvider>().setCurrentIndex(1);
+            context.read<SelfCareProvider>().switchPage(PageViewEnum.myStatus);
+          },
+        );
       },
     );
   }

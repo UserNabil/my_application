@@ -1,7 +1,9 @@
 import 'package:flutter/Material.dart';
 import 'package:my_taraji/core/theme/my_color.dart';
+import 'package:my_taraji/views/crowdfunding/provider/crowdfunding_provider.dart';
 import 'package:my_taraji/views/crowdfunding/view/crowdfunding_page.dart';
 import 'package:my_taraji/views/home/models/crowdfunding.dart';
+import 'package:provider/provider.dart';
 
 class CrowdfundingCard extends StatelessWidget {
   final Crowdfunding crowdfunding;
@@ -11,6 +13,7 @@ class CrowdfundingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        context.read<CrowdFundingProvider>().setCrowdfunding(crowdfunding);
         Navigator.push(
           context,
           MaterialPageRoute(

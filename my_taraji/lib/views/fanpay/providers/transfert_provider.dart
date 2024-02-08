@@ -85,6 +85,8 @@ class TransfertProvider with ChangeNotifier {
   void setNumberPhone(Contact? contact) {
     _contactSelected = contact!;
     _suffix = contact.phones[0].normalizedNumber.substring(0, 3);
+
+    _showContact = false;
     _phoneController.text = contact.phones[0].normalizedNumber.substring(3);
     notifyListeners();
   }
@@ -128,7 +130,7 @@ class TransfertProvider with ChangeNotifier {
         break;
       case "pinCode":
         _step = newStep;
-        initAllData();
+        // initAllData();
         setTransfertTitle("Code PIN");
         break;
       case "connect":

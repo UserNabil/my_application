@@ -26,6 +26,7 @@ class NewsContent extends StatelessWidget {
           ),
           // NewsSocialSection(news: news),
           const SizedBox(height: 10.0),
+
           NewsTextContent(news: news),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_taraji/views/challenge/components/provider/challenge_provider.dart';
+import 'package:my_taraji/views/crowdfunding/provider/crowdfunding_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/don_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/fanpay_historique_provider.dart';
 import 'package:my_taraji/views/fanpay/providers/fanpay_provider.dart';
@@ -30,6 +31,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => TransfertProvider()),
       ChangeNotifierProvider(create: (_) => ChallengeProvider()),
       ChangeNotifierProvider(create: (_) => FanzoneProvider()),
+      ChangeNotifierProvider(create: (_) => CrowdFundingProvider()),
     ],
     child: const MyApp(),
   ));

@@ -139,11 +139,18 @@ class MyFanPay extends StatelessWidget {
           builder: (context, AsyncSnapshot<AccountCard> authDetailsSnapshot) {
             if (authDetailsSnapshot.connectionState ==
                 ConnectionState.waiting) {
-              return Center(
-                child: GifView.asset(
-                  alignment: Alignment.center,
-                  'images/gifs/loader_paiement.gif',
-                  frameRate: 30,
+              return Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [MyColors.blue, MyColors.blue3])),
+                child: Center(
+                  child: GifView.asset(
+                    alignment: Alignment.center,
+                    'images/gifs/loader_paiement.gif',
+                    frameRate: 30,
+                  ),
                 ),
               );
             }

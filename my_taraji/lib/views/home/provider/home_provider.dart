@@ -67,27 +67,25 @@ class HomeProvider with ChangeNotifier {
 
   Future<AllDataContent> loadCampaigns() async {
     // var challengeService = ChallengeService();
+
+    List<Challenge> loadedChallenges = [];
+    List<Campaign> loadedCampaigns = [];
+    AllDataContent allContent = AllDataContent(
+      campagnes: [],
+      challenges: [],
+    );
     var campaignService = CampaignService();
-    List<Campaign> loadedCampaigns = await campaignService
-        .getAllCampaigns()
-        .then((value) => value.data ?? []);
+    await campaignService.getAllCampaigns().then((value) {
+      allContent = AllDataContent(
+        campagnes: loadedCampaigns,
+        challenges: loadedChallenges,
+      );
+    });
     // List<Challenge> loadedChallenges = await challengeService
     //     .getAllChallenges()
     //     .then((value) => value.data ?? []);
 
-    List<Challenge> loadedChallenges = [];
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    for (var campaign in loadedCampaigns) {
-      prefs.setBool(campaign.id, true);
-    }
-    saveCampaigns(loadedCampaigns);
     // saveChallenges(loadedChallenges);
-
-    AllDataContent allContent = AllDataContent(
-      campagnes: loadedCampaigns,
-      challenges: loadedChallenges,
-    );
     return allContent;
   }
 

@@ -9,6 +9,7 @@ class TransactionService {
   late String baseUrl = "https://devmytarajiapi.azurewebsites.net";
 
   TransactionService();
+
   Future<TransactionSettings> getTransactionSettings(
       TransactionType type) async {
     const path = "api/v1/settings-mobile";
@@ -71,7 +72,6 @@ class TransactionService {
     }
   }
 
-// return bank account details
   Future<APIResponseModel<AccountCard>> getWalletDetails() async {
     const path = "api/v1/wallet/wallet-details";
     final url = Uri.parse('$baseUrl/$path');
@@ -87,6 +87,55 @@ class TransactionService {
     } else {
       throw Exception(
           'Failed to get wallet details - ${response.reasonPhrase}');
+    }
+  }
+
+  Future<APIResponseModel<List<TransactionModel>>> getTransactionHistories({
+    String order = "",
+    int page = 0,
+    int size = 10,
+    String sort = "",
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    const path = "api/v1/financial-transaction/histories";
+    final url = Uri.parse('$baseUrl/$path');
+
+    User user = User.fromJson(json.decode(prefs.getString('user')!));
+
+    Map<String, String> headers = {
+      'Authorization': 'Bearer ${user.currentToken}',
+      'Content-Type': 'application/json',
+    };
+
+    debugPrint(user.currentToken.toString());
+
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode({
+        "order": order,
+        "page": page,
+        "size": size,
+        "sort": sort,
+      }),
+    );
+
+    debugPrint(response.headers.toString());
+    debugPrint(response.body.toString());
+    debugPrint(response.statusCode.toString());
+    debugPrint(response.reasonPhrase.toString());
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      return APIResponseModel<List<TransactionModel>>.fromJson(
+        jsonData,
+        (data) => (data as List)
+            .map((e) => TransactionModel.fromJson(e))
+            .toList(growable: false),
+      );
+    } else {
+      throw Exception(
+          'Failed to get transaction histories - ${response.reasonPhrase}');
     }
   }
 }

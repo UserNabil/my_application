@@ -30,3 +30,27 @@ Future<CrowdfundingOutput> getCrowdfundingList() async {
     );
   }
 }
+
+Future<CrowdfundingOutput> getCrowdfundingDetails(String id) async {
+  final url = Uri.parse(urlCrowdFundingDetails);
+  Map<String, dynamic> parameters = {
+    'id': id,
+  };
+  try {
+    Uri uriWithParams = Uri.https(url.authority, url.path, parameters);
+    log('uri withparams $uriWithParams');
+
+    final response = await http.get(uriWithParams);
+    log('response : ${response.body}');
+    final data = json.decode(response.body);
+    log('data $data');
+    final CrowdfundingOutput crowdfundingOutput =
+        CrowdfundingOutput.fromJson(data);
+    log(crowdfundingOutput.toString());
+    return crowdfundingOutput;
+  } catch (e) {
+    throw Exception(
+      'Failed to connect to the server to get getCrowdfundingDetails',
+    );
+  }
+}

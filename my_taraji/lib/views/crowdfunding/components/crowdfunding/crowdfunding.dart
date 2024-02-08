@@ -1,18 +1,26 @@
 import 'package:flutter/cupertino.dart';
+import 'package:my_taraji/views/crowdfunding/provider/crowdfunding_provider.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
+import 'package:my_taraji/views/home/models/crowdfunding.dart';
 
-class CrowdFundingDon extends StatelessWidget {
-  const CrowdFundingDon({super.key, required this.user});
+class CrowdFunding extends StatelessWidget {
+  const CrowdFunding({super.key, required this.user});
 
   final User? user;
 
   @override
   Widget build(BuildContext context) {
-    DonUI donUI = DonUI();
-    bool isActiveMinimum =
-        context.watch<DonProvider>().donSettings.isMinimumThresholdAmountActive;
-    int minimumThresholdAmount =
-        context.watch<DonProvider>().donSettings.minimumThresholdAmount;
+    DonUI crowdFundingUI = DonUI();
+    bool isActiveMinimum = context
+        .watch<CrowdFundingProvider>()
+        .crowdFundingSettings
+        .isMinimumThresholdAmountActive;
+    int minimumThresholdAmount = context
+        .watch<CrowdFundingProvider>()
+        .crowdFundingSettings
+        .minimumThresholdAmount;
+    Crowdfunding? crowFunding =
+        context.watch<CrowdFundingProvider>().crowdFunding;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,37 +42,33 @@ class CrowdFundingDon extends StatelessWidget {
                 Text(user?.pseudo ?? "",
                     style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 15.0),
-                const Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('Don pour Taraji'),
-                  ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.55,
+                  child: Text(
+                    crowFunding?.title ?? "",
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                  ),
                 ),
               ],
             )
           ],
         ),
-        donUI.divider(40.0),
-        const SizedBox(height: 20.0),
-        const Text(
-          'Définir montant',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16.0,
-          ),
-        ),
+        crowdFundingUI.divider(40.0),
         const SizedBox(height: 20.0),
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Form(
-            key: context.watch<DonProvider>().formKey,
+            key: context.watch<CrowdFundingProvider>().formKey,
             child: TextFormField(
               textAlign: TextAlign.center,
               readOnly: !context
-                  .watch<DonProvider>()
-                  .donSettings
+                  .watch<CrowdFundingProvider>()
+                  .crowdFundingSettings
                   .isFreeInputAmountActivated,
-              controller: context.watch<DonProvider>().amountController,
+              controller:
+                  context.watch<CrowdFundingProvider>().amountController,
               cursorColor: MyColors.blue3,
               style: const TextStyle(
                 fontSize: 40.0,
@@ -73,6 +77,7 @@ class CrowdFundingDon extends StatelessWidget {
               ),
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
+                labelText: "Définir un montant",
                 errorMaxLines: 2,
                 suffix: Text(
                   "DT",
@@ -101,7 +106,7 @@ class CrowdFundingDon extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10.0),
-        donUI.divider(0.0),
+        crowdFundingUI.divider(0.0),
         const SizedBox(height: 20.0),
         Container(
           height: 200,
@@ -110,14 +115,14 @@ class CrowdFundingDon extends StatelessWidget {
             spacing: 10.0,
             runSpacing: 20.0,
             children: context
-                .watch<DonProvider>()
-                .donSettings
+                .watch<CrowdFundingProvider>()
+                .crowdFundingSettings
                 .authorizedAmounts
                 .map((authorizedAmount) {
               return ElevatedButton(
                 onPressed: () {
                   context
-                      .read<DonProvider>()
+                      .read<CrowdFundingProvider>()
                       .setAmount(authorizedAmount.amount);
                 },
                 style: ElevatedButton.styleFrom(
@@ -195,7 +200,7 @@ class CrowdFundingDon extends StatelessWidget {
             await Future.delayed(
               const Duration(seconds: 1),
               () {
-                context.read<DonProvider>().setStep("confirmDon");
+                context.read<CrowdFundingProvider>().setStep("confirmDon");
               },
             );
           },

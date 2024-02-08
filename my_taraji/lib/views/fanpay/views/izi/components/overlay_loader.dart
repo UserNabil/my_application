@@ -7,7 +7,7 @@ class OverlayLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white.withOpacity(0.5),
+      color: Colors.blue.withOpacity(0.5),
       child: Center(
         heightFactor: 2,
         child: Column(
@@ -19,6 +19,8 @@ class OverlayLoader extends StatelessWidget {
               'images/gifs/loader_paiement.gif',
               frameRate: 30,
             ),
+
+            // SvgPicture.asset("images/svgs/loader.svg"),
           ],
         ),
       ),

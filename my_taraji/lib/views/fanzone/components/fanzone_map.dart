@@ -124,14 +124,14 @@ class FanzoneMap extends StatefulWidget {
 
 class FanzoneMapState extends State<FanzoneMap> {
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(36.1, 10.185),
     zoom: 14.4746,
   );
 
   List<Marker> markers = [
     const Marker(
       markerId: MarkerId('initialMarker'),
-      position: LatLng(37.42796133580664, -122.085749655962),
+      position: LatLng(36.1, 10.185),
       infoWindow: InfoWindow(
         title: 'Initial Marker',
         snippet: 'This is the initial marker.',

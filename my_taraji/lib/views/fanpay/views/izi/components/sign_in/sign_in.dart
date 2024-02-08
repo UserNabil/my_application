@@ -130,7 +130,7 @@ class SignIn extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Connexion à Izi',
+                  'Connexion à Fanpay',
                   style: TextStyle(
                     color: MyColors.white,
                     fontSize: 27,

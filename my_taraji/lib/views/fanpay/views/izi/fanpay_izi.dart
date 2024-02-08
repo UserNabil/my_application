@@ -60,7 +60,9 @@ Widget buildBody(BuildContext context, User? user) {
                   width: 300,
                   child: Column(children: [
                     Text(
-                      haveWallet ? "Bienvenue sur IZI" : "Pas de compte IZI ?",
+                      haveWallet
+                          ? "Bienvenue sur Fanpay"
+                          : "Pas de compte Fanpay ?",
                       style: TextStyle(
                         color: MyColors.white,
                         fontSize: 50,

@@ -4,6 +4,7 @@ import 'package:my_taraji/services/enums/financial_transaction_type.dart';
 import 'package:my_taraji/services/transaction_service.dart';
 import 'package:my_taraji/services/user_service.dart';
 import 'package:my_taraji/views/fanpay/models/transaction_model.dart';
+import 'package:my_taraji/views/home/models/crowdfunding.dart';
 import 'package:my_taraji/views/init/models/user.dart';
 
 class CrowdFundingProvider with ChangeNotifier {
@@ -11,8 +12,8 @@ class CrowdFundingProvider with ChangeNotifier {
   final TextEditingController _pinCode = TextEditingController();
   final TextEditingController _signinPwd = TextEditingController();
   String _step = "don";
-  String _title = "Don";
-  TransactionSettings _donSettings = TransactionSettings(
+  String _title = "CrowdFunding";
+  TransactionSettings _crowdFundingSettings = TransactionSettings(
     authorizedAmounts: [],
     isFreeInputAmountActivated: false,
     isMinimumThresholdAmountActive: false,
@@ -34,6 +35,12 @@ class CrowdFundingProvider with ChangeNotifier {
   bool _userHaveCoins = false;
   double _userCoins = 0;
   String _error = "";
+  Crowdfunding? _crowdFunding;
+
+  void setCrowdfunding(Crowdfunding crowdFunding) {
+    _crowdFunding = crowdFunding;
+    notifyListeners();
+  }
 
   void calculateCoins(User? user) {
     if (user?.myRewards?.coins != null) {
@@ -60,7 +67,7 @@ class CrowdFundingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDonTitle(String newTitle) {
+  void setCrowdFundingTitle(String newTitle) {
     _title = newTitle;
     notifyListeners();
   }
@@ -76,26 +83,26 @@ class CrowdFundingProvider with ChangeNotifier {
         if (_formKey.currentState?.validate() == true || _isValidForm) {
           _isValidForm = true;
           _step = newStep;
-          setDonTitle("Confirmer don");
+          setCrowdFundingTitle("Confirmer la donation");
           convertAmount();
         }
         break;
       case "finishDon":
         _step = newStep;
-        setDonTitle("");
+        setCrowdFundingTitle("");
         break;
       case "don":
         _step = "don";
         initAllData();
-        setDonTitle("Don");
+        setCrowdFundingTitle("CrowdFunding");
         break;
       case "pinCode":
         _step = newStep;
-        setDonTitle("Code PIN");
+        setCrowdFundingTitle("Code PIN");
         break;
       case "connect":
         _step = newStep;
-        setDonTitle("Connexion");
+        setCrowdFundingTitle("Connexion");
         break;
     }
     notifyListeners();
@@ -119,7 +126,7 @@ class CrowdFundingProvider with ChangeNotifier {
     _signinPwd.text = "";
     _signinPwd.value = TextEditingValue.empty;
     _isTypeCoins = false;
-    _title = "Don";
+    _title = "CrowdFunding";
     _isValidForm = false;
     _formKey.currentState?.reset();
     _convertedAmount = "";
@@ -133,20 +140,20 @@ class CrowdFundingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<TransactionSettings> getDonSettings() async {
+  Future<TransactionSettings> getCrowdFundingSettings() async {
     TransactionType type = getTransactionType(1);
-    TransactionSettings donSettings =
+    TransactionSettings crowdFundingSettings =
         await transactionService.getTransactionSettings(type);
-    donSettings.authorizedAmounts.sort((a, b) => a.amount.compareTo(b.amount));
-    _donSettings = donSettings;
+    crowdFundingSettings.authorizedAmounts
+        .sort((a, b) => a.amount.compareTo(b.amount));
+    _crowdFundingSettings = crowdFundingSettings;
     notifyListeners();
-    return donSettings;
+    debugPrint("crowdFundingSettings: ${crowdFundingSettings.toJson()}");
+    return crowdFundingSettings;
   }
 
   void manageAmountController() {
-    if (_donSettings.isMinimumThresholdAmountActive) {
-      // _amountController.text = _donSettings.minimumThresholdAmount.toString();
-    }
+    if (_crowdFundingSettings.isMinimumThresholdAmountActive) {}
     notifyListeners();
   }
 
@@ -175,10 +182,10 @@ class CrowdFundingProvider with ChangeNotifier {
     );
   }
 
-  void createDonation(User? user, BuildContext context) async {
+  void createCrowdFunding(User? user, BuildContext context) async {
     setIsLoading(true);
 
-    TransactionModel donModel = TransactionModel(
+    TransactionModel crowdFundingModel = TransactionModel(
       contributionMethod: _isTypeCoins ? 1 : 2,
       amountContributed: int.parse(_amountController.text),
       coinsCountContributed: int.parse(_convertedAmount),
@@ -187,10 +194,12 @@ class CrowdFundingProvider with ChangeNotifier {
       queneyLevelId: user?.level?.currentLevel.id ?? "",
     );
 
-    debugPrint("donModel: ${donModel.toJson().toString()}");
+    debugPrint("donModel: ${crowdFundingModel.toJson().toString()}");
 
     if (_isTypeCoins && _userHaveCoins) {
-      await transactionService.createTransaction(donModel).then((value) {
+      await transactionService
+          .createTransaction(crowdFundingModel)
+          .then((value) {
         setIsLoading(false);
         if (value.data?.isSuccess == true) {
           setStep("finishDon");
@@ -199,7 +208,9 @@ class CrowdFundingProvider with ChangeNotifier {
         }
       });
     } else if (!_isTypeCoins) {
-      await transactionService.createTransaction(donModel).then((value) {
+      await transactionService
+          .createTransaction(crowdFundingModel)
+          .then((value) {
         setIsLoading(false);
         if (value.data?.isSuccess == true) {
           if (value.data?.isIZIAuthenticated == true &&
@@ -284,7 +295,7 @@ class CrowdFundingProvider with ChangeNotifier {
   String get title => _title;
   TextEditingController get amountController => _amountController;
   bool get isTypeCash => _isTypeCoins;
-  TransactionSettings get donSettings => _donSettings;
+  TransactionSettings get crowdFundingSettings => _crowdFundingSettings;
   GlobalKey<FormState> get formKey => _formKey;
   String get convertedAmount => _convertedAmount;
   bool get isValidForm => _isValidForm;
@@ -296,4 +307,5 @@ class CrowdFundingProvider with ChangeNotifier {
   bool get userHaveCoins => _userHaveCoins;
   double get userCoins => _userCoins;
   String get error => _error;
+  Crowdfunding? get crowdFunding => _crowdFunding;
 }

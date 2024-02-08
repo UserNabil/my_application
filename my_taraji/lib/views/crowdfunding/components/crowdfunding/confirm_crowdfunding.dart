@@ -1,17 +1,21 @@
 import 'package:flutter/cupertino.dart';
+import 'package:my_taraji/views/crowdfunding/provider/crowdfunding_provider.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
-class ConfirmDon extends StatelessWidget {
-  const ConfirmDon({super.key, required this.user});
+class ConfirmCrowdFunding extends StatelessWidget {
+  const ConfirmCrowdFunding({super.key, required this.user});
   final User? user;
+
+  static DonUI crowdFundingUI = DonUI();
 
   @override
   Widget build(BuildContext context) {
-    bool isLoading = context.watch<DonProvider>().isLoading;
-    DonUI donUI = DonUI();
+    bool isLoading = context.watch<CrowdFundingProvider>().isLoading;
     DateTime now = DateTime.now();
-    bool userHaveCoins = context.watch<DonProvider>().userHaveCoins;
-    Widget confirmDon() {
+    bool userHaveCoins = context.watch<CrowdFundingProvider>().userHaveCoins;
+    // Crowdfunding? crowFunding =
+    //     context.watch<CrowdFundingProvider>().crowdFunding;
+    Widget confirmCrowdFunding() {
       return Column(
         children: [
           Container(
@@ -19,44 +23,45 @@ class ConfirmDon extends StatelessWidget {
             child: SvgPicture.asset(
                 width: 150, height: 150, "images/svgs/fanpay/confirm_don.svg"),
           ),
-          donUI.divider(20.0),
+          crowdFundingUI.divider(20.0),
           Text(
-            "${context.watch<DonProvider>().amountController.text} DT",
+            "${context.watch<CrowdFundingProvider>().amountController.text} DT",
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 32.0,
             ),
           ),
           const SizedBox(height: 10.0),
-          donUI.textType1("Votre don pour Taraji", false, false),
+          crowdFundingUI.textType1("Votre don pour Taraji", false, false),
           const SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              donUI.textType1("Payer par", false, false),
-              donUI.textType2("Solde wallet"),
+              crowdFundingUI.textType1("Payer par", false, false),
+              crowdFundingUI.textType2("Solde wallet"),
               Switch(
                 thumbColor: MaterialStateProperty.all(MyColors.white),
                 trackColor: MaterialStateProperty.all(MyColors.orange),
                 trackOutlineWidth: MaterialStateProperty.all(0),
                 trackOutlineColor:
                     MaterialStateProperty.all(Colors.transparent),
-                value: context.watch<DonProvider>().isTypeCash,
+                value: context.watch<CrowdFundingProvider>().isTypeCash,
                 onChanged: (value) {
-                  context.read<DonProvider>().setTypeCash(value, user);
+                  context.read<CrowdFundingProvider>().setTypeCash(value, user);
                 },
               ),
-              donUI.textType2("Coins"),
+              crowdFundingUI.textType2("Coins"),
             ],
           ),
-          context.watch<DonProvider>().isTypeCash
+          context.watch<CrowdFundingProvider>().isTypeCash
               ? Column(
                   children: [
-                    donUI.divider(40.0),
+                    crowdFundingUI.divider(40.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        donUI.textType1("Nombre des coins", false, false),
+                        crowdFundingUI.textType1(
+                            "Nombre des coins", false, false),
                         Text(
                             style: TextStyle(
                               color: userHaveCoins ? null : MyColors.red,
@@ -64,27 +69,27 @@ class ConfirmDon extends StatelessWidget {
                               fontSize: 16.0,
                             ),
                             userHaveCoins
-                                ? "${context.watch<DonProvider>().convertedAmount} Coins"
-                                : "${context.watch<DonProvider>().userCoins} Coins"),
+                                ? "${context.watch<CrowdFundingProvider>().convertedAmount} Coins"
+                                : "${context.watch<CrowdFundingProvider>().userCoins} Coins"),
                       ],
                     ),
                   ],
                 )
               : const SizedBox(),
-          donUI.divider(40.0),
+          crowdFundingUI.divider(40.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              donUI.textType1("Don destination", false, false),
-              donUI.textType2("Taraji"),
+              crowdFundingUI.textType1("Don destination", false, false),
+              crowdFundingUI.textType2("Taraji"),
             ],
           ),
-          donUI.divider(40.0),
+          crowdFundingUI.divider(40.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              donUI.textType1("Date", false, false),
-              donUI.textType2(donUI.formatDate(now)),
+              crowdFundingUI.textType1("Date", false, false),
+              crowdFundingUI.textType2(crowdFundingUI.formatDate(now)),
             ],
           ),
           userHaveCoins
@@ -92,7 +97,7 @@ class ConfirmDon extends StatelessWidget {
               : SizedBox(
                   height: 50,
                   child: Text(
-                    context.watch<DonProvider>().error,
+                    context.watch<CrowdFundingProvider>().error,
                     style: const TextStyle(color: MyColors.red),
                   ),
                 ),
@@ -104,7 +109,9 @@ class ConfirmDon extends StatelessWidget {
             onPressed: () {
               isLoading
                   ? null
-                  : context.read<DonProvider>().createDonation(user, context);
+                  : context
+                      .read<CrowdFundingProvider>()
+                      .createCrowdFunding(user, context);
             },
             child: isLoading
                 ? const CupertinoActivityIndicator(
@@ -123,6 +130,6 @@ class ConfirmDon extends StatelessWidget {
       );
     }
 
-    return confirmDon();
+    return confirmCrowdFunding();
   }
 }

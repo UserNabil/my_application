@@ -1,11 +1,12 @@
 import 'package:intl/intl.dart';
+import 'package:my_taraji/views/crowdfunding/provider/crowdfunding_provider.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 
-class FinishDon extends StatelessWidget {
-  const FinishDon({super.key, required this.user});
+class FinishCrowdFunding extends StatelessWidget {
+  const FinishCrowdFunding({super.key, required this.user});
   final User? user;
 
-  static DonUI donUI = DonUI();
+  static DonUI crowdFundingUI = DonUI();
 
   String formatDate(DateTime date) {
     String formattedDate = DateFormat('• HH:mm').format(date);
@@ -53,8 +54,8 @@ class FinishDon extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              donUI.textType2('Taraji'),
-              donUI.textType1(
+              crowdFundingUI.textType2('Taraji'),
+              crowdFundingUI.textType1(
                   '${formatPhoneNumber(user?.phone ?? "")} ${formatDate(DateTime.now())}',
                   false,
                   true),
@@ -65,7 +66,7 @@ class FinishDon extends StatelessWidget {
     );
   }
 
-  Widget finishDon(BuildContext context) {
+  Widget finishCrowdFunding(BuildContext context) {
     return Column(
       children: [
         Padding(
@@ -85,26 +86,26 @@ class FinishDon extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              donUI.textType1(
-                  "Votre don à été réalisé pour le compte de Taraji",
+              crowdFundingUI.textType1(
+                  "Votre participation à été réalisé pour le compte de Taraji",
                   true,
                   false),
               const SizedBox(height: 10),
-              donUI.dottedDivider(1.5, MyColors.grey),
+              crowdFundingUI.dottedDivider(1.5, MyColors.grey),
               const SizedBox(height: 40),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  donUI.textType1("Don destination", false, false),
+                  crowdFundingUI.textType1("Don destination", false, false),
                   destinationCard(),
                 ],
               ),
               const SizedBox(height: 20),
-              donUI.textType1("Total don", false, false),
+              crowdFundingUI.textType1("Total don", false, false),
               Text(
-                context.watch<DonProvider>().isTypeCash
-                    ? "${context.watch<DonProvider>().convertedAmount} Coins"
-                    : "${context.watch<DonProvider>().amountController.text} DT",
+                context.watch<CrowdFundingProvider>().isTypeCash
+                    ? "${context.watch<CrowdFundingProvider>().convertedAmount} Coins"
+                    : "${context.watch<CrowdFundingProvider>().amountController.text} DT",
                 style: const TextStyle(
                   color: MyColors.blue,
                   fontWeight: FontWeight.w600,
@@ -112,9 +113,9 @@ class FinishDon extends StatelessWidget {
                 ),
               ),
               Text(
-                context.watch<DonProvider>().isTypeCash
-                    ? "${context.watch<DonProvider>().convertedAmount} Experience Points"
-                    : "${context.watch<DonProvider>().amountController.text} Experience Points",
+                context.watch<CrowdFundingProvider>().isTypeCash
+                    ? "${context.watch<CrowdFundingProvider>().convertedAmount} Experience Points"
+                    : "${context.watch<CrowdFundingProvider>().amountController.text} Experience Points",
                 style: const TextStyle(
                   color: Color(0xff08849D),
                   fontSize: 16.0,
@@ -131,7 +132,7 @@ class FinishDon extends StatelessWidget {
             backgroundColor: MyColors.orange,
           ),
           onPressed: () {
-            context.read<DonProvider>().initAllData();
+            context.read<CrowdFundingProvider>().initAllData();
             context.read<FanPayProvider>().openModal();
             Navigator.pop(context);
           },
@@ -150,6 +151,6 @@ class FinishDon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return finishDon(context);
+    return finishCrowdFunding(context);
   }
 }

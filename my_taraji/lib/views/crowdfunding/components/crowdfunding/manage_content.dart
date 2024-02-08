@@ -1,8 +1,12 @@
+import 'package:my_taraji/views/crowdfunding/components/crowdfunding/confirm_crowdfunding.dart';
+import 'package:my_taraji/views/crowdfunding/components/crowdfunding/crowdfunding.dart';
+import 'package:my_taraji/views/crowdfunding/components/crowdfunding/finish_crowdfunding.dart';
+import 'package:my_taraji/views/crowdfunding/provider/crowdfunding_provider.dart';
 import 'package:my_taraji/views/fanpay/imports.dart';
 import 'package:my_taraji/views/fanpay/views/izi/components/overlay_loader.dart';
 
-class ManageDonPage extends StatelessWidget {
-  const ManageDonPage({super.key});
+class ManageCrowdFundingPage extends StatelessWidget {
+  const ManageCrowdFundingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +15,7 @@ class ManageDonPage extends StatelessWidget {
       builder: (context, snapshot) {
         final value = snapshot.data;
         if (snapshot.hasData) {
-          return context.watch<DonProvider>().step != "finishDon"
+          return context.watch<CrowdFundingProvider>().step != "finishDon"
               ? _buildBody(context, value)
               : Stack(
                   alignment: Alignment.topCenter,
@@ -37,33 +41,33 @@ class ManageDonPage extends StatelessWidget {
   }
 
   Widget _manageStep(User? user, BuildContext context) {
-    final step = context.watch<DonProvider>().step;
+    final step = context.watch<CrowdFundingProvider>().step;
     onPressedToConnect() {
-      context.read<DonProvider>().validateConnectionForm(context);
+      context.read<CrowdFundingProvider>().validateConnectionForm(context);
     }
 
     onPressedToVerif() {
-      context.read<DonProvider>().validateVerifForm(context);
+      context.read<CrowdFundingProvider>().validateVerifForm(context);
     }
 
     switch (step) {
       case "don":
-        return MyDon(user: user);
+        return CrowdFunding(user: user);
       case "confirmDon":
-        return ConfirmDon(user: user);
+        return ConfirmCrowdFunding(user: user);
       case "finishDon":
-        return FinishDon(user: user);
+        return FinishCrowdFunding(user: user);
       case "pinCode":
-        return context.watch<DonProvider>().isLoading == true
+        return context.watch<CrowdFundingProvider>().isLoading == true
             ? Stack(
                 children: [
                   PinCode(
                     onPressed: onPressedToVerif,
                     paddingTop: 0,
-                    formKey: context.watch<DonProvider>().formKey,
-                    pinCode: context.watch<DonProvider>().pinCode,
-                    isLoading: context.watch<DonProvider>().isLoading,
-                    valid: context.watch<DonProvider>().isValid,
+                    formKey: context.watch<CrowdFundingProvider>().formKey,
+                    pinCode: context.watch<CrowdFundingProvider>().pinCode,
+                    isLoading: context.watch<CrowdFundingProvider>().isLoading,
+                    valid: context.watch<CrowdFundingProvider>().isValid,
                   ),
                   const OverlayLoader(),
                 ],
@@ -71,24 +75,24 @@ class ManageDonPage extends StatelessWidget {
             : PinCode(
                 onPressed: onPressedToVerif,
                 paddingTop: 0,
-                formKey: context.watch<DonProvider>().formKey,
-                pinCode: context.watch<DonProvider>().pinCode,
-                isLoading: context.watch<DonProvider>().isLoading,
-                valid: context.watch<DonProvider>().isValid,
+                formKey: context.watch<CrowdFundingProvider>().formKey,
+                pinCode: context.watch<CrowdFundingProvider>().pinCode,
+                isLoading: context.watch<CrowdFundingProvider>().isLoading,
+                valid: context.watch<CrowdFundingProvider>().isValid,
               );
 
       case "connect":
-        return context.watch<DonProvider>().isLoading == true
+        return context.watch<CrowdFundingProvider>().isLoading == true
             ? Stack(
                 alignment: Alignment.center,
                 children: [
                   SignIn(
                     onPressed: onPressedToConnect,
                     paddingTop: 0,
-                    formKey: context.watch<DonProvider>().formKey,
-                    signinId: context.watch<DonProvider>().signinId,
-                    signinPwd: context.watch<DonProvider>().signinPwd,
-                    isLoading: context.watch<DonProvider>().isLoading,
+                    formKey: context.watch<CrowdFundingProvider>().formKey,
+                    signinId: context.watch<CrowdFundingProvider>().signinId,
+                    signinPwd: context.watch<CrowdFundingProvider>().signinPwd,
+                    isLoading: context.watch<CrowdFundingProvider>().isLoading,
                   ),
                   const OverlayLoader(),
                 ],
@@ -96,10 +100,10 @@ class ManageDonPage extends StatelessWidget {
             : SignIn(
                 onPressed: onPressedToConnect,
                 paddingTop: 0,
-                formKey: context.watch<DonProvider>().formKey,
-                signinId: context.watch<DonProvider>().signinId,
-                signinPwd: context.watch<DonProvider>().signinPwd,
-                isLoading: context.watch<DonProvider>().isLoading,
+                formKey: context.watch<CrowdFundingProvider>().formKey,
+                signinId: context.watch<CrowdFundingProvider>().signinId,
+                signinPwd: context.watch<CrowdFundingProvider>().signinPwd,
+                isLoading: context.watch<CrowdFundingProvider>().isLoading,
               );
 
       default:
@@ -108,9 +112,9 @@ class ManageDonPage extends StatelessWidget {
   }
 
   Widget _buildTop(BuildContext context) {
-    final donProvider = context.watch<DonProvider>();
+    final crowdFundingProvider = context.watch<CrowdFundingProvider>();
     final fanPayProvider = context.read<FanPayProvider>();
-    final step = donProvider.step;
+    final step = crowdFundingProvider.step;
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.17,
@@ -132,7 +136,7 @@ class ManageDonPage extends StatelessWidget {
               ),
             ),
             Text(
-              donProvider.title,
+              crowdFundingProvider.title,
               style: const TextStyle(
                 color: MyColors.white,
                 fontSize: 20,
@@ -141,7 +145,7 @@ class ManageDonPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {},
-              child: donProvider.step != "finishDon"
+              child: crowdFundingProvider.step != "finishDon"
                   ? const SizedBox(height: 22, width: 22)
                   : const Icon(
                       size: 20,
@@ -157,31 +161,31 @@ class ManageDonPage extends StatelessWidget {
 
   void _handleTopGesture(
       BuildContext context, String step, FanPayProvider fanPayProvider) {
-    final donProvider = context.read<DonProvider>();
+    final crowdFundingProvider = context.read<CrowdFundingProvider>();
 
     switch (step) {
       case "don":
-        context.read<DonProvider>().initAllData();
+        context.read<CrowdFundingProvider>().initAllData();
         fanPayProvider.openModal();
         Navigator.pop(context);
         break;
       case "finishDon":
-        context.read<DonProvider>().initAllData();
+        context.read<CrowdFundingProvider>().initAllData();
         fanPayProvider.openModal();
         Navigator.pop(context);
         break;
       case "confirmDon":
-        donProvider.setStep("don");
+        crowdFundingProvider.setStep("don");
         break;
       case "connect":
       case "pinCode":
-        donProvider.setStep("confirmDon");
+        crowdFundingProvider.setStep("confirmDon");
         break;
     }
   }
 
   Widget _buildMiddle(BuildContext context, User? user) {
-    final donProvider = context.watch<DonProvider>();
+    final crowdFundingProvider = context.watch<CrowdFundingProvider>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -201,7 +205,7 @@ class ManageDonPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              donProvider.step != "finishDon"
+              crowdFundingProvider.step != "finishDon"
                   ? SvgPicture.asset(
                       'images/icons/drag.svg',
                       height: 5,
@@ -219,7 +223,7 @@ class ManageDonPage extends StatelessWidget {
                     padding: const EdgeInsets.all(30),
                     child: Column(
                       children: [
-                        donProvider.step != "finishDon"
+                        crowdFundingProvider.step != "finishDon"
                             ? Container()
                             : const SizedBox(height: 50),
                         _manageStep(user, context),
