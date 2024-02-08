@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:my_taraji/core/config/azureb2c_config.dart';
 import 'package:my_taraji/views/home/provider/home_provider.dart';
 import 'package:my_taraji/views/init/components/bottom_bar/bar.dart';
 import 'package:my_taraji/views/init/providers/init_taraji_provider.dart';
@@ -18,15 +19,6 @@ class InitScreen extends StatefulWidget {
 
 class _InitScreenState extends State<InitScreen> {
   late SharedPreferences prefs;
-  final clientId = '1689eb93-8b4f-476f-bb17-8889533e4c65';
-  final redirectURL = 'com.trendit.mytaraji://oauthredirect';
-  final discoveryURL =
-      'https://mytarajjib2c.b2clogin.com/myTarajjiB2c.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_mytarajji_signup_signin';
-  final List<String> scopes = [
-    //  '1689eb93-8b4f-476f-bb17-8889533e4c65',
-    'openid',
-    // 'profile',
-  ];
   bool isConnected = false;
 
   @override
@@ -40,12 +32,15 @@ class _InitScreenState extends State<InitScreen> {
     AuthorizationTokenResponse? result;
     try {
       result = await appauth.authorizeAndExchangeCode(
-        AuthorizationTokenRequest(clientId, redirectURL,
-            //issuer: "https://prodplatform.b2clogin.com/ccab738-09c1-45df-8aca-7c17c285b689/v2.0/",
-            discoveryUrl: discoveryURL,
-            scopes: scopes),
+        AuthorizationTokenRequest(
+          AzureB2cConfig.clientId,
+          AzureB2cConfig.redirectURL,
+          discoveryUrl: AzureB2cConfig.discoveryURL,
+          scopes: AzureB2cConfig.scopes,
+        ),
       );
-      log('token${result?.idToken}');
+      log('access token ${result?.accessToken}');
+      log('id token ${result?.idToken}');
       setState(() {
         isConnected = true;
       });
@@ -54,10 +49,7 @@ class _InitScreenState extends State<InitScreen> {
     }
 
     prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', result?.idToken ?? '');
-    var accessToken = result?.accessToken;
-    log('result =====> $result');
-    log('accessToken $accessToken');
+    prefs.setString('accessToken', result?.accessToken ?? '');
   }
 
   @override
